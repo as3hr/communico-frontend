@@ -1,31 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:communico_frontend/di/service_locator.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'presentation/communico.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('App'),
-      ),
-      body: const Column(
-        children: [],
-      ),
-    );
-  }
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ServiceLocator.configureServiceLocator();
+  runApp(const Communico());
 }
