@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:communico_frontend/domain/entities/user_entity.dart';
-import 'package:communico_frontend/domain/failures/post_failure.dart';
+import 'package:communico_frontend/domain/failures/user_failure.dart';
 import 'package:communico_frontend/domain/model/user_json.dart';
 import 'package:communico_frontend/domain/repositories/user_repository.dart';
 import 'package:communico_frontend/network/network_repository.dart';
