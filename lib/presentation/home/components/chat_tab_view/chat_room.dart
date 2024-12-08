@@ -93,15 +93,24 @@ class ChatRoom extends StatelessWidget {
                           ),
                         ),
                         child: InputField(
+                          textEditingController: state.currentMessageController,
                           hintText: "Write a message ...",
                           onChanged: (val) {},
+                          onSubmit: (val) {
+                            final index =
+                                DefaultTabController.of(context).index;
+                            cubit.sendMessage(index);
+                          },
                           showBorder: false,
                         ),
                       ),
                     ),
                     2.horizontalSpace,
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        final index = DefaultTabController.of(context).index;
+                        cubit.sendMessage(index);
+                      },
                       child: Container(
                           decoration: BoxDecoration(
                             color: AppColor.violet,

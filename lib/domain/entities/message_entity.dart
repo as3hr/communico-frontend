@@ -16,16 +16,16 @@ class MessageEntity {
   int? groupId;
 
   MessageEntity({
-    required this.id,
+    this.id = 0,
     required this.text,
-    required this.timeStamp,
+    DateTime? timeStamp,
     required this.userId,
     this.chat,
     this.group,
     this.groupId,
     this.chatId,
     this.sender,
-  });
+  }) : timeStamp = timeStamp ?? DateTime.now();
 
   Map<String, dynamic> toChatJson() => MessageJson.copyWith(this).toChatJson();
 

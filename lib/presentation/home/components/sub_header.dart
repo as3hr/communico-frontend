@@ -8,9 +8,7 @@ import '../../../helpers/widgets/theme_switch.dart';
 class SubHeader extends StatelessWidget {
   const SubHeader({
     super.key,
-    required this.tabController,
   });
-  final TabController tabController;
   @override
   Widget build(BuildContext context) {
     return Flex(
@@ -41,7 +39,6 @@ class SubHeader extends StatelessWidget {
                       isScrollable: true,
                       dividerColor: Colors.transparent,
                       onTap: (index) {},
-                      controller: tabController,
                       tabs: const [
                         Text("Direct Messages"),
                         Text("Group Messages"),

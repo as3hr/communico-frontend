@@ -10,50 +10,37 @@ import '../../../di/service_locator.dart';
 import '../home_cubit.dart';
 import '../home_state.dart';
 
-class HomeBody extends StatefulWidget {
+class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
 
-  @override
-  State<HomeBody> createState() => _HomeBodyState();
-}
-
-class _HomeBodyState extends State<HomeBody>
-    with SingleTickerProviderStateMixin {
-  final cubit = getIt<HomeCubit>();
-  late TabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 2, vsync: this);
-  }
+  static final cubit = getIt<HomeCubit>();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: cubit,
       builder: (context, state) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
-          child: Center(
-            child: Column(
-              children: [
-                const Header(),
-                5.verticalSpace,
-                SubHeader(
-                  tabController: tabController,
-                ),
-                5.verticalSpace,
-                Expanded(
-                  child: TabBarView(
-                    controller: tabController,
-                    children: const [
-                      ChatTabView(),
-                      GroupTabView(),
-                    ],
+        return DefaultTabController(
+          length: 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
+            child: Center(
+              child: Column(
+                children: [
+                  const Header(),
+                  5.verticalSpace,
+                  const SubHeader(),
+                  5.verticalSpace,
+                  const Expanded(
+                    child: TabBarView(
+                      children: [
+                        ChatTabView(),
+                        GroupTabView(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
