@@ -27,13 +27,13 @@ class Styles {
           fontSize: 15, color: AppColor.grey, family: FontFamily.varela),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColor.black1,
+          color: AppColor.darkBackground,
         ),
         borderRadius: BorderRadius.circular(20),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColor.black1,
+          color: AppColor.darkBackground,
         ),
         borderRadius: BorderRadius.circular(20),
       ),

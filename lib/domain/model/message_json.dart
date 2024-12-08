@@ -6,8 +6,9 @@ import 'package:communico_frontend/domain/model/user_json.dart';
 import '../entities/chat_entity.dart';
 import '../entities/message_entity.dart';
 import '../entities/user_entity.dart';
+import 'base_model.dart';
 
-class MessageJson {
+class MessageJson implements BaseModel<MessageEntity> {
   int id;
   String text;
   DateTime timeStamp;
@@ -33,7 +34,7 @@ class MessageJson {
   factory MessageJson.fromJson(Map<String, dynamic> json) => MessageJson(
         id: json["id"],
         text: json["text"],
-        timeStamp: DateTime.tryParse(json["timeStamp"] ?? "") ?? DateTime.now(),
+        timeStamp: DateTime.tryParse(json["timestamp"] ?? "") ?? DateTime.now(),
         userId: json["userId"],
         chatId: json["chatId"],
         sender: json["sender"] != null
@@ -60,6 +61,7 @@ class MessageJson {
         groupId: entity.groupId,
       );
 
+  @override
   MessageEntity toDomain() => MessageEntity(
         id: id,
         text: text,
@@ -74,14 +76,14 @@ class MessageJson {
 
   Map<String, dynamic> toChatJson() => {
         "text": text,
-        "timeStamp": timeStamp.toIso8601String(),
+        "timestamp": timeStamp.toIso8601String(),
         "userId": userId,
         "chatId": chatId,
       };
 
   Map<String, dynamic> toGroupJson() => {
         "text": text,
-        "timeStamp": timeStamp.toIso8601String(),
+        "timestamp": timeStamp.toIso8601String(),
         "userId": userId,
         "groupId": groupId,
       };

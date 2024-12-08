@@ -1,11 +1,12 @@
 import 'package:communico_frontend/domain/entities/chat_entity.dart';
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/domain/entities/user_entity.dart';
+import 'package:communico_frontend/domain/model/base_model.dart';
 import 'package:communico_frontend/domain/model/message_json.dart';
 import 'package:communico_frontend/domain/model/user_json.dart';
 import 'package:communico_frontend/helpers/utils.dart';
 
-class ChatJson {
+class ChatJson implements BaseModel<ChatEntity> {
   int id;
   List<ChatParticipantsEntity> participants;
   List<MessageEntity>? messages;
@@ -35,6 +36,7 @@ class ChatJson {
         messages: entity.messages,
       );
 
+  @override
   ChatEntity toDomain() => ChatEntity(
         id: id,
         participants: participants,

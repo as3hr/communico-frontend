@@ -14,6 +14,8 @@ class ChatEntity {
     this.messages,
   });
 
+  factory ChatEntity.empty() => ChatEntity(id: 0, participants: []);
+
   Map<String, dynamic> toJson() => ChatJson.copyWith(this).toJson();
 }
 

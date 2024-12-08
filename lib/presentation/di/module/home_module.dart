@@ -4,8 +4,12 @@ import '../../../di/service_locator.dart';
 
 class HomeModule {
   static Future<void> configureHomeModuleInjection() async {
-    getIt.registerSingleton<HomeCubit>(
-      HomeCubit(),
+    getIt.registerLazySingleton<HomeCubit>(
+      () => HomeCubit(
+        getIt(),
+        getIt(),
+        getIt(),
+      )..fetchData(),
     );
   }
 }

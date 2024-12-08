@@ -24,7 +24,7 @@ class ApiGroupRepository implements GroupRepository {
 
   @override
   Future<Either<GroupFailure, Paginate<GroupEntity>>> getMyGroups() async {
-    final response = await networkRepository.post(url: "/groups/");
+    final response = await networkRepository.get(url: "/groups/");
     if (response.failed) {
       return left(GroupFailure(error: response.message));
     }

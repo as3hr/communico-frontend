@@ -1,5 +1,4 @@
 import 'package:communico_frontend/helpers/extensions.dart';
-import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
 import 'package:communico_frontend/helpers/widgets/input_field.dart';
 import 'package:communico_frontend/presentation/auth/auth_cubit.dart';
@@ -17,7 +16,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.black1,
+      backgroundColor: Colors.black,
       body: BlocBuilder<AuthCubit, AuthState>(
           bloc: cubit,
           builder: (context, state) {
@@ -27,37 +26,34 @@ class AuthPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
-                    child: Container(
-                      width: 0.3.sw,
-                      height: 0.1.sh,
-                      color: AppColor.black1,
-                      child: InputField(
-                        onChanged: (val) {
-                          state.username = val;
-                        },
-                      ),
+                    child: InputField(
+                      onChanged: (val) {
+                        state.username = val;
+                      },
+                      onSubmit: (val) {
+                        if (state.username.isNotEmpty) cubit.getIn();
+                      },
                     ),
                   ),
                   20.verticalSpace,
-                  Center(
-                    child: SizedBox(
-                      width: 0.8.sw,
-                      height: 0.1.sh,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (state.username.isNotEmpty) cubit.getIn();
-                          },
-                          child: Center(
-                            child: Text(
-                              "GET IN",
-                              style: Styles.boldStyle(
-                                fontSize: 12,
-                                color: context.colorScheme.primary,
-                              ),
+                  GestureDetector(
+                      onTap: () {
+                        if (state.username.isNotEmpty) cubit.getIn();
+                      },
+                      child: Container(
+                        width: 0.2.sw,
+                        padding: const EdgeInsets.all(10),
+                        color: Colors.black,
+                        child: Center(
+                          child: Text(
+                            "GET IN",
+                            style: Styles.boldStyle(
+                              fontSize: 12,
+                              color: context.colorScheme.primary,
                             ),
-                          )),
-                    ),
-                  ),
+                          ),
+                        ),
+                      )),
                 ],
               ),
             );

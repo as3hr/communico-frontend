@@ -4,38 +4,39 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static const lightColortheme = ColorScheme(
     brightness: Brightness.light,
-    primary: AppColor.white,
-    onPrimary: AppColor.darkBlue,
-    secondary: AppColor.lightGrey,
-    onSecondary: AppColor.lightWhite,
+    primary: AppColor.lightPrimary,
+    onPrimary: AppColor.white,
+    secondary: AppColor.lightSecondary,
+    onSecondary: AppColor.lightGrey,
     error: AppColor.red,
     onError: AppColor.white,
-    surface: AppColor.white,
-    onSurface: AppColor.darkBlue,
+    surface: AppColor.lightBackground,
+    onSurface: AppColor.darkGrey,
   );
 
   static const darkColortheme = ColorScheme(
     brightness: Brightness.dark,
-    primary: AppColor.darkBlue,
+    primary: AppColor.darkPrimary,
     onPrimary: AppColor.white,
-    secondary: AppColor.lightGrey,
-    onSecondary: AppColor.black3,
+    secondary: AppColor.darkSecondary,
+    onSecondary: AppColor.grey,
     error: AppColor.red,
     onError: AppColor.white,
-    surface: AppColor.darkBlue,
-    onSurface: AppColor.lightGrey,
+    surface: AppColor.darkBackground,
+    onSurface: AppColor.grey,
   );
 
   static ThemeData theme({bool dark = false}) {
     return ThemeData(
-      scaffoldBackgroundColor: dark ? AppColor.darkBlue : AppColor.white,
+      scaffoldBackgroundColor:
+          dark ? AppColor.darkBackground : AppColor.lightBackground,
       useMaterial3: true,
       colorScheme: dark ? darkColortheme : lightColortheme,
       fontFamily: "Varela",
       textSelectionTheme: TextSelectionThemeData(
-        selectionColor: AppColor.lightGrey,
-        cursorColor: dark ? AppColor.white : AppColor.darkBlue,
-        selectionHandleColor: dark ? AppColor.white : AppColor.darkBlue,
+        selectionColor: dark ? AppColor.darkSecondary : AppColor.lightGrey,
+        cursorColor: dark ? AppColor.white : AppColor.darkPrimary,
+        selectionHandleColor: dark ? AppColor.white : AppColor.lightPrimary,
       ),
       textTheme: dark ? Typography.whiteCupertino : Typography.blackCupertino,
       visualDensity: VisualDensity.adaptivePlatformDensity,

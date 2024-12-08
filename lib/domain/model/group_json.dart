@@ -5,8 +5,9 @@ import 'package:communico_frontend/helpers/utils.dart';
 import '../entities/group_entity.dart';
 import '../entities/message_entity.dart';
 import '../entities/user_entity.dart';
+import 'base_model.dart';
 
-class GroupJson {
+class GroupJson implements BaseModel<GroupEntity> {
   int id;
   String name;
   List<GroupMemberEntity> members;
@@ -37,6 +38,7 @@ class GroupJson {
             .toList(),
       );
 
+  @override
   GroupEntity toDomain() => GroupEntity(
         id: id,
         name: name,

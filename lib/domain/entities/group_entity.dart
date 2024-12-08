@@ -15,6 +15,12 @@ class GroupEntity {
     List<MessageEntity>? messages,
   }) : messages = messages ?? [];
 
+  factory GroupEntity.empty() => GroupEntity(
+        id: 0,
+        members: [],
+        name: "",
+      );
+
   Map<String, dynamic> toJson() => GroupJson.copyWith(this).toJson();
 }
 

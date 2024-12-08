@@ -7,43 +7,31 @@ import '../styles/styles.dart';
 class InputField extends StatefulWidget {
   const InputField({
     super.key,
-    this.preFilledValue,
-    this.passwordField = false,
+    this.keyboardType,
     this.hintText,
     this.validator,
-    this.keyboardType,
-    this.readOnly = false,
     this.inputFormatters,
-    this.isDateField = false,
     this.focusNode,
     this.onSubmit,
-    this.maxLength,
     this.textEditingController,
     this.suffixIcon,
     this.onCrossTap,
     this.borderRadius,
-    this.showCrossIcon = false,
     this.onTap,
     this.disableOnTapOutside = false,
     required this.onChanged,
   });
 
-  final String? preFilledValue;
-  final bool passwordField;
   final String? hintText;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
-  final bool readOnly;
   final List<TextInputFormatter>? inputFormatters;
-  final bool isDateField;
   final FocusNode? focusNode;
   final void Function(String)? onSubmit;
-  final int? maxLength;
   final TextEditingController? textEditingController;
   final Widget? suffixIcon;
   final void Function()? onCrossTap;
   final double? borderRadius;
-  final bool showCrossIcon;
   final void Function()? onTap;
   final bool disableOnTapOutside;
   final void Function(String) onChanged;
@@ -60,9 +48,6 @@ class _InputFieldState extends State<InputField> {
   void initState() {
     super.initState();
     controller = widget.textEditingController ?? TextEditingController();
-    if (widget.preFilledValue != null) {
-      controller.text = widget.preFilledValue!;
-    }
   }
 
   @override
@@ -76,32 +61,20 @@ class _InputFieldState extends State<InputField> {
     return TextFormField(
       focusNode: widget.focusNode,
       controller: controller,
-      obscureText: widget.passwordField && isObscure,
-      readOnly: widget.readOnly,
       keyboardType: widget.keyboardType,
       inputFormatters: widget.inputFormatters,
-      maxLength: widget.maxLength,
       onTap: widget.onTap,
       onFieldSubmitted: widget.onSubmit,
       validator: widget.validator,
       onChanged: widget.onChanged,
       textInputAction: TextInputAction.done,
-      style: Styles.semiMediumStyle(
-        fontSize: 15,
-        color: context.colorScheme.onPrimary,
-        family: FontFamily.varela,
-      ),
       cursorColor: context.colorScheme.onPrimary,
+      cursorHeight: 20,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
         hintText: widget.hintText,
-        hintStyle: Styles.mediumStyle(
-          fontSize: 15,
-          color: AppColor.grey,
-          family: FontFamily.varela,
-        ),
-        suffixIcon: widget.suffixIcon ?? _buildSuffixIcon(context),
+        suffixIcon: widget.suffixIcon,
         fillColor: context.colorScheme.secondary,
-        contentPadding: const EdgeInsets.all(8),
         enabledBorder: _buildBorder(context.colorScheme.onPrimary),
         focusedBorder:
             _buildBorder(context.colorScheme.onPrimary, isFocused: true),
@@ -118,35 +91,6 @@ class _InputFieldState extends State<InputField> {
         }
       },
     );
-  }
-
-  Widget? _buildSuffixIcon(BuildContext context) {
-    if (widget.passwordField) {
-      return GestureDetector(
-        onTap: () {
-          setState(() {
-            isObscure = !isObscure;
-          });
-        },
-        child: Icon(
-          isObscure ? Icons.visibility_off : Icons.visibility,
-          color: context.colorScheme.onPrimary,
-        ),
-      );
-    }
-    if (widget.showCrossIcon) {
-      return GestureDetector(
-        onTap: () {
-          controller.clear();
-          widget.onCrossTap?.call();
-        },
-        child: Icon(
-          Icons.cancel,
-          color: context.colorScheme.onPrimary,
-        ),
-      );
-    }
-    return null;
   }
 
   OutlineInputBorder _buildBorder(Color color, {bool isFocused = false}) {
