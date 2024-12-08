@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'app_colors.dart';
 
@@ -17,6 +16,7 @@ class Styles {
       fillColor: AppColor.lightGrey,
       errorStyle: boldStyle(
         fontSize: 12, color: AppColor.red,
+        family: FontFamily.dmSans,
         // family: FontFamily.varela
       ),
       errorBorder: InputBorder.none,
@@ -43,11 +43,11 @@ class Styles {
   static TextStyle boldStyle({
     required double fontSize,
     required Color color,
-    // required FontFamily family,
+    required FontFamily family,
   }) {
     return TextStyle(
       fontWeight: FontWeight.w900,
-      fontSize: fontSize.sp,
+      fontSize: fontSize,
       color: color,
       // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
     );
@@ -60,9 +60,9 @@ class Styles {
   }) {
     return TextStyle(
       fontWeight: FontWeight.w700,
-      fontSize: fontSize.sp,
+      fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
     );
   }
 
@@ -73,9 +73,9 @@ class Styles {
   }) {
     return TextStyle(
       fontWeight: FontWeight.w600,
-      fontSize: fontSize.sp,
+      fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
     );
   }
 
@@ -86,9 +86,9 @@ class Styles {
   }) {
     return TextStyle(
       fontWeight: FontWeight.w500,
-      fontSize: fontSize.sp,
+      fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
     );
   }
 
@@ -99,9 +99,9 @@ class Styles {
   }) {
     return TextStyle(
       fontWeight: FontWeight.w300,
-      fontSize: fontSize.sp,
+      fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
     );
   }
 

@@ -5,6 +5,9 @@ import 'package:communico_frontend/domain/model/user_json.dart';
 import 'package:communico_frontend/domain/repositories/user_repository.dart';
 import 'package:communico_frontend/network/network_repository.dart';
 
+import '../../di/service_locator.dart';
+import '../../domain/stores/user_store.dart';
+
 class ApiUserRepository implements UserRepository {
   final NetworkRepository networkRepository;
   ApiUserRepository(this.networkRepository);
@@ -18,6 +21,7 @@ class ApiUserRepository implements UserRepository {
       return left(UserFailure(error: response.message));
     }
     final user = UserJson.fromJson(response.data["data"]).toDomain();
+    getIt<UserStore>().setUser(user);
     return right(user);
   }
 }

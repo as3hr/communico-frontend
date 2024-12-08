@@ -1,10 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:communico_frontend/domain/entities/chat_entity.dart';
 import 'package:communico_frontend/domain/entities/group_entity.dart';
+import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/domain/repositories/chat_repository.dart';
 import 'package:communico_frontend/domain/repositories/group_repository.dart';
 import 'package:communico_frontend/domain/repositories/message_repository.dart';
 import 'package:communico_frontend/presentation/home/home_state.dart';
+
+import '../../di/service_locator.dart';
+import '../../domain/stores/user_store.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final ChatRepository chatRepository;
@@ -71,5 +75,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   void updateCurrentGroup(GroupEntity group) {
     emit(state.copyWith(currentGroup: group));
+  }
+
+  bool isMyMessage(MessageEntity message) {
+    return getIt<UserStore>().getUser() != null &&
+            (getIt<UserStore>().getUser()!.id == message.userId)
+        ? true
+        : false;
   }
 }

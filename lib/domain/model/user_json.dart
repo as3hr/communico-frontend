@@ -18,4 +18,12 @@ class UserJson {
         username: username,
         id: id,
       );
+
+  factory UserJson.copyWith(UserEntity userEntity) =>
+      UserJson(id: userEntity.id, username: userEntity.username);
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "username": username,
+      };
 }

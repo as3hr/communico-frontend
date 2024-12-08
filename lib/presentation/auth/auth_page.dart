@@ -49,6 +49,7 @@ class AuthPage extends StatelessWidget {
                             "GET IN",
                             style: Styles.boldStyle(
                               fontSize: 12,
+                              family: FontFamily.dmSans,
                               color: context.colorScheme.primary,
                             ),
                           ),

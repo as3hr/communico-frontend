@@ -18,10 +18,12 @@ class InputField extends StatefulWidget {
     this.onCrossTap,
     this.borderRadius,
     this.onTap,
+    this.showBorder = true,
     this.disableOnTapOutside = false,
     required this.onChanged,
   });
 
+  final bool showBorder;
   final String? hintText;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
@@ -74,15 +76,18 @@ class _InputFieldState extends State<InputField> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 8),
         hintText: widget.hintText,
         suffixIcon: widget.suffixIcon,
-        fillColor: context.colorScheme.secondary,
-        enabledBorder: _buildBorder(context.colorScheme.onPrimary),
-        focusedBorder:
-            _buildBorder(context.colorScheme.onPrimary, isFocused: true),
+        border: !widget.showBorder ? InputBorder.none : null,
+        fillColor: context.colorScheme.primary,
+        enabledBorder: widget.showBorder ? _buildBorder(AppColor.black1) : null,
+        focusedBorder: widget.showBorder
+            ? _buildBorder(AppColor.black1, isFocused: true)
+            : null,
         errorBorder: _buildBorder(AppColor.red),
         focusedErrorBorder: _buildBorder(AppColor.red),
         errorStyle: Styles.boldStyle(
           fontSize: 12,
           color: AppColor.red,
+          family: FontFamily.dmSans,
         ),
       ),
       onTapOutside: (event) {
