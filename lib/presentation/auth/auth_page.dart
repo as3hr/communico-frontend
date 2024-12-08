@@ -13,6 +13,7 @@ import '../../di/service_locator.dart';
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
   static final cubit = getIt<AuthCubit>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,28 +23,41 @@ class AuthPage extends StatelessWidget {
           builder: (context, state) {
             return SafeArea(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    color: AppColor.black1,
-                    child: Center(
+                  Center(
+                    child: Container(
+                      width: 0.3.sw,
+                      height: 0.1.sh,
+                      color: AppColor.black1,
                       child: InputField(
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          state.username = val;
+                        },
                       ),
                     ),
                   ),
-                  20.horizontalSpace,
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: Center(
-                        child: Text(
-                          "GET IN",
-                          style: Styles.boldStyle(
-                            fontSize: 20,
-                            color: context.colorScheme.primary,
-                          ),
-                        ),
-                      ))
+                  20.verticalSpace,
+                  Center(
+                    child: SizedBox(
+                      width: 0.8.sw,
+                      height: 0.1.sh,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            if (state.username.isNotEmpty) cubit.getIn();
+                          },
+                          child: Center(
+                            child: Text(
+                              "GET IN",
+                              style: Styles.boldStyle(
+                                fontSize: 12,
+                                color: context.colorScheme.primary,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ),
                 ],
               ),
             );

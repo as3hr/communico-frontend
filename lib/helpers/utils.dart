@@ -1,8 +1,7 @@
 import 'dart:async';
 
+import 'package:communico_frontend/navigation/app_navigation.dart';
 import 'package:flutter/material.dart';
-
-import '../presentation/communico.dart';
 
 List<T> parseList<T>(
   data,
@@ -13,9 +12,9 @@ List<T> parseList<T>(
 }
 
 Future<void> showToast(String message) async {
-  if (appContext.mounted) {
+  if (AppNavigation.context.mounted) {
     showDialog(
-      context: appContext,
+      context: AppNavigation.context,
       barrierColor: Colors.transparent,
       barrierDismissible: false,
       builder: (context) {

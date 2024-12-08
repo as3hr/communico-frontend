@@ -1,12 +1,28 @@
 import 'package:bloc/bloc.dart';
+import 'package:communico_frontend/presentation/auth/auth_navigator.dart';
 import 'package:communico_frontend/presentation/auth/auth_state.dart';
 
+import '../../domain/repositories/user_repository.dart';
+import '../../helpers/utils.dart';
+
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthState.empty());
+  final UserRepository userRepository;
+  final AuthNavigator navigator;
+  AuthCubit(this.userRepository, this.navigator) : super(AuthState.empty());
 
   void getIn() {
     emit(state.copyWith(isLoading: true));
-    // TODO: implement getIn
-    emit(state.copyWith(isLoading: false));
+    userRepository.getIn(state.username).then(
+          (response) => response.fold(
+            (error) {
+              emit(state.copyWith(isLoading: false));
+              showToast(error.error);
+            },
+            (user) {
+              emit(state.copyWith(isLoading: false, user: user));
+              navigator.goToHome();
+            },
+          ),
+        );
   }
 }

@@ -1,18 +1,13 @@
-import '../../domain/entities/post_entity.dart';
-
 class HomeState {
   bool isLoading;
-  List<PostEntity> posts;
 
   HomeState({
     this.isLoading = true,
-    required this.posts,
   });
 
-  factory HomeState.empty() => HomeState(posts: []);
+  factory HomeState.empty() => HomeState();
 
-  copyWith({bool? isLoading, List<PostEntity>? posts}) => HomeState(
-        posts: posts ?? this.posts,
+  copyWith({bool? isLoading}) => HomeState(
         isLoading: isLoading ?? this.isLoading,
       );
 }

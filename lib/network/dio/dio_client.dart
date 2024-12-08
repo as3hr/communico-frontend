@@ -19,7 +19,7 @@ class DioClient {
 
   final dio = Dio(
     BaseOptions(
-      baseUrl: appUrl,
+      baseUrl: baseUrl,
       headers: {
         'Content-Type': 'application/json',
       },

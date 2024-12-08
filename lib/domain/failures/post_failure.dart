@@ -1,4 +1,4 @@
-class PostFailure {
+class UserFailure {
   String error;
-  PostFailure({required this.error});
+  UserFailure({required this.error});
 }

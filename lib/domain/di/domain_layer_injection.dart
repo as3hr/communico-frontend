@@ -1,7 +1,7 @@
-import 'module/post_module.dart';
+import 'module/user_module.dart';
 
 class DomainLayerInjection {
   static Future<void> configureDataLayerInjection() async {
-    await PostModule.configurePostModuleInjection();
+    await UserModule.configureUserModuleInjection();
   }
 }
