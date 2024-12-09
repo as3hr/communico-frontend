@@ -49,6 +49,8 @@ dependencies:
   universal_html: ^2.2.4
   flutter_switch: ^0.3.2
   intl: ^0.19.0
+  one_clock: ^2.0.1
+  flutter_gemini: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -73,8 +75,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

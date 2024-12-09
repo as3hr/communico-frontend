@@ -12,7 +12,7 @@ class ThemeSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     final adaptiveTheme = AdaptiveTheme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(right: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -20,11 +20,11 @@ class ThemeSwitch extends StatelessWidget {
             valueListenable: adaptiveTheme.modeChangeNotifier,
             builder: (context, theme, child) {
               return SizedBox(
-                height: 0.06.sh,
+                height: 0.03.sh,
                 child: FlutterSwitch(
                   value: adaptiveTheme.mode.isDark,
                   padding: 4.0,
-                  activeColor: AppColor.black1,
+                  activeColor: AppColor.darkBackground,
                   inactiveColor: AppColor.grey.withOpacity(0.15),
                   activeIcon: const Icon(
                     Icons.dark_mode,

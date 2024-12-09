@@ -14,10 +14,12 @@ class MessageEntity {
   GroupEntity? group;
   int? chatId;
   int? groupId;
+  bool isAi; // for identifying ai messages in room
 
   MessageEntity({
     this.id = 0,
     required this.text,
+    this.isAi = false,
     DateTime? timeStamp,
     required this.userId,
     this.chat,

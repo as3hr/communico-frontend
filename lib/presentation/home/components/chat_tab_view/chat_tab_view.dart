@@ -6,7 +6,6 @@ import '../../../../di/service_locator.dart';
 import '../../home_cubit.dart';
 import '../../home_state.dart';
 import 'chat_room.dart';
-import 'chat_room_detail.dart';
 import 'chats_list.dart';
 
 class ChatTabView extends StatelessWidget {
@@ -23,6 +22,7 @@ class ChatTabView extends StatelessWidget {
               ? currentChat.participants[1].user
               : null;
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Expanded(flex: 2, child: ChatsList()),
               5.horizontalSpace,
@@ -37,8 +37,6 @@ class ChatTabView extends StatelessWidget {
                     roomTitle: chatUser?.username ?? "",
                     messages: currentChat.messages ?? [],
                   )),
-              5.horizontalSpace,
-              const Expanded(flex: 2, child: ChatRoomDetail()),
             ],
           );
         });

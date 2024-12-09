@@ -23,11 +23,18 @@ class MyMessage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 constraints: BoxConstraints(
-                  maxWidth: 0.65.sw,
+                  maxWidth: 0.55.sw,
                 ),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     color: AppColor.violet,
-                    borderRadius: BorderRadius.only(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.zero,
                       bottomLeft: Radius.circular(12),

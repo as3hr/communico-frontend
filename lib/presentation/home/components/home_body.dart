@@ -1,3 +1,4 @@
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/header.dart';
@@ -21,7 +22,7 @@ class HomeBody extends StatelessWidget {
       bloc: cubit,
       builder: (context, state) {
         return DefaultTabController(
-          length: 2,
+          length: 3,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
             child: Center(
@@ -37,6 +38,7 @@ class HomeBody extends StatelessWidget {
                       children: [
                         ChatTabView(),
                         GroupTabView(),
+                        AiTabView(),
                       ],
                     ),
                   ),

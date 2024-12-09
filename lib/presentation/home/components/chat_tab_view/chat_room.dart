@@ -1,6 +1,7 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/widgets/input_field.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_chat_room_detail.dart';
 import 'package:communico_frontend/presentation/home/components/message/my_message.dart';
 import 'package:communico_frontend/presentation/home/components/message/other_message.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,13 @@ class ChatRoom extends StatelessWidget {
     required this.onSendMessage,
     required this.roomTitle,
     required this.textController,
+    this.isAi = false,
   });
   final String roomTitle;
   final List<MessageEntity> messages;
   final void Function() onSendMessage;
   final TextEditingController textController;
+  final bool isAi;
 
   static final cubit = getIt<HomeCubit>();
   @override
@@ -35,29 +38,36 @@ class ChatRoom extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: context.colorScheme.primary,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: AppColor.black1,
-                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(16),
               ),
               constraints: BoxConstraints(
                 maxHeight: 0.6.sh,
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 0.05.sh,
-                    color: context.colorScheme.secondary,
-                    child: Row(
-                      children: [
-                        10.horizontalSpace,
-                        Text(roomTitle),
-                        const Spacer(),
-                        const Text("CLEAR ALL"),
-                        10.horizontalSpace,
-                      ],
+                  if (!isAi && messages.isNotEmpty)
+                    Container(
+                      height: 0.05.sh,
+                      color: context.colorScheme.secondary,
+                      child: Row(
+                        children: [
+                          10.horizontalSpace,
+                          Text(roomTitle),
+                        ],
+                      ),
                     ),
-                  ),
+                  if (isAi)
+                    const Expanded(
+                      child: AiChatRoomDetail(),
+                    ),
                   if (messages.isNotEmpty)
                     Expanded(
                       child: ListView.builder(
@@ -71,6 +81,11 @@ class ChatRoom extends StatelessWidget {
                               : OtherMessage(message: message);
                         },
                       ),
+                    ),
+                  if (messages.isEmpty && !isAi)
+                    const Center(
+                      child: Expanded(
+                          child: Text("Start your conversation here!")),
                     ),
                 ],
               ),
@@ -89,10 +104,14 @@ class ChatRoom extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: context.colorScheme.primary,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: AppColor.black1,
-                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: InputField(
                       textEditingController: textController,

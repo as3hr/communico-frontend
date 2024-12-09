@@ -15,16 +15,19 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 import '../../di/service_locator.dart';
 import '../../domain/stores/user_store.dart';
+import '../../helpers/deboouncer.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final ChatRepository chatRepository;
   final MessageRepository messageRepository;
   final GroupRepository groupRepository;
+  final Debouncer _debouncer;
   HomeCubit(
     this.chatRepository,
     this.groupRepository,
     this.messageRepository,
-  ) : super(HomeState.empty());
+  )   : _debouncer = Debouncer(delay: const Duration(milliseconds: 800)),
+        super(HomeState.empty());
 
   Future<void> fetchData() async {
     emit(state.copyWith(isLoading: true));
@@ -84,6 +87,45 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(chatPagination: state.chatPagination));
   }
 
+  searchInChats(String val) {
+    if (val.isNotEmpty) {
+      _debouncer.call(() {
+        final updatedChatList = state.chatPagination.data.where((chat) {
+          final particpants = chat.participants
+              .where((participant) =>
+                  participant.userId != user!.id &&
+                  participant.user!.username
+                      .toLowerCase()
+                      .contains(val.toLowerCase()))
+              .toList();
+          return particpants.isNotEmpty;
+        }).toList();
+        final updatedPagination =
+            state.chatPagination.copyWith(data: updatedChatList);
+        emit(state.copyWith(chatPagination: updatedPagination));
+      });
+    } else {
+      _debouncer.cancel();
+      getChats();
+    }
+  }
+
+  searchInGroups(String val) {
+    if (val.isNotEmpty) {
+      _debouncer.call(() {
+        final updatedGroupList = state.groupPagination.data.where((group) {
+          return group.name.toLowerCase().contains(val.toLowerCase());
+        }).toList();
+        final updatedPagination =
+            state.groupPagination.copyWith(data: updatedGroupList);
+        emit(state.copyWith(groupPagination: updatedPagination));
+      });
+    } else {
+      _debouncer.cancel();
+      getGroups();
+    }
+  }
+
   // index 0 == directMessages && index 1 == groupMessages
   sendMessage(int index) {
     if (index == 0) {
@@ -132,7 +174,7 @@ class HomeCubit extends Cubit<HomeState> {
             (chatPagination) {
               emit(state.copyWith(
                 chatPagination: chatPagination,
-                currentChat: chatPagination.data.first,
+                currentChat: chatPagination.data.firstOrNull,
               ));
               updateCurrentChat(state.currentChat);
             },
@@ -147,7 +189,7 @@ class HomeCubit extends Cubit<HomeState> {
             (groupPagination) {
               emit(state.copyWith(
                 groupPagination: groupPagination,
-                currentGroup: groupPagination.data.first,
+                currentGroup: groupPagination.data.firstOrNull,
               ));
               updateCurrentGroup(state.currentGroup);
             },

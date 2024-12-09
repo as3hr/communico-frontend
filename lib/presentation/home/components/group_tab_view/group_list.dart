@@ -40,27 +40,36 @@ class GroupList extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: context.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: AppColor.black1,
-                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 6,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: InputField(
                     hintText: "Search ...",
-                    onChanged: (val) {},
+                    onChanged: (val) {
+                      cubit.searchInGroups(val);
+                    },
                     showBorder: false,
                   ),
                 ),
                 1.verticalSpace,
                 Expanded(
-                  flex: 7,
                   child: Container(
                     decoration: BoxDecoration(
                       color: context.colorScheme.primary,
-                      border: Border.all(
-                        color: AppColor.black1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: ListView.builder(
                         itemCount: groups.length,
