@@ -33,6 +33,7 @@ class HomeBody extends StatelessWidget {
                   5.verticalSpace,
                   const Expanded(
                     child: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
                       children: [
                         ChatTabView(),
                         GroupTabView(),

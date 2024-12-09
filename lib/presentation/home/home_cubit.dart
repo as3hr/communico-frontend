@@ -48,17 +48,25 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
+// only append the incoming message if it is from someone else
   listenToDirectMessage() {
     socket.on('newMessage', (data) {
+      log("NEW MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
-      appendMessageToChat(message);
+      if (message.userId != user!.id) {
+        appendMessageToChat(message);
+      }
     });
   }
 
+// only append the incoming message if it is from someone else
   listenToGroupMessage() {
     socket.on('newGroupMessage', (data) {
+      log("NEW GROUP MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
-      appendMessageToGroup(message);
+      if (message.userId != user!.id) {
+        appendMessageToGroup(message);
+      }
     });
   }
 
@@ -78,34 +86,40 @@ class HomeCubit extends Cubit<HomeState> {
 
   // index 0 == directMessages && index 1 == groupMessages
   sendMessage(int index) {
-    if (state.currentMessageController.text.isNotEmpty) {
-      MessageEntity message = MessageEntity(
-        text: state.currentMessageController.text,
-        userId: user!.id,
-      );
-      if (index == 0) {
+    if (index == 0) {
+      if (state.currentMessageController.text.isNotEmpty) {
+        MessageEntity message = MessageEntity(
+          text: state.currentMessageController.text,
+          userId: user!.id,
+        );
         message.chatId = state.currentChat.id;
         appendMessageToChat(message);
-      } else if (index == 1) {
+        emitMessage(index, message);
+        state.currentMessageController.text = "";
+      }
+    } else if (index == 1) {
+      if (state.currentGroupMessageController.text.isNotEmpty) {
+        MessageEntity message = MessageEntity(
+          text: state.currentGroupMessageController.text,
+          userId: user!.id,
+        );
         message.groupId = state.currentGroup.id;
         appendMessageToGroup(message);
+        emitMessage(index, message);
+        state.currentGroupMessageController.text = "";
       }
-      emitMessage(index, message);
-      state.currentMessageController.text = "";
     }
   }
 
   emitMessage(int index, MessageEntity message) {
     if (index == 0) {
-      message.chatId = state.currentChat.id;
       socket.emit(
-        'newMessage',
+        'message',
         message.toChatJson(),
       );
     } else if (index == 1) {
-      message.groupId = state.currentGroup.id;
       socket.emit(
-        'newGroupMessage',
+        'groupMessage',
         message.toGroupJson(),
       );
     }
@@ -120,6 +134,7 @@ class HomeCubit extends Cubit<HomeState> {
                 chatPagination: chatPagination,
                 currentChat: chatPagination.data.first,
               ));
+              updateCurrentChat(state.currentChat);
             },
           ),
         );
@@ -134,6 +149,7 @@ class HomeCubit extends Cubit<HomeState> {
                 groupPagination: groupPagination,
                 currentGroup: groupPagination.data.first,
               ));
+              updateCurrentGroup(state.currentGroup);
             },
           ),
         );
@@ -152,11 +168,23 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void updateCurrentChat(ChatEntity chat) {
+    socket.emit("leaveRoom", {
+      "chatId": state.currentChat.id,
+    });
     emit(state.copyWith(currentChat: chat));
+    socket.emit("roomJoin", {
+      "chatId": state.currentChat.id,
+    });
   }
 
   void updateCurrentGroup(GroupEntity group) {
+    socket.emit("leaveGroup", {
+      "groupId": state.currentGroup.id,
+    });
     emit(state.copyWith(currentGroup: group));
+    socket.emit("groupJoin", {
+      "groupId": state.currentGroup.id,
+    });
   }
 
   bool isMyMessage(MessageEntity message) {

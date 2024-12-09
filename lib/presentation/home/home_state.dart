@@ -11,10 +11,12 @@ class HomeState {
   ChatEntity currentChat;
   GroupEntity currentGroup;
   TextEditingController currentMessageController;
+  TextEditingController currentGroupMessageController;
 
   HomeState({
     this.isLoading = true,
     required this.currentMessageController,
+    required this.currentGroupMessageController,
     required this.chatPagination,
     required this.groupPagination,
     required this.currentChat,
@@ -22,11 +24,13 @@ class HomeState {
   });
 
   factory HomeState.empty() => HomeState(
-      chatPagination: Paginate.empty(),
-      groupPagination: Paginate.empty(),
-      currentChat: ChatEntity.empty(),
-      currentGroup: GroupEntity.empty(),
-      currentMessageController: TextEditingController());
+        chatPagination: Paginate.empty(),
+        groupPagination: Paginate.empty(),
+        currentChat: ChatEntity.empty(),
+        currentGroup: GroupEntity.empty(),
+        currentGroupMessageController: TextEditingController(),
+        currentMessageController: TextEditingController(),
+      );
 
   copyWith({
     bool? isLoading,
@@ -35,8 +39,11 @@ class HomeState {
     ChatEntity? currentChat,
     GroupEntity? currentGroup,
     TextEditingController? currentMessageController,
+    TextEditingController? currentGroupMessageController,
   }) =>
       HomeState(
+        currentGroupMessageController:
+            currentGroupMessageController ?? this.currentGroupMessageController,
         currentMessageController:
             currentMessageController ?? this.currentMessageController,
         isLoading: isLoading ?? this.isLoading,

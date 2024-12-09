@@ -3,6 +3,7 @@ import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../helpers/styles/styles.dart';
 import '../../../../helpers/utils.dart';
 
 class OtherMessage extends StatelessWidget {
@@ -23,8 +24,8 @@ class OtherMessage extends StatelessWidget {
             decoration: BoxDecoration(
                 color: context.colorScheme.secondary,
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.zero,
+                  topLeft: Radius.zero,
+                  topRight: Radius.circular(12),
                   bottomLeft: Radius.circular(12),
                   bottomRight: Radius.circular(12),
                 )),
@@ -32,8 +33,18 @@ class OtherMessage extends StatelessWidget {
               message.text,
             ),
           ),
-          5.verticalSpace,
-          Text(formatDate(message.timeStamp)),
+          1.verticalSpace,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              formatDate(message.timeStamp),
+              style: Styles.lightStyle(
+                fontSize: 12,
+                color: context.colorScheme.onSurface,
+                family: FontFamily.dmSans,
+              ),
+            ),
+          ),
         ],
       ),
     );

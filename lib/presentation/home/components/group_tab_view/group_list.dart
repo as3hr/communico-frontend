@@ -10,8 +10,8 @@ import '../../../../helpers/styles/app_colors.dart';
 import '../../../../helpers/widgets/input_field.dart';
 import '../../home_state.dart';
 
-class ChatsList extends StatelessWidget {
-  const ChatsList({super.key});
+class GroupList extends StatelessWidget {
+  const GroupList({super.key});
 
   static final cubit = getIt<HomeCubit>();
   @override
@@ -19,7 +19,7 @@ class ChatsList extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: cubit,
       builder: (context, state) {
-        final chats = state.chatPagination.data;
+        final groups = state.groupPagination.data;
         return Scaffold(
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 30),
@@ -63,16 +63,16 @@ class ChatsList extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListView.builder(
-                        itemCount: chats.length,
+                        itemCount: groups.length,
                         itemBuilder: (context, index) {
-                          final chat = chats[index];
-                          final message = chat.messages?.last;
-                          final isSelected = chat.id == state.currentChat.id;
+                          final group = groups[index];
+                          final message = group.messages.last;
+                          final isSelected = group.id == state.currentGroup.id;
                           return Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: InkWell(
                               onTap: () {
-                                cubit.updateCurrentChat(chat);
+                                cubit.updateCurrentGroup(group);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -83,12 +83,9 @@ class ChatsList extends StatelessWidget {
                                 ),
                                 padding: const EdgeInsets.all(4),
                                 child: ListTile(
-                                  title: Text(
-                                      chat.participants[1].user?.username ??
-                                          ""),
-                                  subtitle: Text(message?.text ?? ""),
-                                  trailing: Text(formatDate(
-                                      message?.timeStamp ?? DateTime.now())),
+                                  title: Text(group.name),
+                                  subtitle: Text(message.text),
+                                  trailing: Text(formatDate(message.timeStamp)),
                                 ),
                               ),
                             ),
