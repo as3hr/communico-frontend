@@ -23,12 +23,13 @@ class HomeBody extends StatelessWidget {
       builder: (context, state) {
         return DefaultTabController(
           length: 3,
+          animationDuration: const Duration(milliseconds: 600),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
             child: Center(
               child: Column(
                 children: [
-                  const Header(),
+                  Header(username: cubit.user!.username),
                   5.verticalSpace,
                   const SubHeader(),
                   5.verticalSpace,

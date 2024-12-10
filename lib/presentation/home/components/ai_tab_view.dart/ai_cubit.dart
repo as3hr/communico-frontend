@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:communico_frontend/main.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_state.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_stream_event.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 
 import '../../../../di/service_locator.dart';
@@ -16,14 +18,37 @@ class AiCubit extends Cubit<AiState> {
         text: state.currentAiMessageController.text,
         userId: user!.id,
       );
+      state.currentAiMessageController.clear();
       appendMessageToAiChat(message);
+      generateAiResponse(message.text);
     }
   }
 
-  void aiResponse() {
+  void generateAiResponse(String text) {
+    String aiResponse = "";
+    emit(state.copyWith(isLoading: true));
+    Future.delayed(const Duration(seconds: 1), () {});
     Gemini.instance.promptStream(parts: [
-      Part.text(state.currentAiMessageController.text),
-    ]).listen((value) {});
+      Part.text(text),
+    ]).listen(
+      (value) {
+        dynamic output = value?.content?.parts?.first;
+        if (!state.aiMessageInitialized) {
+          emit(state.copyWith(aiMessageInitialized: true, isLoading: false));
+        }
+        aiResponse += output.text;
+        eventBus.fire(AiStreamEvent(response: aiResponse));
+      },
+      onDone: () {
+        final message = MessageEntity(text: aiResponse, userId: 0, isAi: true);
+        appendMessageToAiChat(message);
+        eventBus.fire(AiStreamEvent(response: ""));
+        emit(state.copyWith(
+          aiMessageInitialized: false,
+          messages: state.messages,
+        ));
+      },
+    );
   }
 
   appendMessageToAiChat(MessageEntity message) {

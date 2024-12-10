@@ -1,29 +1,33 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/widgets/input_field.dart';
-import 'package:communico_frontend/presentation/home/components/message/my_message.dart';
-import 'package:communico_frontend/presentation/home/components/message/other_message.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_streaming_message.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/empty_ai.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_message.dart';
+import 'package:communico_frontend/presentation/home/components/loading_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../di/service_locator.dart';
 import '../../../../helpers/styles/app_colors.dart';
-import '../../home_cubit.dart';
+import '../message/my_message.dart';
 
-class ChatRoom extends StatelessWidget {
-  const ChatRoom({
+class AiChatRoom extends StatelessWidget {
+  const AiChatRoom({
     super.key,
     required this.messages,
     required this.onSendMessage,
     required this.roomTitle,
     required this.textController,
+    required this.isLoading,
+    required this.response,
   });
   final String roomTitle;
   final List<MessageEntity> messages;
   final void Function() onSendMessage;
   final TextEditingController textController;
+  final bool isLoading;
+  final String response;
 
-  static final cubit = getIt<HomeCubit>();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -47,34 +51,29 @@ class ChatRoom extends StatelessWidget {
               constraints: BoxConstraints(
                 maxHeight: 0.6.sh,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 0.05.sh,
-                    color: context.colorScheme.secondary,
-                    child: Row(
+              child: messages.isEmpty
+                  ? const EmptyAi()
+                  : Column(
                       children: [
-                        10.horizontalSpace,
-                        Text(roomTitle),
+                        Expanded(
+                          child: ListView.builder(
+                            reverse: true,
+                            itemCount: messages.length,
+                            itemBuilder: (context, index) {
+                              final message = messages[index];
+                              return message.isAi
+                                  ? AiMessage(message: message)
+                                  : MyMessage(message: message);
+                            },
+                          ),
+                        ),
+                        if (isLoading) const LoadingMessage(),
+                        if (response.isNotEmpty)
+                          AiStreamingMessage(
+                            text: response,
+                          ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      reverse: true,
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        final message = messages[index];
-                        final isMyMessage = cubit.isMyMessage(message);
-                        return isMyMessage
-                            ? MyMessage(message: message)
-                            : OtherMessage(message: message);
-                      },
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
           2.verticalSpace,

@@ -1,3 +1,4 @@
+import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,24 +22,30 @@ class ChatTabView extends StatelessWidget {
           final chatUser = currentChat.participants.isNotEmpty
               ? currentChat.participants[1].user
               : null;
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Expanded(flex: 2, child: ChatsList()),
-              5.horizontalSpace,
-              Expanded(
-                  flex: 5,
-                  child: ChatRoom(
-                    onSendMessage: () {
-                      final index = DefaultTabController.of(context).index;
-                      cubit.sendMessage(index);
-                    },
-                    textController: state.currentMessageController,
-                    roomTitle: chatUser?.username ?? "",
-                    messages: currentChat.messages ?? [],
-                  )),
-            ],
-          );
+          return state.chatPagination.data.isEmpty
+              ? EmptyChat(
+                  onTap: () {},
+                  text: "Start your First Chat!",
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Expanded(flex: 2, child: ChatsList()),
+                    5.horizontalSpace,
+                    Expanded(
+                        flex: 5,
+                        child: ChatRoom(
+                          onSendMessage: () {
+                            final index =
+                                DefaultTabController.of(context).index;
+                            cubit.sendMessage(index);
+                          },
+                          textController: state.currentMessageController,
+                          roomTitle: chatUser?.username ?? "",
+                          messages: currentChat.messages ?? [],
+                        )),
+                  ],
+                );
         });
   }
 }

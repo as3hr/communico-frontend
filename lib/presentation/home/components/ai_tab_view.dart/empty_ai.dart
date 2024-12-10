@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../helpers/styles/app_images.dart';
 
-class AiChatRoomDetail extends StatelessWidget {
-  const AiChatRoomDetail({super.key});
+class EmptyAi extends StatelessWidget {
+  const EmptyAi({super.key});
 
   @override
   Widget build(BuildContext context) {

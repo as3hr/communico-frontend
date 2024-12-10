@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key});
+  const Header({super.key, required this.username});
+  final String username;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Text(
-          "COMMUNICO",
-          style: TextStyle(
+        Text(
+          "WELCOME TO COMMUNICO $username",
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),

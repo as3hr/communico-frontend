@@ -1,4 +1,4 @@
-import 'package:communico_frontend/presentation/home/components/group_tab_view/empty_group.dart';
+import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_list.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_room_detail.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,12 @@ class GroupTabView extends StatelessWidget {
               const Expanded(flex: 2, child: GroupList()),
               5.horizontalSpace,
               if (state.groupPagination.data.isEmpty)
-                const Expanded(flex: 5, child: EmptyGroup()),
+                Expanded(
+                    flex: 5,
+                    child: EmptyChat(
+                      text: "Create your First Group",
+                      onTap: () {},
+                    )),
               if (state.groupPagination.data.isNotEmpty) ...[
                 Expanded(
                     flex: 5,

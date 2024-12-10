@@ -36,9 +36,9 @@ class MyMessage extends StatelessWidget {
                     ],
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(12),
-                      topRight: Radius.zero,
+                      topRight: Radius.circular(12),
                       bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
+                      bottomRight: Radius.zero,
                     )),
                 child: Text(
                   message.text,
