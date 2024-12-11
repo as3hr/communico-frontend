@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:communico_frontend/main.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_state.dart';
-import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_stream_event.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_stream_event.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 
 import '../../../../di/service_locator.dart';

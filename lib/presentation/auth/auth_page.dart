@@ -1,3 +1,5 @@
+import 'package:communico_frontend/helpers/widgets/app_button.dart';
+import 'package:communico_frontend/helpers/widgets/input_field.dart';
 import 'package:communico_frontend/presentation/auth/auth_cubit.dart';
 import 'package:communico_frontend/presentation/auth/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -44,58 +46,21 @@ class AuthPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 50),
-                      TextField(
-                        onChanged: (val) {
-                          state.username = val;
-                        },
-                        onSubmitted: (val) {
-                          if (state.username.isNotEmpty) cubit.getIn();
-                        },
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
+                      InputField(
                           hintText: "Enter your username",
-                          hintStyle: const TextStyle(color: Colors.white54),
-                          filled: true,
-                          fillColor: Colors.grey.shade900,
-                          prefixIcon:
-                              Icon(Icons.person, color: Colors.grey.shade600),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
+                          onChanged: (val) {
+                            state.username = val;
+                          },
+                          onSubmitted: (val) {
+                            if (state.username.isNotEmpty) cubit.getIn();
+                          },
+                          prefixIcon: Icons.person),
                       const SizedBox(height: 20),
-                      InkWell(
-                        onTap: () {
-                          if (state.username.isNotEmpty) cubit.getIn();
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFF6366F1),
-                                Color(0xFF3B82F6),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "GET IN",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      AppButton(
+                          title: "GET IN",
+                          onTap: () {
+                            if (state.username.isNotEmpty) cubit.getIn();
+                          }),
                       const SizedBox(height: 40),
                       Text(
                         "Powered by Communico",

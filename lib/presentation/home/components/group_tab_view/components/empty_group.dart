@@ -2,7 +2,7 @@ import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/styles/app_colors.dart';
 
 class EmptyGroup extends StatelessWidget {
   const EmptyGroup({super.key});

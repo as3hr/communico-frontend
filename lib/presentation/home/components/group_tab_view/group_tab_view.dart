@@ -1,54 +1,66 @@
+import 'dart:ui';
+
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
-import 'package:communico_frontend/presentation/home/components/group_tab_view/group_list.dart';
-import 'package:communico_frontend/presentation/home/components/group_tab_view/group_room_detail.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_creation_form.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_list.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_room_detail.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../di/service_locator.dart';
-import '../../home_cubit.dart';
-import '../../home_state.dart';
-import '../chat_tab_view/chat_room.dart';
+import '../../../../helpers/widgets/animated_banner.dart';
+import '../chat_room.dart';
+import 'group_cubit.dart';
 
 class GroupTabView extends StatelessWidget {
   const GroupTabView({super.key});
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = getIt<GroupCubit>();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<GroupCubit, GroupState>(
         bloc: cubit,
         builder: (context, state) {
           final currentGroup = state.currentGroup;
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Expanded(flex: 2, child: GroupList()),
-              5.horizontalSpace,
-              if (state.groupPagination.data.isEmpty)
-                Expanded(
-                    flex: 5,
-                    child: EmptyChat(
-                      text: "Create your First Group",
-                      onTap: () {},
-                    )),
-              if (state.groupPagination.data.isNotEmpty) ...[
-                Expanded(
-                    flex: 5,
-                    child: ChatRoom(
-                      onSendMessage: () {
-                        final index = DefaultTabController.of(context).index;
-                        cubit.sendMessage(index);
+          return state.groupPagination.data.isEmpty
+              ? EmptyChat(
+                  text: "Create your First Group",
+                  onTap: () {
+                    cubit.fetchUsers();
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                          child: const AnimatedBanner(
+                            content: GroupCreationForm(),
+                          ),
+                        );
                       },
-                      textController: state.currentGroupMessageController,
-                      roomTitle: currentGroup.name,
-                      messages: currentGroup.messages,
-                    )),
-                5.horizontalSpace,
-                const Expanded(flex: 2, child: GroupRoomDetail()),
-              ]
-            ],
-          );
+                    );
+                  },
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Expanded(flex: 2, child: GroupList()),
+                    5.horizontalSpace,
+                    Expanded(
+                        flex: 5,
+                        child: ChatRoom(
+                          onSendMessage: () {
+                            cubit.sendMessage();
+                          },
+                          textController: state.groupMessageController,
+                          roomTitle: currentGroup.name,
+                          messages: currentGroup.messages,
+                        )),
+                    5.horizontalSpace,
+                    const Expanded(flex: 2, child: GroupRoomDetail()),
+                  ],
+                );
         });
   }
 }

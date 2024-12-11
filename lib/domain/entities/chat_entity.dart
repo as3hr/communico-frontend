@@ -9,7 +9,7 @@ class ChatEntity {
   List<MessageEntity>? messages;
 
   ChatEntity({
-    required this.id,
+    this.id = 0,
     required this.participants,
     this.messages,
   });

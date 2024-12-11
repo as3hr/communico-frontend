@@ -1,19 +1,19 @@
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../di/service_locator.dart';
-import '../../home_cubit.dart';
-import '../../home_state.dart';
+import '../../../../../di/service_locator.dart';
+import '../group_cubit.dart';
 
 class GroupRoomDetail extends StatelessWidget {
   const GroupRoomDetail({super.key});
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = getIt<GroupCubit>();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<GroupCubit, GroupState>(
       bloc: cubit,
       builder: (context, state) {
         final currentGroup = state.currentGroup;

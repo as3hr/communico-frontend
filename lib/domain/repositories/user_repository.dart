@@ -4,4 +4,5 @@ import 'package:communico_frontend/domain/failures/user_failure.dart';
 
 abstract class UserRepository {
   Future<Either<UserFailure, UserEntity>> getIn(String username);
+  Future<Either<UserFailure, List<UserEntity>>> fetchUsers();
 }

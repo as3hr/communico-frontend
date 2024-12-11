@@ -1,22 +1,22 @@
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
-import 'package:communico_frontend/presentation/home/home_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../di/service_locator.dart';
-import '../../../../helpers/styles/app_colors.dart';
-import '../../../../helpers/widgets/input_field.dart';
-import '../../home_state.dart';
+import '../../../../../di/service_locator.dart';
+import '../../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/widgets/input_form_field.dart';
 
 class ChatsList extends StatelessWidget {
   const ChatsList({super.key});
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = getIt<ChatCubit>();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<ChatCubit, ChatState>(
       bloc: cubit,
       builder: (context, state) {
         final chats = state.chatPagination.data;
@@ -49,10 +49,10 @@ class ChatsList extends StatelessWidget {
                     ],
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: InputField(
+                  child: InputFormField(
                     hintText: "Search ...",
                     onChanged: (val) {
-                      cubit.searchInChats(val);
+                      cubit.searchInChatsList(val);
                     },
                     showBorder: false,
                   ),

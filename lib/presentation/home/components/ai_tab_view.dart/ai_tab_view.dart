@@ -1,12 +1,12 @@
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_state.dart';
-import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_stream_event.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_stream_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../di/service_locator.dart';
 import '../../../../main.dart';
-import 'ai_chat_room.dart';
+import 'components/ai_chat_room.dart';
 
 class AiTabView extends StatelessWidget {
   const AiTabView({super.key});

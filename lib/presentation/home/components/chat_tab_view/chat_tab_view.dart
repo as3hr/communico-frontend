@@ -1,21 +1,25 @@
+import 'dart:ui';
+
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
+import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
+import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../di/service_locator.dart';
-import '../../home_cubit.dart';
-import '../../home_state.dart';
-import 'chat_room.dart';
-import 'chats_list.dart';
+import '../../../../helpers/widgets/animated_banner.dart';
+import '../chat_room.dart';
+import 'components/chats_list.dart';
 
 class ChatTabView extends StatelessWidget {
   const ChatTabView({super.key});
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = getIt<ChatCubit>();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<ChatCubit, ChatState>(
         bloc: cubit,
         builder: (context, state) {
           final currentChat = state.currentChat;
@@ -24,7 +28,20 @@ class ChatTabView extends StatelessWidget {
               : null;
           return state.chatPagination.data.isEmpty
               ? EmptyChat(
-                  onTap: () {},
+                  onTap: () {
+                    cubit.fetchUsers();
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                          child: const AnimatedBanner(
+                            content: ChatCreationForm(),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   text: "Start your First Chat!",
                 )
               : Row(
@@ -36,11 +53,9 @@ class ChatTabView extends StatelessWidget {
                         flex: 5,
                         child: ChatRoom(
                           onSendMessage: () {
-                            final index =
-                                DefaultTabController.of(context).index;
-                            cubit.sendMessage(index);
+                            cubit.sendMessage();
                           },
-                          textController: state.currentMessageController,
+                          textController: state.messageController,
                           roomTitle: chatUser?.username ?? "",
                           messages: currentChat.messages ?? [],
                         )),

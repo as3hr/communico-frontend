@@ -3,8 +3,10 @@ import 'package:communico_frontend/domain/model/user_json.dart';
 class UserEntity {
   String username;
   int id;
+  bool isSelected;
 
   UserEntity({
+    this.isSelected = false,
     required this.id,
     required this.username,
   });

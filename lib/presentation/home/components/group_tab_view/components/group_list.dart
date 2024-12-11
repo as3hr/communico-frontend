@@ -1,22 +1,22 @@
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
-import 'package:communico_frontend/presentation/home/home_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../di/service_locator.dart';
-import '../../../../helpers/styles/app_colors.dart';
-import '../../../../helpers/widgets/input_field.dart';
-import '../../home_state.dart';
+import '../../../../../di/service_locator.dart';
+import '../../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/widgets/input_form_field.dart';
+import '../group_cubit.dart';
 
 class GroupList extends StatelessWidget {
   const GroupList({super.key});
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = getIt<GroupCubit>();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<GroupCubit, GroupState>(
       bloc: cubit,
       builder: (context, state) {
         final groups = state.groupPagination.data;
@@ -49,10 +49,10 @@ class GroupList extends StatelessWidget {
                     ],
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: InputField(
+                  child: InputFormField(
                     hintText: "Search ...",
                     onChanged: (val) {
-                      cubit.searchInGroups(val);
+                      cubit.searchInGroupsList(val);
                     },
                     showBorder: false,
                   ),

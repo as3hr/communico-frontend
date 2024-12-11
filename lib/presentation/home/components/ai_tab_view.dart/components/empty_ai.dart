@@ -1,7 +1,7 @@
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../helpers/styles/app_images.dart';
+import '../../../../../helpers/styles/app_images.dart';
 
 class EmptyAi extends StatelessWidget {
   const EmptyAi({super.key});

@@ -1,3 +1,4 @@
+import 'package:communico_frontend/helpers/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:communico_frontend/domain/entities/user_entity.dart';
 import 'package:communico_frontend/domain/failures/user_failure.dart';
@@ -23,5 +24,17 @@ class ApiUserRepository implements UserRepository {
     final user = UserJson.fromJson(response.data["data"]).toDomain();
     getIt<UserStore>().setUser(user);
     return right(user);
+  }
+
+  @override
+  Future<Either<UserFailure, List<UserEntity>>> fetchUsers() async {
+    final response = await networkRepository.get(url: "/users/");
+    if (response.failed) {
+      return left(UserFailure(error: response.message));
+    }
+    final users = parseList(response.data["data"], UserJson.fromJson)
+        .map((user) => user.toDomain())
+        .toList();
+    return right(users);
   }
 }

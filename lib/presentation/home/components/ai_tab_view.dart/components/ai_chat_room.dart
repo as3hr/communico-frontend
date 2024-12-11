@@ -1,15 +1,15 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
-import 'package:communico_frontend/helpers/widgets/input_field.dart';
-import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_streaming_message.dart';
-import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/empty_ai.dart';
-import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_message.dart';
+import 'package:communico_frontend/helpers/widgets/input_form_field.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_streaming_message.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/empty_ai.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_message.dart';
 import 'package:communico_frontend/presentation/home/components/loading_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../helpers/styles/app_colors.dart';
-import '../message/my_message.dart';
+import '../../../../../helpers/styles/app_colors.dart';
+import '../../message/my_message.dart';
 
 class AiChatRoom extends StatelessWidget {
   const AiChatRoom({
@@ -98,7 +98,7 @@ class AiChatRoom extends StatelessWidget {
                       ],
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: InputField(
+                    child: InputFormField(
                       textEditingController: textController,
                       hintText: "Write a message ...",
                       onChanged: (val) {},

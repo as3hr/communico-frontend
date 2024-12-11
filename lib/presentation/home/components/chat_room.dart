@@ -1,14 +1,14 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
-import 'package:communico_frontend/helpers/widgets/input_field.dart';
+import 'package:communico_frontend/helpers/widgets/input_form_field.dart';
 import 'package:communico_frontend/presentation/home/components/message/my_message.dart';
 import 'package:communico_frontend/presentation/home/components/message/other_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../di/service_locator.dart';
-import '../../../../helpers/styles/app_colors.dart';
-import '../../home_cubit.dart';
+import '../../../di/service_locator.dart';
+import '../../../helpers/styles/app_colors.dart';
+import '../home_cubit.dart';
 
 class ChatRoom extends StatelessWidget {
   const ChatRoom({
@@ -99,7 +99,7 @@ class ChatRoom extends StatelessWidget {
                       ],
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: InputField(
+                    child: InputFormField(
                       textEditingController: textController,
                       hintText: "Write a message ...",
                       onChanged: (val) {},
