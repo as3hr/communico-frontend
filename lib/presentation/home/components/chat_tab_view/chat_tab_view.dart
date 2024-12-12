@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
-import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation_form.dart';
+import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation.dart';
+import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,12 +25,17 @@ class ChatTabView extends StatelessWidget {
         builder: (context, state) {
           final currentChat = state.currentChat;
           final chatUser = currentChat.participants.isNotEmpty
-              ? currentChat.participants[1].user
+              ? currentChat.participants
+                  .firstWhere(
+                      (participant) => participant.userId != cubit.user!.id)
+                  .user
               : null;
+
           return state.chatPagination.data.isEmpty
               ? EmptyChat(
                   onTap: () {
-                    cubit.fetchUsers();
+                    final chatCubit = getIt<ChatCreationCubit>();
+                    chatCubit.fetchUsers();
                     showDialog(
                       context: context,
                       builder: (_) {
@@ -57,7 +63,7 @@ class ChatTabView extends StatelessWidget {
                           },
                           textController: state.messageController,
                           roomTitle: chatUser?.username ?? "",
-                          messages: currentChat.messages ?? [],
+                          messages: currentChat.messages,
                         )),
                   ],
                 );

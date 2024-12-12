@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
-import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_creation_form.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_creation.dart/group_creation_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_creation.dart/group_creation.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_list.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_room_detail.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
@@ -28,7 +29,7 @@ class GroupTabView extends StatelessWidget {
               ? EmptyChat(
                   text: "Create your First Group",
                   onTap: () {
-                    cubit.fetchUsers();
+                    getIt<GroupCreationCubit>().fetchUsers();
                     showDialog(
                       context: context,
                       builder: (_) {

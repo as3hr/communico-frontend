@@ -18,7 +18,7 @@ class ApiChatRepository implements ChatRepository {
     if (response.failed) {
       return left(ChatFailure(error: response.message));
     }
-    return right(ChatJson.fromJson(response.data).toDomain());
+    return right(ChatJson.fromJson(response.data["data"]).toDomain());
   }
 
   @override

@@ -10,18 +10,16 @@ import '../../../../domain/entities/user_entity.dart';
 import '../../../../domain/model/message_json.dart';
 import '../../../../domain/repositories/chat_repository.dart';
 import '../../../../domain/repositories/message_repository.dart';
-import '../../../../domain/repositories/user_repository.dart';
 import '../../../../domain/stores/user_store.dart';
 import '../../../../helpers/constants.dart';
 import '../../../../helpers/deboouncer.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final UserRepository userRepository;
   final ChatRepository chatRepository;
   final MessageRepository messageRepository;
   final Debouncer _debouncer;
 
-  ChatCubit(this.userRepository, this.chatRepository, this.messageRepository)
+  ChatCubit(this.chatRepository, this.messageRepository)
       : _debouncer = Debouncer(delay: const Duration(milliseconds: 800)),
         super(ChatState.empty());
 
@@ -40,38 +38,6 @@ class ChatCubit extends Cubit<ChatState> {
         );
   }
 
-  searchMembers(String value) {
-    if (value.isNotEmpty) {
-      final users = state.allUsers
-          .where((user) =>
-              user.username.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      emit(state.copyWith(filteredUsers: users));
-    } else {
-      emit(state.copyWith(filteredUsers: []));
-    }
-  }
-
-  void selectChatUser(UserEntity currentUser) {
-    final users = state.filteredUsers.map((user) {
-      if (user.id == currentUser.id) {
-        user.isSelected = true;
-      } else {
-        user.isSelected = false;
-      }
-      return user;
-    }).toList();
-    emit(state.copyWith(filteredUsers: users));
-  }
-
-  fetchUsers() {
-    userRepository
-        .fetchUsers()
-        .then((response) => response.fold((error) {}, (users) {
-              state.allUsers = users;
-            }));
-  }
-
 // only append the incoming message if it is from someone else
   listenToDirectMessage() {
     socket.on('newMessage', (data) {
@@ -86,7 +52,7 @@ class ChatCubit extends Cubit<ChatState> {
   appendMessageToChat(MessageEntity message) {
     final chat = state.chatPagination.data
         .firstWhere((chat) => chat.id == message.chatId);
-    chat.messages?.insert(0, message);
+    chat.messages.insert(0, message);
     emit(state.copyWith(chatPagination: state.chatPagination));
   }
 
@@ -149,7 +115,14 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
-  UserEntity? get user => getIt<UserStore>().getUser();
+  Future<void> createChat(ChatEntity chat) async {
+    final response = await chatRepository.createChat(chat);
+    response.fold((error) {}, (chat) {
+      state.chatPagination.data.insert(0, chat);
+      emit(state.copyWith(
+          chatPagination: state.chatPagination, currentChat: chat));
+    });
+  }
 
-  void createChat() {}
+  UserEntity? get user => getIt<UserStore>().getUser();
 }

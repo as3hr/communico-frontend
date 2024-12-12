@@ -98,7 +98,6 @@ class GroupMemberJson {
       );
 
   Map<String, dynamic> toJson() => {
-        "groupId": groupId,
         "userId": userId,
       };
 }

@@ -1,3 +1,4 @@
+import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -6,26 +7,28 @@ class AppButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.content,
+    this.backgroundColor = AppColor.violet,
   });
   final String title;
-  final void Function() onTap;
+  final void Function()? onTap;
   final Widget? content;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onTap();
+        onTap?.call();
       },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             colors: [
-              Color(0xFF6366F1),
-              Color(0xFF3B82F6),
+              backgroundColor,
+              backgroundColor,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

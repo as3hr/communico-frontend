@@ -9,13 +9,13 @@ import 'package:communico_frontend/helpers/utils.dart';
 class ChatJson implements BaseModel<ChatEntity> {
   int id;
   List<ChatParticipantsEntity> participants;
-  List<MessageEntity>? messages;
+  List<MessageEntity> messages;
 
   ChatJson({
     required this.id,
     required this.participants,
-    this.messages,
-  });
+    List<MessageEntity>? messages,
+  }) : messages = messages ?? [];
 
   factory ChatJson.fromJson(Map<String, dynamic> json) => ChatJson(
         id: json["id"],
@@ -44,9 +44,8 @@ class ChatJson implements BaseModel<ChatEntity> {
       );
 
   Map<String, dynamic> toJson() => {
-        "participants":
-            participants.map((participant) => participant.toJson()).toList(),
-        "messages": messages?.map((message) => message.toChatJson()).toList(),
+        "participant": participants.firstOrNull?.toJson(),
+        "message": messages.firstOrNull?.toChatJson(),
       };
 }
 
@@ -96,7 +95,6 @@ class ChatParticipantsJson {
       );
 
   Map<String, dynamic> toJson() => {
-        "chatId": chatId,
         "userId": userId,
       };
 }

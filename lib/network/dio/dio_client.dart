@@ -63,14 +63,14 @@ class DioClient {
   static NetworkResponse handleDioError(DioException error) {
     String message = "";
     dynamic data;
-    int code = 200;
-    String success = "false";
+    String code = "200";
+    bool success = false;
     if (error.response?.data != null) {
       final responseData = error.response!.data;
       code = responseData["code"] ?? 200;
       message = responseData["message"] ?? "Unknown error occurred";
       data = responseData["data"] ?? "";
-      success = responseData["success"] ?? "false";
+      success = responseData["success"] ?? false;
     } else {
       switch (error.type) {
         case DioExceptionType.cancel:

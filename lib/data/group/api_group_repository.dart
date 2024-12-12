@@ -19,7 +19,7 @@ class ApiGroupRepository implements GroupRepository {
     if (response.failed) {
       return left(GroupFailure(error: response.message));
     }
-    return right(GroupJson.fromJson(response.data).toDomain());
+    return right(GroupJson.fromJson(response.data["data"]).toDomain());
   }
 
   @override

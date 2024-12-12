@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
@@ -8,7 +10,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../di/service_locator.dart';
 import '../../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/widgets/animated_banner.dart';
 import '../../../../../helpers/widgets/input_form_field.dart';
+import 'chat_creation.dart';
+import 'chat_creation_cubit.dart';
 
 class ChatsList extends StatelessWidget {
   const ChatsList({super.key});
@@ -25,7 +30,20 @@ class ChatsList extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 30),
             child: FloatingActionButton(
               shape: const CircleBorder(),
-              onPressed: () {},
+              onPressed: () {
+                getIt<ChatCreationCubit>().fetchUsers();
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                      child: const AnimatedBanner(
+                        content: ChatCreationForm(),
+                      ),
+                    );
+                  },
+                );
+              },
               backgroundColor: AppColor.violet,
               child: const Icon(
                 Icons.add,
@@ -75,8 +93,11 @@ class ChatsList extends StatelessWidget {
                         itemCount: chats.length,
                         itemBuilder: (context, index) {
                           final chat = chats[index];
-                          final message = chat.messages?.last;
+                          final message = chat.messages.last;
                           final isSelected = chat.id == state.currentChat.id;
+                          final participant = chat.participants.firstWhere(
+                              (participant) =>
+                                  participant.userId != cubit.user!.id);
                           return Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: InkWell(
@@ -90,14 +111,28 @@ class ChatsList extends StatelessWidget {
                                       : context.colorScheme.primary,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                padding: const EdgeInsets.all(4),
-                                child: ListTile(
-                                  title: Text(
-                                      chat.participants[1].user?.username ??
-                                          ""),
-                                  subtitle: Text(message?.text ?? ""),
-                                  trailing: Text(formatDate(
-                                      message?.timeStamp ?? DateTime.now())),
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(participant.user?.username ?? ""),
+                                        const Spacer(),
+                                        2.horizontalSpace,
+                                        Text(formatDate(message.timeStamp)),
+                                      ],
+                                    ),
+                                    1.verticalSpace,
+                                    Text(
+                                      message.text,
+                                      style: const TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

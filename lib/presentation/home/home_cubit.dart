@@ -21,8 +21,14 @@ class HomeCubit extends Cubit<HomeState> {
     await Future.wait([
       getIt<ChatCubit>().getChats(),
       getIt<GroupCubit>().getGroups(),
-    ]);
-    emit(state.copyWith(isLoading: false));
+    ]).then((_) {
+      Future.delayed(
+          const Duration(
+            seconds: 1,
+          ), () {
+        emit(state.copyWith(isLoading: false));
+      });
+    });
   }
 
   socketInit() {

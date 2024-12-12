@@ -9,7 +9,7 @@ class GroupEntity {
   List<MessageEntity> messages;
 
   GroupEntity({
-    required this.id,
+    this.id = 0,
     required this.members,
     required this.name,
     List<MessageEntity>? messages,
@@ -32,8 +32,8 @@ class GroupMemberEntity {
   int groupId;
 
   GroupMemberEntity({
-    required this.id,
-    required this.groupId,
+    this.id = 0,
+    this.groupId = 0,
     required this.userId,
     this.group,
     this.user,

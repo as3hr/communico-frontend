@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
@@ -7,8 +9,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../di/service_locator.dart';
 import '../../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/widgets/animated_banner.dart';
 import '../../../../../helpers/widgets/input_form_field.dart';
 import '../group_cubit.dart';
+import 'group_creation.dart/group_creation.dart';
+import 'group_creation.dart/group_creation_cubit.dart';
 
 class GroupList extends StatelessWidget {
   const GroupList({super.key});
@@ -25,7 +30,20 @@ class GroupList extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 30),
             child: FloatingActionButton(
               shape: const CircleBorder(),
-              onPressed: () {},
+              onPressed: () {
+                getIt<GroupCreationCubit>().fetchUsers();
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                      child: const AnimatedBanner(
+                        content: GroupCreationForm(),
+                      ),
+                    );
+                  },
+                );
+              },
               backgroundColor: AppColor.violet,
               child: const Icon(
                 Icons.add,
@@ -75,7 +93,9 @@ class GroupList extends StatelessWidget {
                         itemCount: groups.length,
                         itemBuilder: (context, index) {
                           final group = groups[index];
-                          final message = group.messages.last;
+                          final message = group.messages.isNotEmpty
+                              ? group.messages.last
+                              : null;
                           final isSelected = group.id == state.currentGroup.id;
                           return Padding(
                             padding: const EdgeInsets.all(5.0),
@@ -93,8 +113,9 @@ class GroupList extends StatelessWidget {
                                 padding: const EdgeInsets.all(4),
                                 child: ListTile(
                                   title: Text(group.name),
-                                  subtitle: Text(message.text),
-                                  trailing: Text(formatDate(message.timeStamp)),
+                                  subtitle: Text(message?.text ?? ""),
+                                  trailing: Text(formatDate(
+                                      message?.timeStamp ?? DateTime.now())),
                                 ),
                               ),
                             ),

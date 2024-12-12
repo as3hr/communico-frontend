@@ -10,47 +10,18 @@ import '../../../../domain/entities/user_entity.dart';
 import '../../../../domain/model/message_json.dart';
 import '../../../../domain/repositories/group_repository.dart';
 import '../../../../domain/repositories/message_repository.dart';
-import '../../../../domain/repositories/user_repository.dart';
 import '../../../../domain/stores/user_store.dart';
 import '../../../../helpers/constants.dart';
 import '../../../../helpers/deboouncer.dart';
 
 class GroupCubit extends Cubit<GroupState> {
-  final UserRepository userRepository;
   final MessageRepository messageRepository;
   final GroupRepository groupRepository;
   final Debouncer _debouncer;
 
-  GroupCubit(this.userRepository, this.messageRepository, this.groupRepository)
+  GroupCubit(this.messageRepository, this.groupRepository)
       : _debouncer = Debouncer(delay: const Duration(milliseconds: 800)),
         super(GroupState.empty());
-
-  searchMembers(String value) {
-    if (value.isNotEmpty) {
-      final users = state.allUsers
-          .where((user) =>
-              user.username.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      emit(state.copyWith(filteredUsers: users));
-    } else {
-      emit(state.copyWith(filteredUsers: []));
-    }
-  }
-
-  void selectGroupUser(UserEntity currentUser) {
-    state.filteredUsers
-        .firstWhere((user) => user.id == currentUser.id)
-        .isSelected = !currentUser.isSelected;
-    emit(state.copyWith(filteredUsers: state.filteredUsers));
-  }
-
-  fetchUsers() {
-    userRepository
-        .fetchUsers()
-        .then((response) => response.fold((error) {}, (users) {
-              state.allUsers = users;
-            }));
-  }
 
   appendMessageToGroup(MessageEntity message) {
     final group = state.groupPagination.data
@@ -118,6 +89,15 @@ class GroupCubit extends Cubit<GroupState> {
       if (message.userId != user!.id) {
         appendMessageToGroup(message);
       }
+    });
+  }
+
+  Future<void> createGroup(GroupEntity group) async {
+    final response = await groupRepository.createGroup(group);
+    response.fold((error) {}, (group) {
+      state.groupPagination.data.insert(0, group);
+      emit(state.copyWith(
+          groupPagination: state.groupPagination, currentGroup: group));
     });
   }
 

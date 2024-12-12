@@ -1,15 +1,15 @@
 class NetworkResponse {
-  String success;
+  bool success;
   String message;
-  int code;
+  String code;
   dynamic data;
   bool failed;
   NetworkResponse({
-    this.code = 200,
+    this.code = "200",
     this.data,
     this.failed = false,
     this.message = "",
-    this.success = "",
+    this.success = false,
   });
 
   @override

@@ -6,12 +6,12 @@ class InputField extends StatelessWidget {
     required this.hintText,
     required this.onChanged,
     required this.onSubmitted,
-    required this.prefixIcon,
+    this.prefixIcon,
   });
   final void Function(String) onChanged;
   final void Function(String) onSubmitted;
   final String hintText;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
 
   @override
   Widget build(BuildContext context) {

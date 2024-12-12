@@ -28,7 +28,7 @@ class ApiUserRepository implements UserRepository {
 
   @override
   Future<Either<UserFailure, List<UserEntity>>> fetchUsers() async {
-    final response = await networkRepository.get(url: "/users/");
+    final response = await networkRepository.get(url: "/users/chats/");
     if (response.failed) {
       return left(UserFailure(error: response.message));
     }

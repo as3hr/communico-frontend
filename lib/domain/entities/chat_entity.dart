@@ -6,15 +6,16 @@ import 'user_entity.dart';
 class ChatEntity {
   int id;
   List<ChatParticipantsEntity> participants;
-  List<MessageEntity>? messages;
+  List<MessageEntity> messages;
 
   ChatEntity({
     this.id = 0,
     required this.participants,
-    this.messages,
+    required this.messages,
   });
 
-  factory ChatEntity.empty() => ChatEntity(id: 0, participants: []);
+  factory ChatEntity.empty() =>
+      ChatEntity(id: 0, participants: [], messages: []);
 
   Map<String, dynamic> toJson() => ChatJson.copyWith(this).toJson();
 }
@@ -27,8 +28,8 @@ class ChatParticipantsEntity {
   ChatEntity? chat;
 
   ChatParticipantsEntity({
-    required this.chatId,
-    required this.id,
+    this.chatId = 0,
+    this.id = 0,
     required this.userId,
     this.user,
     this.chat,
