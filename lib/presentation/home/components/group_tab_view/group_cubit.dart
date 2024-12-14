@@ -106,25 +106,23 @@ class GroupCubit extends Cubit<GroupState> {
     });
   }
 
-  getGroupMessages(GroupEntity group) {
-    state.currentGroup = group;
-    if (state.currentGroup.messagePagination.next ||
-        state.currentGroup.messagePagination.data.isEmpty) {
-      messageRepository.getMessages(
-          state.currentGroup.messagePagination, "/messages/groups", {
-        "groupId": state.currentGroup.id,
+  Future<void> getGroupMessages(GroupEntity group) async {
+    if (group.messagePagination.next || group.messagePagination.data.isEmpty) {
+      await messageRepository
+          .getMessages(group.messagePagination, "/messages/groups", {
+        "groupId": group.id,
       }).then((response) => response.fold((error) {}, (messagePagination) {
-            state.currentGroup.messagePagination = messagePagination;
-          }));
+                group.messagePagination = messagePagination;
+              }));
     }
-    emit(state.copyWith(currentGroup: state.currentGroup));
+    emit(state.copyWith(currentGroup: group));
   }
 
-  void updateCurrentGroup(GroupEntity group) {
+  Future<void> updateCurrentGroup(GroupEntity group) async {
     socket.emit("leaveGroup", {
       "groupId": state.currentGroup.id,
     });
-    getGroupMessages(group);
+    await getGroupMessages(group);
     socket.emit("groupJoin", {
       "groupId": state.currentGroup.id,
     });

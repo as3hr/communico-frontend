@@ -30,9 +30,11 @@ class _GroupListState extends State<GroupList> {
     super.initState();
     final scrollController = cubit.state.groupPagination.scrollController;
     scrollController.addListener(() {
-      final threshold = scrollController.position.maxScrollExtent * 0.2;
-      if (scrollController.position.pixels >= threshold) {
-        cubit.getGroups();
+      if (scrollController.hasClients) {
+        final threshold = scrollController.position.maxScrollExtent * 0.2;
+        if (scrollController.position.pixels >= threshold) {
+          cubit.getGroups();
+        }
       }
     });
   }

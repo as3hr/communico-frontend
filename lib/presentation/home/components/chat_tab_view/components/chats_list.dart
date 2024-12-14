@@ -30,9 +30,11 @@ class _ChatsListState extends State<ChatsList> {
     super.initState();
     final scrollController = cubit.state.chatPagination.scrollController;
     scrollController.addListener(() {
-      final threshold = scrollController.position.maxScrollExtent * 0.2;
-      if (scrollController.position.pixels >= threshold) {
-        cubit.getChats();
+      if (scrollController.hasClients) {
+        final threshold = scrollController.position.maxScrollExtent * 0.2;
+        if (scrollController.position.pixels >= threshold) {
+          cubit.getChats();
+        }
       }
     });
   }

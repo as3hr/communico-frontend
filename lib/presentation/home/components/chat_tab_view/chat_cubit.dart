@@ -105,29 +105,27 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> getChatMessages(ChatEntity chat) async {
-    state.currentChat = chat;
-    if (state.currentChat.messagePagination.next ||
-        state.currentChat.messagePagination.data.isEmpty) {
-      messageRepository
-          .getMessages(state.currentChat.messagePagination, "/messages/chats", {
-        "chatId": state.currentChat.id,
+    if (chat.messagePagination.next || chat.messagePagination.data.isEmpty) {
+      await messageRepository
+          .getMessages(chat.messagePagination, "/messages/chats", {
+        "chatId": chat.id,
       }).then(
         (response) => response.fold(
           (error) {},
           (messagePagination) {
-            state.currentChat.messagePagination = messagePagination;
+            chat.messagePagination = messagePagination;
           },
         ),
       );
     }
-    emit(state.copyWith(currentChat: state.currentChat));
+    emit(state.copyWith(currentChat: chat));
   }
 
-  void updateCurrentChat(ChatEntity chat) {
+  Future<void> updateCurrentChat(ChatEntity chat) async {
     socket.emit("leaveRoom", {
       "chatId": state.currentChat.id,
     });
-    getChatMessages(chat);
+    await getChatMessages(chat);
     socket.emit("roomJoin", {
       "chatId": state.currentChat.id,
     });

@@ -37,9 +37,12 @@ class _ChatRoomState extends State<ChatRoom> {
   void initState() {
     super.initState();
     widget.scrollController.addListener(() {
-      final threshold = widget.scrollController.position.maxScrollExtent * 0.2;
-      if (widget.scrollController.position.pixels >= threshold) {
-        widget.scrollAndCall();
+      if (widget.scrollController.hasClients) {
+        final threshold =
+            widget.scrollController.position.maxScrollExtent * 0.2;
+        if (widget.scrollController.position.pixels >= threshold) {
+          widget.scrollAndCall();
+        }
       }
     });
   }
