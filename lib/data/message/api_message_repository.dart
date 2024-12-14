@@ -25,7 +25,7 @@ class ApiMessageRepository implements MessageRepository {
       Map<String, dynamic>? extraQuery) async {
     final response = await networkRepository.get(
       url: url,
-      extraQuery: extraQuery,
+      extraQuery: {...?extraQuery, "skip": previousMessages.skip},
     );
     if (response.failed) {
       return left(MessageFailure(error: response.message));

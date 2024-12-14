@@ -33,7 +33,7 @@ class _ChatsListState extends State<ChatsList> {
       if (scrollController.hasClients) {
         final threshold = scrollController.position.maxScrollExtent * 0.2;
         if (scrollController.position.pixels >= threshold) {
-          cubit.getChats();
+          cubit.scrollAndCallChat();
         }
       }
     });
@@ -44,7 +44,9 @@ class _ChatsListState extends State<ChatsList> {
     return BlocBuilder<ChatCubit, ChatState>(
       bloc: cubit,
       builder: (context, state) {
-        final chats = state.chatPagination.data;
+        final chats = state.isSearching
+            ? state.chatSearchList
+            : state.chatPagination.data;
         return Scaffold(
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 30),
@@ -109,56 +111,63 @@ class _ChatsListState extends State<ChatsList> {
                       ],
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: ListView.builder(
-                        controller: state.chatPagination.scrollController,
-                        itemCount: chats.length,
-                        itemBuilder: (context, index) {
-                          final chat = chats[index];
-                          final message = chat.messages.last;
-                          final isSelected = chat.id == state.currentChat.id;
-                          final participant = chat.participants.firstWhere(
-                              (participant) =>
-                                  participant.userId != cubit.user!.id);
-                          return Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: InkWell(
-                              onTap: () {
-                                cubit.updateCurrentChat(chat);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? context.colorScheme.secondary
-                                      : context.colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                    child: chats.isEmpty
+                        ? const Center(
+                            child: Text("NO CHATS FOUND!"),
+                          )
+                        : ListView.builder(
+                            controller: state.chatPagination.scrollController,
+                            itemCount: chats.length,
+                            itemBuilder: (context, index) {
+                              final chat = chats[index];
+                              final message = chat.messages.last;
+                              final isSelected =
+                                  chat.id == state.currentChat.id;
+                              final participant = chat.participants.firstWhere(
+                                  (participant) =>
+                                      participant.userId != cubit.user!.id);
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    cubit.updateCurrentChat(chat);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? context.colorScheme.secondary
+                                          : context.colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(participant.user?.username ?? ""),
-                                        const Spacer(),
-                                        2.horizontalSpace,
-                                        Text(formatDate(message.timeStamp)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(participant.user?.username ??
+                                                ""),
+                                            const Spacer(),
+                                            2.horizontalSpace,
+                                            Text(formatDate(message.timeStamp)),
+                                          ],
+                                        ),
+                                        1.verticalSpace,
+                                        Text(
+                                          message.text,
+                                          style: const TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                    1.verticalSpace,
-                                    Text(
-                                      message.text,
-                                      style: const TextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }),
+                              );
+                            }),
                   ),
                 ),
               ],

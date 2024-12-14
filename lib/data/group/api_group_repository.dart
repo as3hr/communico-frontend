@@ -27,7 +27,7 @@ class ApiGroupRepository implements GroupRepository {
   @override
   Future<Either<GroupFailure, Paginate<GroupEntity>>> getMyGroups(
       Paginate<GroupEntity> previousGroups) async {
-    final response = await networkRepository.get(url: "/groups/", extraQuery: {
+    final response = await networkRepository.get(url: "/groups", extraQuery: {
       "skip": previousGroups.skip,
     });
     if (response.failed) {

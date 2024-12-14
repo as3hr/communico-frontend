@@ -30,7 +30,7 @@ class HomeModule {
       () => GroupCubit(getIt(), getIt()),
     );
     getIt.registerLazySingleton<HomeCubit>(
-      () => HomeCubit()..fetchData(),
+      () => HomeCubit(),
     );
   }
 }

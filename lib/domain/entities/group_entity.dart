@@ -26,6 +26,22 @@ class GroupEntity {
         name: "",
       );
 
+  GroupEntity copyWith({
+    int? id,
+    String? name,
+    List<GroupMemberEntity>? members,
+    List<MessageEntity>? messages,
+    Paginate<MessageEntity>? messagePagination,
+  }) {
+    return GroupEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      members: members ?? this.members,
+      messages: messages ?? this.messages,
+      messagePagination: messagePagination ?? this.messagePagination,
+    );
+  }
+
   Map<String, dynamic> toJson() => GroupJson.copyWith(this).toJson();
 }
 

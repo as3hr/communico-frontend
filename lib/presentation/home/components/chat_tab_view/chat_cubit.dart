@@ -24,23 +24,20 @@ class ChatCubit extends Cubit<ChatState> {
         super(ChatState.empty());
 
   Future<void> getChats() async {
-    if (state.chatPagination.next || state.chatPagination.data.isEmpty) {
-      chatRepository.getMyChats(state.chatPagination).then(
-            (response) => response.fold(
-              (error) {},
-              (chatPagination) async {
-                if (chatPagination.data.isNotEmpty) {
-                  emit(state.copyWith(
-                    chatPagination: chatPagination,
-                    currentChat: chatPagination.data.first,
-                  ));
-                  await getChatMessages(chatPagination.data.first);
+    chatRepository.getMyChats(state.chatPagination).then(
+          (response) => response.fold(
+            (error) {},
+            (chatPagination) async {
+              if (chatPagination.data.isNotEmpty) {
+                if (state.chatPagination.data.isEmpty) {
+                  await updateCurrentChat(chatPagination.data.first);
                 }
-                updateCurrentChat(state.currentChat);
-              },
-            ),
-          );
-    }
+                emit(state.copyWith(
+                    chatPagination: chatPagination, isSearching: false));
+              }
+            },
+          ),
+        );
   }
 
 // only append the incoming message if it is from someone else
@@ -55,9 +52,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   appendMessageToChat(MessageEntity message) {
-    final chat = state.chatPagination.data
-        .firstWhere((chat) => chat.id == message.chatId);
-    chat.messages.insert(0, message);
+    state.currentChat.messagePagination.data.insert(0, message);
     emit(state.copyWith(chatPagination: state.chatPagination));
   }
 
@@ -66,21 +61,22 @@ class ChatCubit extends Cubit<ChatState> {
       _debouncer.call(() {
         final updatedChatList = state.chatPagination.data.where((chat) {
           final particpants = chat.participants
-              .where((participant) =>
-                  participant.userId != user!.id &&
-                  participant.user!.username
-                      .toLowerCase()
-                      .contains(val.toLowerCase()))
+              .where((participant) => participant.user!.username
+                  .toLowerCase()
+                  .contains(val.toLowerCase()))
               .toList();
           return particpants.isNotEmpty;
         }).toList();
-        final updatedPagination =
-            state.chatPagination.copyWith(data: updatedChatList);
-        emit(state.copyWith(chatPagination: updatedPagination));
+        if (!state.isSearching) {
+          emit(state.copyWith(
+              chatSearchList: updatedChatList, isSearching: true));
+        } else {
+          emit(state.copyWith(chatSearchList: updatedChatList));
+        }
       });
     } else {
       _debouncer.cancel();
-      getChats();
+      emit(state.copyWith(isSearching: false));
     }
   }
 
@@ -105,20 +101,40 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> getChatMessages(ChatEntity chat) async {
-    if (chat.messagePagination.next || chat.messagePagination.data.isEmpty) {
-      await messageRepository
-          .getMessages(chat.messagePagination, "/messages/chats", {
-        "chatId": chat.id,
-      }).then(
-        (response) => response.fold(
-          (error) {},
-          (messagePagination) {
-            chat.messagePagination = messagePagination;
-          },
-        ),
-      );
-    }
+    await messageRepository
+        .getMessages(chat.messagePagination, "/messages/chats", {
+      "chatId": chat.id,
+    }).then(
+      (response) => response.fold(
+        (error) {},
+        (messagePagination) {
+          chat.messagePagination = messagePagination;
+        },
+      ),
+    );
     emit(state.copyWith(currentChat: chat));
+  }
+
+  scrollAndCallChat() {
+    if (!state.chatLoading) {
+      if (state.chatPagination.next || state.chatPagination.data.isEmpty) {
+        emit(state.copyWith(chatLoading: true));
+        getChats().then((_) {
+          emit(state.copyWith(chatLoading: false));
+        });
+      }
+    }
+  }
+
+  Future<void> scrollAndCallMessages(ChatEntity chat) async {
+    if (!state.messageLoading) {
+      emit(state.copyWith(messageLoading: true));
+      log("COUNT");
+      if (chat.messagePagination.next || chat.messagePagination.data.isEmpty) {
+        await getChatMessages(chat);
+        emit(state.copyWith(messageLoading: false));
+      }
+    }
   }
 
   Future<void> updateCurrentChat(ChatEntity chat) async {
@@ -133,8 +149,9 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> createChat(ChatEntity chat) async {
     final response = await chatRepository.createChat(chat);
-    response.fold((error) {}, (chat) {
+    response.fold((error) {}, (chat) async {
       state.chatPagination.data.insert(0, chat);
+      await getChatMessages(chat);
       emit(state.copyWith(
           chatPagination: state.chatPagination, currentChat: chat));
     });

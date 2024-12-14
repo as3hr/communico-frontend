@@ -17,6 +17,20 @@ class ChatEntity {
     Paginate<MessageEntity>? messagePagination,
   }) : messagePagination = messagePagination ?? Paginate.empty();
 
+  ChatEntity copyWith({
+    int? id,
+    List<ChatParticipantsEntity>? participants,
+    List<MessageEntity>? messages,
+    Paginate<MessageEntity>? messagePagination,
+  }) {
+    return ChatEntity(
+      id: id ?? this.id,
+      participants: participants ?? this.participants,
+      messages: messages ?? this.messages,
+      messagePagination: messagePagination ?? this.messagePagination,
+    );
+  }
+
   factory ChatEntity.empty() =>
       ChatEntity(id: 0, participants: [], messages: []);
 

@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
               emit(state.copyWith(isLoading: false));
               showToast(error.error);
             },
-            (user) {
+            (user) async {
               emit(state.copyWith(isLoading: false, user: user));
               window.localStorage["user"] = jsonEncode(user);
               navigator.goToHome();

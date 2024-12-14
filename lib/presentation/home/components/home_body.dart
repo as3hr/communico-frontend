@@ -18,39 +18,42 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SelectionArea(
-      child: BlocBuilder<HomeCubit, HomeState>(
-        bloc: cubit,
-        builder: (context, state) {
-          return DefaultTabController(
-            length: 3,
-            animationDuration: const Duration(milliseconds: 600),
-            child: Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
-              child: Center(
-                child: Column(
-                  children: [
-                    Header(username: cubit.user!.username),
-                    5.verticalSpace,
-                    const SubHeader(),
-                    5.verticalSpace,
-                    const Expanded(
-                      child: TabBarView(
-                        physics: NeverScrollableScrollPhysics(),
-                        children: [
-                          ChatTabView(),
-                          GroupTabView(),
-                          AiTabView(),
-                        ],
+    return PopScope(
+      onPopInvokedWithResult: (_, __) {},
+      child: SelectionArea(
+        child: BlocBuilder<HomeCubit, HomeState>(
+          bloc: cubit,
+          builder: (context, state) {
+            return DefaultTabController(
+              length: 3,
+              animationDuration: const Duration(milliseconds: 600),
+              child: Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Header(username: cubit.user!.username),
+                      5.verticalSpace,
+                      const SubHeader(),
+                      5.verticalSpace,
+                      const Expanded(
+                        child: TabBarView(
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            ChatTabView(),
+                            GroupTabView(),
+                            AiTabView(),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

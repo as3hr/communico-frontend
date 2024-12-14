@@ -6,10 +6,22 @@ import 'package:communico_frontend/di/service_locator.dart';
 import 'package:communico_frontend/presentation/home/home_cubit.dart';
 import 'package:communico_frontend/presentation/home/home_state.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  static final cubit = getIt<HomeCubit>();
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final cubit = getIt<HomeCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    cubit.fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(

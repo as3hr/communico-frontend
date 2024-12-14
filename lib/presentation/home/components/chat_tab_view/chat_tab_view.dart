@@ -31,7 +31,7 @@ class ChatTabView extends StatelessWidget {
                   .user
               : null;
 
-          return state.chatPagination.data.isEmpty
+          return state.chatPagination.data.isEmpty && !state.isSearching
               ? EmptyChat(
                   onTap: () {
                     final chatCubit = getIt<ChatCreationCubit>();
@@ -64,7 +64,7 @@ class ChatTabView extends StatelessWidget {
                           scrollController: state
                               .currentChat.messagePagination.scrollController,
                           scrollAndCall: () {
-                            cubit.getChatMessages(state.currentChat);
+                            cubit.scrollAndCallMessages(state.currentChat);
                           },
                           textController: state.messageController,
                           roomTitle: chatUser?.username ?? "",

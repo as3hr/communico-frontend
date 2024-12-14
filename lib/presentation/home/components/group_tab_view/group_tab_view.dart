@@ -25,7 +25,7 @@ class GroupTabView extends StatelessWidget {
         bloc: cubit,
         builder: (context, state) {
           final currentGroup = state.currentGroup;
-          return state.groupPagination.data.isEmpty
+          return state.groupPagination.data.isEmpty && !state.isSearching
               ? EmptyChat(
                   text: "Create your First Group",
                   onTap: () {
@@ -57,7 +57,7 @@ class GroupTabView extends StatelessWidget {
                           scrollController: state
                               .currentGroup.messagePagination.scrollController,
                           scrollAndCall: () {
-                            cubit.getGroupMessages(state.currentGroup);
+                            cubit.scrollAndCallMessages(state.currentGroup);
                           },
                           textController: state.groupMessageController,
                           roomTitle: currentGroup.name,

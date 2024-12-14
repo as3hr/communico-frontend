@@ -33,7 +33,7 @@ class _GroupListState extends State<GroupList> {
       if (scrollController.hasClients) {
         final threshold = scrollController.position.maxScrollExtent * 0.2;
         if (scrollController.position.pixels >= threshold) {
-          cubit.getGroups();
+          cubit.scrollAndCallGroup();
         }
       }
     });
@@ -44,7 +44,9 @@ class _GroupListState extends State<GroupList> {
     return BlocBuilder<GroupCubit, GroupState>(
       bloc: cubit,
       builder: (context, state) {
-        final groups = state.groupPagination.data;
+        final groups = state.isSearching
+            ? state.groupSearchList
+            : state.groupPagination.data;
         return Scaffold(
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 30),
@@ -109,39 +111,45 @@ class _GroupListState extends State<GroupList> {
                       ],
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: ListView.builder(
-                        controller: state.groupPagination.scrollController,
-                        itemCount: groups.length,
-                        itemBuilder: (context, index) {
-                          final group = groups[index];
-                          final message = group.messages.isNotEmpty
-                              ? group.messages.last
-                              : null;
-                          final isSelected = group.id == state.currentGroup.id;
-                          return Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: InkWell(
-                              onTap: () {
-                                cubit.updateCurrentGroup(group);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? context.colorScheme.secondary
-                                      : context.colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(10),
+                    child: groups.isEmpty
+                        ? const Center(
+                            child: Text("NO GROUPS FOUND!"),
+                          )
+                        : ListView.builder(
+                            controller: state.groupPagination.scrollController,
+                            itemCount: groups.length,
+                            itemBuilder: (context, index) {
+                              final group = groups[index];
+                              final message = group.messages.isNotEmpty
+                                  ? group.messages.last
+                                  : null;
+                              final isSelected =
+                                  group.id == state.currentGroup.id;
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    cubit.updateCurrentGroup(group);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? context.colorScheme.secondary
+                                          : context.colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    padding: const EdgeInsets.all(4),
+                                    child: ListTile(
+                                      title: Text(group.name),
+                                      subtitle: Text(message?.text ?? ""),
+                                      trailing: Text(formatDate(
+                                          message?.timeStamp ??
+                                              DateTime.now())),
+                                    ),
+                                  ),
                                 ),
-                                padding: const EdgeInsets.all(4),
-                                child: ListTile(
-                                  title: Text(group.name),
-                                  subtitle: Text(message?.text ?? ""),
-                                  trailing: Text(formatDate(
-                                      message?.timeStamp ?? DateTime.now())),
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
+                              );
+                            }),
                   ),
                 ),
               ],

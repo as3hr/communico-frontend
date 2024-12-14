@@ -16,7 +16,9 @@ class Header extends StatelessWidget {
         ),
         const Spacer(),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+          },
           child: const Text(
             "LOGOUT",
             style: TextStyle(

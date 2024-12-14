@@ -25,7 +25,9 @@ class ApiChatRepository implements ChatRepository {
   @override
   Future<Either<ChatFailure, Paginate<ChatEntity>>> getMyChats(
       Paginate<ChatEntity> previousChats) async {
-    final response = await networkRepository.get(url: "/chats/");
+    final response = await networkRepository.get(url: "/chats", extraQuery: {
+      "skip": previousChats.skip,
+    });
     if (response.failed) {
       return left(ChatFailure(error: response.message));
     }
