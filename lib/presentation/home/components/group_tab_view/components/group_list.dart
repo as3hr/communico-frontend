@@ -15,10 +15,28 @@ import '../group_cubit.dart';
 import 'group_creation.dart/group_creation.dart';
 import 'group_creation.dart/group_creation_cubit.dart';
 
-class GroupList extends StatelessWidget {
+class GroupList extends StatefulWidget {
   const GroupList({super.key});
 
-  static final cubit = getIt<GroupCubit>();
+  @override
+  State<GroupList> createState() => _GroupListState();
+}
+
+class _GroupListState extends State<GroupList> {
+  final cubit = getIt<GroupCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    final scrollController = cubit.state.groupPagination.scrollController;
+    scrollController.addListener(() {
+      final threshold = scrollController.position.maxScrollExtent * 0.2;
+      if (scrollController.position.pixels >= threshold) {
+        cubit.getGroups();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCubit, GroupState>(
@@ -90,6 +108,7 @@ class GroupList extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: ListView.builder(
+                        controller: state.groupPagination.scrollController,
                         itemCount: groups.length,
                         itemBuilder: (context, index) {
                           final group = groups[index];

@@ -24,18 +24,23 @@ class ChatCubit extends Cubit<ChatState> {
         super(ChatState.empty());
 
   Future<void> getChats() async {
-    chatRepository.getMyChats().then(
-          (response) => response.fold(
-            (error) {},
-            (chatPagination) {
-              emit(state.copyWith(
-                chatPagination: chatPagination,
-                currentChat: chatPagination.data.firstOrNull,
-              ));
-              updateCurrentChat(state.currentChat);
-            },
-          ),
-        );
+    if (state.chatPagination.next || state.chatPagination.data.isEmpty) {
+      chatRepository.getMyChats(state.chatPagination).then(
+            (response) => response.fold(
+              (error) {},
+              (chatPagination) async {
+                if (chatPagination.data.isNotEmpty) {
+                  emit(state.copyWith(
+                    chatPagination: chatPagination,
+                    currentChat: chatPagination.data.first,
+                  ));
+                  await getChatMessages(chatPagination.data.first);
+                }
+                updateCurrentChat(state.currentChat);
+              },
+            ),
+          );
+    }
   }
 
 // only append the incoming message if it is from someone else
@@ -99,17 +104,30 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  getChatMessages() {
-    messageRepository.getMessages("/messages/", {
-      "chatId": state.currentChat.id,
-    });
+  Future<void> getChatMessages(ChatEntity chat) async {
+    state.currentChat = chat;
+    if (state.currentChat.messagePagination.next ||
+        state.currentChat.messagePagination.data.isEmpty) {
+      messageRepository
+          .getMessages(state.currentChat.messagePagination, "/messages/chats", {
+        "chatId": state.currentChat.id,
+      }).then(
+        (response) => response.fold(
+          (error) {},
+          (messagePagination) {
+            state.currentChat.messagePagination = messagePagination;
+          },
+        ),
+      );
+    }
+    emit(state.copyWith(currentChat: state.currentChat));
   }
 
   void updateCurrentChat(ChatEntity chat) {
     socket.emit("leaveRoom", {
       "chatId": state.currentChat.id,
     });
-    emit(state.copyWith(currentChat: chat));
+    getChatMessages(chat);
     socket.emit("roomJoin", {
       "chatId": state.currentChat.id,
     });

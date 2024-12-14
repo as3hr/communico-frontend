@@ -2,18 +2,23 @@ import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/domain/entities/user_entity.dart';
 import 'package:communico_frontend/domain/model/group_json.dart';
 
+import '../model/paginate.dart';
+
 class GroupEntity {
   int id;
   String name;
   List<GroupMemberEntity> members;
   List<MessageEntity> messages;
+  Paginate<MessageEntity> messagePagination;
 
   GroupEntity({
     this.id = 0,
     required this.members,
     required this.name,
+    Paginate<MessageEntity>? messagePagination,
     List<MessageEntity>? messages,
-  }) : messages = messages ?? [];
+  })  : messages = messages ?? [],
+        messagePagination = messagePagination ?? Paginate.empty();
 
   factory GroupEntity.empty() => GroupEntity(
         id: 0,

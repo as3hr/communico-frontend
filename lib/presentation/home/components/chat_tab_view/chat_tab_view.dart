@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../di/service_locator.dart';
 import '../../../../helpers/widgets/animated_banner.dart';
-import '../chat_room.dart';
+import '../chat_rom/chat_room.dart';
 import 'components/chats_list.dart';
 
 class ChatTabView extends StatelessWidget {
@@ -61,9 +61,14 @@ class ChatTabView extends StatelessWidget {
                           onSendMessage: () {
                             cubit.sendMessage();
                           },
+                          scrollController: state
+                              .currentChat.messagePagination.scrollController,
+                          scrollAndCall: () {
+                            cubit.getChatMessages(state.currentChat);
+                          },
                           textController: state.messageController,
                           roomTitle: chatUser?.username ?? "",
-                          messages: currentChat.messages,
+                          messages: currentChat.messagePagination.data,
                         )),
                   ],
                 );

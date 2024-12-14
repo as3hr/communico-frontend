@@ -67,18 +67,23 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
   Future<void> getGroups() async {
-    groupRepository.getMyGroups().then(
-          (response) => response.fold(
-            (error) {},
-            (groupPagination) {
-              emit(state.copyWith(
-                groupPagination: groupPagination,
-                currentGroup: groupPagination.data.firstOrNull,
-              ));
-              updateCurrentGroup(state.currentGroup);
-            },
-          ),
-        );
+    if (state.groupPagination.next || state.groupPagination.data.isEmpty) {
+      groupRepository.getMyGroups(state.groupPagination).then(
+            (response) => response.fold(
+              (error) {},
+              (groupPagination) async {
+                if (groupPagination.data.isNotEmpty) {
+                  emit(state.copyWith(
+                    groupPagination: groupPagination,
+                    currentGroup: groupPagination.data.first,
+                  ));
+                  await getGroupMessages(groupPagination.data.first);
+                  updateCurrentGroup(state.currentGroup);
+                }
+              },
+            ),
+          );
+    }
   }
 
 // only append the incoming message if it is from someone else
@@ -101,17 +106,25 @@ class GroupCubit extends Cubit<GroupState> {
     });
   }
 
-  getGroupMessages() {
-    messageRepository.getMessages("/messages/", {
-      "groupId": state.currentGroup.id,
-    });
+  getGroupMessages(GroupEntity group) {
+    state.currentGroup = group;
+    if (state.currentGroup.messagePagination.next ||
+        state.currentGroup.messagePagination.data.isEmpty) {
+      messageRepository.getMessages(
+          state.currentGroup.messagePagination, "/messages/groups", {
+        "groupId": state.currentGroup.id,
+      }).then((response) => response.fold((error) {}, (messagePagination) {
+            state.currentGroup.messagePagination = messagePagination;
+          }));
+    }
+    emit(state.copyWith(currentGroup: state.currentGroup));
   }
 
   void updateCurrentGroup(GroupEntity group) {
     socket.emit("leaveGroup", {
       "groupId": state.currentGroup.id,
     });
-    emit(state.copyWith(currentGroup: group));
+    getGroupMessages(group);
     socket.emit("groupJoin", {
       "groupId": state.currentGroup.id,
     });

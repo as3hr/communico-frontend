@@ -4,6 +4,8 @@ import 'package:communico_frontend/navigation/app_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../domain/model/paginate.dart';
+
 List<T> parseList<T>(
   data,
   T Function(Map<String, dynamic>) fromJson,
@@ -64,4 +66,21 @@ Future<void> showToast(String message) async {
 
 String formatDate(DateTime date) {
   return DateFormat('hh:mm a').format(date);
+}
+
+// if next is true then only ill hit pagination call in UI lAYER!
+Paginate<T> updatedPagination<T>({
+  required Paginate<T> previousData,
+  required Map<String, dynamic> data,
+  required Function(Map<String, dynamic>) dataFromJson,
+}) {
+  Paginate<T> pagination = Paginate<T>.fromJson(data, dataFromJson);
+  final updatedResults = previousData.data.isEmpty
+      ? pagination.data
+      : [...previousData.data, ...pagination.data];
+  final skip = pagination.data.length < 25 ? 0 : previousData.skip + 25;
+  final next = pagination.data.isNotEmpty && pagination.data.length == 25;
+  pagination =
+      pagination.copyWith(data: updatedResults, skip: skip, next: next);
+  return pagination;
 }

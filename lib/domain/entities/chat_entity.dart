@@ -1,4 +1,5 @@
 import 'package:communico_frontend/domain/model/chat_json.dart';
+import 'package:communico_frontend/domain/model/paginate.dart';
 
 import 'message_entity.dart';
 import 'user_entity.dart';
@@ -7,12 +8,14 @@ class ChatEntity {
   int id;
   List<ChatParticipantsEntity> participants;
   List<MessageEntity> messages;
+  Paginate<MessageEntity> messagePagination;
 
   ChatEntity({
     this.id = 0,
     required this.participants,
     required this.messages,
-  });
+    Paginate<MessageEntity>? messagePagination,
+  }) : messagePagination = messagePagination ?? Paginate.empty();
 
   factory ChatEntity.empty() =>
       ChatEntity(id: 0, participants: [], messages: []);

@@ -45,7 +45,6 @@ class Communico extends StatelessWidget {
                         initialRoute: window.localStorage['authToken'] != null
                             ? RouteName.home
                             : RouteName.getIn,
-                        builder: DevicePreview.appBuilder,
                       );
                     });
               });

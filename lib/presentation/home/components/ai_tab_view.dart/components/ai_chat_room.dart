@@ -62,8 +62,12 @@ class AiChatRoom extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final message = messages[index];
                               return message.isAi
-                                  ? AiMessage(message: message)
-                                  : MyMessage(message: message);
+                                  ? AiMessage(
+                                      message: message,
+                                      key: ValueKey(index.toString()))
+                                  : MyMessage(
+                                      message: message,
+                                      key: ValueKey(index.toString()));
                             },
                           ),
                         ),

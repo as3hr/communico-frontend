@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import '../model/paginate.dart';
 
 abstract class ChatRepository {
-  Future<Either<ChatFailure, Paginate<ChatEntity>>> getMyChats();
+  Future<Either<ChatFailure, Paginate<ChatEntity>>> getMyChats(
+      Paginate<ChatEntity> previousChats);
   Future<Either<ChatFailure, ChatEntity>> createChat(ChatEntity chatEntity);
 }

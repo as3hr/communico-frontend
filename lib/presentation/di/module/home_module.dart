@@ -10,7 +10,9 @@ import '../../home/components/group_tab_view/components/group_creation.dart/grou
 class HomeModule {
   static Future<void> configureHomeModuleInjection() async {
     getIt.registerLazySingleton<AiCubit>(
-      () => AiCubit(),
+      () => AiCubit(
+        getIt(),
+      ),
     );
     getIt.registerLazySingleton<ChatCubit>(
       () => ChatCubit(getIt(), getIt()),

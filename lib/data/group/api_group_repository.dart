@@ -6,6 +6,8 @@ import 'package:communico_frontend/domain/repositories/group_repository.dart';
 import 'package:communico_frontend/network/network_repository.dart';
 import 'package:dartz/dartz.dart';
 
+import '../../helpers/utils.dart';
+
 class ApiGroupRepository implements GroupRepository {
   final NetworkRepository networkRepository;
   ApiGroupRepository(this.networkRepository);
@@ -23,13 +25,21 @@ class ApiGroupRepository implements GroupRepository {
   }
 
   @override
-  Future<Either<GroupFailure, Paginate<GroupEntity>>> getMyGroups() async {
-    final response = await networkRepository.get(url: "/groups/");
+  Future<Either<GroupFailure, Paginate<GroupEntity>>> getMyGroups(
+      Paginate<GroupEntity> previousGroups) async {
+    final response = await networkRepository.get(url: "/groups/", extraQuery: {
+      "skip": previousGroups.skip,
+    });
     if (response.failed) {
       return left(GroupFailure(error: response.message));
     }
-    final group =
-        Paginate<GroupEntity>.fromJson(response.data, GroupJson.fromJson);
-    return right(group);
+
+    final pagination = updatedPagination<GroupEntity>(
+      previousData: previousGroups,
+      data: response.data,
+      dataFromJson: GroupJson.fromJson,
+    );
+
+    return right(pagination);
   }
 }

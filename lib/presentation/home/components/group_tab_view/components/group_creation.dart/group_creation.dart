@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +51,6 @@ class GroupCreationMemberSelection extends StatelessWidget {
     return BlocBuilder<GroupCreationCubit, GroupCreationState>(
       bloc: cubit,
       builder: (context, state) {
-        log(state.selectedUsers.length.toString());
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
@@ -192,6 +189,7 @@ class GroupCreationNaming extends StatelessWidget {
                 onTap: state.name.isNotEmpty
                     ? () {
                         cubit.createGroup();
+                        Navigator.pop(context);
                       }
                     : null,
               ),

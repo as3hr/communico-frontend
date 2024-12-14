@@ -6,6 +6,7 @@ import 'package:communico_frontend/network/network_repository.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../domain/model/chat_json.dart';
+import '../../helpers/utils.dart';
 
 class ApiChatRepository implements ChatRepository {
   final NetworkRepository networkRepository;
@@ -22,13 +23,19 @@ class ApiChatRepository implements ChatRepository {
   }
 
   @override
-  Future<Either<ChatFailure, Paginate<ChatEntity>>> getMyChats() async {
+  Future<Either<ChatFailure, Paginate<ChatEntity>>> getMyChats(
+      Paginate<ChatEntity> previousChats) async {
     final response = await networkRepository.get(url: "/chats/");
     if (response.failed) {
       return left(ChatFailure(error: response.message));
     }
-    final chat =
-        Paginate<ChatEntity>.fromJson(response.data, ChatJson.fromJson);
-    return right(chat);
+
+    final pagination = updatedPagination<ChatEntity>(
+      previousData: previousChats,
+      data: response.data,
+      dataFromJson: ChatJson.fromJson,
+    );
+
+    return right(pagination);
   }
 }

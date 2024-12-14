@@ -15,10 +15,28 @@ import '../../../../../helpers/widgets/input_form_field.dart';
 import 'chat_creation.dart';
 import 'chat_creation_cubit.dart';
 
-class ChatsList extends StatelessWidget {
+class ChatsList extends StatefulWidget {
   const ChatsList({super.key});
 
-  static final cubit = getIt<ChatCubit>();
+  @override
+  State<ChatsList> createState() => _ChatsListState();
+}
+
+class _ChatsListState extends State<ChatsList> {
+  final cubit = getIt<ChatCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    final scrollController = cubit.state.chatPagination.scrollController;
+    scrollController.addListener(() {
+      final threshold = scrollController.position.maxScrollExtent * 0.2;
+      if (scrollController.position.pixels >= threshold) {
+        cubit.getChats();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatState>(
@@ -90,6 +108,7 @@ class ChatsList extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: ListView.builder(
+                        controller: state.chatPagination.scrollController,
                         itemCount: chats.length,
                         itemBuilder: (context, index) {
                           final chat = chats[index];

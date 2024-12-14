@@ -6,5 +6,9 @@ import '../model/paginate.dart';
 
 abstract class MessageRepository {
   Future<Either<MessageFailure, Paginate<MessageEntity>>> getMessages(
-      String url, Map<String, dynamic>? extraQuery);
+      Paginate<MessageEntity> previousMessages,
+      String url,
+      Map<String, dynamic>? extraQuery);
+
+  Stream<Either<MessageFailure, String>> getAiResponse(String prompt);
 }

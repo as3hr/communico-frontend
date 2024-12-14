@@ -1,31 +1,33 @@
+import 'package:flutter/material.dart';
+
 import '../../helpers/utils.dart';
 import 'base_model.dart';
 
 class Paginate<T> {
-  String? previous;
-  String? next;
-  int count;
+  int skip;
   List<T> data;
+  bool next;
+  ScrollController scrollController;
 
   Paginate({
-    this.previous,
-    this.next,
-    this.count = 0,
+    bool? next,
+    this.skip = 0,
+    ScrollController? scrollController,
     List<T>? data,
-  }) : data = data ?? List<T>.empty(growable: true);
+  })  : data = data ?? List<T>.empty(growable: true),
+        scrollController = scrollController ?? ScrollController(),
+        next = next ?? ((data?.isNotEmpty ?? false) && data?.length == 25);
 
   factory Paginate.empty() => Paginate();
 
   Paginate<T> copyWith({
-    String? previous,
-    String? next,
-    int? count,
+    bool? next,
+    int? skip,
     List<T>? data,
   }) {
     return Paginate<T>(
-      previous: previous ?? this.previous,
       next: next ?? this.next,
-      count: count ?? this.count,
+      skip: skip ?? this.skip,
       data: data ?? this.data,
     );
   }
@@ -35,9 +37,6 @@ class Paginate<T> {
     Function(Map<String, dynamic>) dataFromJson,
   ) {
     return Paginate<T>(
-      // count: json['count'],
-      // previous: json['previous'],
-      // next: json['next'],
       data: json['data'] is List && json['data'] != null
           ? parseList(json['data'], dataFromJson)
               .map((json) {
@@ -49,11 +48,4 @@ class Paginate<T> {
           : [],
     );
   }
-
-  Map<String, dynamic> toJson(List<Map<String, dynamic>> mappedIssues) => {
-        'count': count,
-        'previous': previous,
-        'next': next,
-        'data': mappedIssues,
-      };
 }

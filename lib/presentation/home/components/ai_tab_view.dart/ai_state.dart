@@ -6,8 +6,10 @@ class AiState {
   List<MessageEntity> messages;
   bool aiMessageInitialized;
   bool isLoading;
+  String aiResponse;
 
   AiState({
+    required this.aiResponse,
     required this.currentAiMessageController,
     required this.messages,
     this.isLoading = false,
@@ -17,6 +19,7 @@ class AiState {
   factory AiState.empty() => AiState(
         currentAiMessageController: TextEditingController(),
         messages: [],
+        aiResponse: "",
       );
 
   copyWith({
@@ -24,8 +27,10 @@ class AiState {
     List<MessageEntity>? messages,
     bool? aiMessageInitialized,
     bool? isLoading,
+    String? aiResponse,
   }) =>
       AiState(
+        aiResponse: "",
         currentAiMessageController:
             currentAiMessageController ?? this.currentAiMessageController,
         messages: messages ?? this.messages,

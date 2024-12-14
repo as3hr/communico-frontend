@@ -4,6 +4,7 @@ import 'package:communico_frontend/domain/model/paginate.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class GroupRepository {
-  Future<Either<GroupFailure, Paginate<GroupEntity>>> getMyGroups();
+  Future<Either<GroupFailure, Paginate<GroupEntity>>> getMyGroups(
+      Paginate<GroupEntity> previousGroups);
   Future<Either<GroupFailure, GroupEntity>> createGroup(GroupEntity entity);
 }

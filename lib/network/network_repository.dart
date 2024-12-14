@@ -16,6 +16,7 @@ class NetworkRepository {
     required String url,
     Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
+    ResponseType? responseType,
   }) async {
     if (!await networkMonitor.checkConnection()) {
       throw NetworkResponse(
@@ -49,7 +50,7 @@ class NetworkRepository {
         url,
         data: data,
         queryParameters: queryParameters,
-        options: Options(method: method),
+        options: Options(method: method, responseType: responseType),
       );
 
       networkResponse = _handleResponse(response);
@@ -90,46 +91,59 @@ class NetworkRepository {
   Future<NetworkResponse> get({
     required String url,
     Map<String, dynamic>? extraQuery,
+    ResponseType? responseType,
   }) =>
       request(
         method: 'GET',
         url: url,
         queryParameters: extraQuery,
+        responseType: responseType,
       );
 
   Future<NetworkResponse> post({
     required String url,
     Map<String, dynamic>? data,
+    ResponseType? responseType,
   }) =>
       request(
         method: 'POST',
         url: url,
         data: data,
+        responseType: responseType,
       );
 
   Future<NetworkResponse> patch({
     required String url,
     Map<String, dynamic>? data,
+    ResponseType? responseType,
   }) =>
       request(
         method: 'PATCH',
         url: url,
         data: data,
+        responseType: responseType,
       );
 
   Future<NetworkResponse> put({
     required String url,
     Map<String, dynamic>? data,
+    ResponseType? responseType,
   }) =>
       request(
         method: 'PUT',
         url: url,
         data: data,
+        responseType: responseType,
       );
 
-  Future<NetworkResponse> delete({required String url}) => request(
+  Future<NetworkResponse> delete({
+    required String url,
+    ResponseType? responseType,
+  }) =>
+      request(
         method: 'DELETE',
         url: url,
+        responseType: responseType,
       );
 
   NetworkResponse _handleResponse(Response response) {
