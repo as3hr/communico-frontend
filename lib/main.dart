@@ -10,8 +10,8 @@ final eventBus = EventBus();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await ServiceLocator.configureServiceLocator();
   await dotenv.load();
+  await ServiceLocator.configureServiceLocator();
   Gemini.init(apiKey: dotenv.env['GEMINI_API_KEY'].toString());
   runApp(const Communico());
 }
