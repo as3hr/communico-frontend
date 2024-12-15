@@ -39,7 +39,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
             cd /home/as3hr/communico-frontend/
-            rm -rf build/web
+            rm -rf build
       
     - name: Copy build artifacts
       uses: appleboy/scp-action@v0.1.7
