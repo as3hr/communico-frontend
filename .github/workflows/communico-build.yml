@@ -35,7 +35,6 @@ jobs:
         script: |
           cd /home/as3hr/communico-frontend
           git pull origin master
-          flutter pub get
 
     - name: Remove Build/Web Directory
       uses: appleboy/ssh-action@v1.0.3
