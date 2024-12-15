@@ -18,6 +18,12 @@ jobs:
       with:
         flutter-version: '3.16.x'
         channel: 'stable'
+    
+    - name: Get dependencies
+      run: flutter pub get
+  
+    - name: Build Web
+      run: flutter build web --release
 
     - name: Deploy to VM
       uses: appleboy/ssh-action@v1.0.3
@@ -41,6 +47,7 @@ jobs:
         flutter build web --release
         echo "Build completed. Checking for files..."
         ls -la build/web/
+        
       
     - name: Copy build artifacts
       uses: appleboy/scp-action@v0.1.7
