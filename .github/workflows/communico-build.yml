@@ -19,19 +19,25 @@ jobs:
         flutter-version: '3.16.x'
         channel: 'stable'
 
-    - name: Deploy to VM
-      uses: appleboy/ssh-action@v1.0.3
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Build Web
+      run: flutter build web --release
+
+    - name: Debug Flutter Build
+      run: |
+        echo "Build completed. Checking for files in 'build/web'..."
+        ls -la build/web/
+
+    - name: Copy build artifacts
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.SERVER_PUBLIC_IP }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          set -e
-          cd /home/as3hr/communico-frontend
-          echo "Pulling latest code from GitHub..."
-          git fetch origin
-          git reset --hard origin/master
-          flutter pub get
+        source: "build/web/*"
+        target: "/home/as3hr/communico-frontend/build/web"
 
     - name: Restart Nginx
       uses: appleboy/ssh-action@v1.0.3
@@ -40,7 +46,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          echo "Checking Nginx configuration..."
+          echo "Testing Nginx configuration..."
           sudo nginx -t
           echo "Restarting Nginx..."
           sudo systemctl restart nginx
