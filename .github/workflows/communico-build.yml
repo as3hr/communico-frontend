@@ -16,20 +16,36 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.24.4'
+        flutter-version: '3.2.4'
         dart-version: '3.5.4'
         channel: 'stable'
-
+    
     - name: Get dependencies
       run: flutter pub get
-
+  
     - name: Build Web
       run: flutter build web --release
+ 
+    - name: Deploy to VM
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_PUBLIC_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/as3hr/communico-frontend
+          git pull origin master
+          flutter pub get
 
-    - name: Debug Flutter Build
-      run: |
-        echo "Build completed. Checking for files in 'build/web'..."
-        ls -la build/web/
+    - name: Remove Build/Web Directory
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_PUBLIC_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/as3hr/communico-frontend/build/
+          rm -rf web
       
     - name: Copy build artifacts
       uses: appleboy/scp-action@v0.1.7
@@ -38,8 +54,8 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "build/web/*"
-        target: "/home/as3hr/communico-frontend/build/web/"
-
+        target: "/home/as3hr/communico-frontend/"
+    
     - name: Restart Nginx
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -47,7 +63,5 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          echo "Testing Nginx configuration..."
-          sudo nginx -t
-          echo "Restarting Nginx..."
-          sudo systemctl restart nginx
+            sudo nginx -t
+            sudo systemctl restart nginx
