@@ -32,6 +32,15 @@ jobs:
           rm -rf build/web
           flutter build web --release
           mkdir -p build/web
+    
+    - name: Check Build Directory
+      run: ls -la build/web/
+        
+    - name: Debug Flutter Build
+      run: |
+        flutter build web --release
+        echo "Build completed. Checking for files..."
+        ls -la build/web/
       
     - name: Copy build artifacts
       uses: appleboy/scp-action@v0.1.7
