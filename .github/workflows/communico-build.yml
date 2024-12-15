@@ -33,7 +33,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/as3hr/communico-frontend
+          cd /var/www/html/communico-frontend
           git pull origin master
 
     - name: Remove Build/Web Directory
@@ -43,7 +43,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/as3hr/communico-frontend/build/
+          cd /var/www/html/communico-frontend/build/
           rm -rf web
       
     - name: Copy build artifacts
@@ -53,16 +53,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "build/web/*"
-        target: "/home/as3hr/communico-frontend/"
-      
-    - name: Copy build artifacts on html
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.SERVER_PUBLIC_IP }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "build/web/*"
-        target: "/var/www/html/"
+        target: "/var/www/html/communico-frontend/"
     
     - name: Restart Nginx
       uses: appleboy/ssh-action@v1.0.3
