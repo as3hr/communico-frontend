@@ -30,16 +30,6 @@ jobs:
       run: |
         echo "Build completed. Checking for files in 'build/web'..."
         ls -la build/web/
-    
-    - name: Remove existing build/web on VM
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.SERVER_PUBLIC_IP }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-            cd /home/as3hr/communico-frontend/
-            rm -rf build
       
     - name: Copy build artifacts
       uses: appleboy/scp-action@v0.1.7
@@ -48,7 +38,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "build/web/*"
-        target: "/home/as3hr/communico-frontend/build/web"
+        target: "/home/as3hr/communico-frontend/build/web/"
 
     - name: Restart Nginx
       uses: appleboy/ssh-action@v1.0.3
