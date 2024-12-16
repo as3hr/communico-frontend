@@ -7,4 +7,5 @@ var socket = io("https://communico.as3hr.dev", {
   'transports': ['websocket'],
   'autoConnect': true,
   'debug': true,
+  'path': '/socket.io/',
 });
