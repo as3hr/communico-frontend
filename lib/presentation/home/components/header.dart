@@ -143,9 +143,7 @@ class _HeaderState extends State<Header> {
                 ),
                 const AppVerticalDivider(),
                 TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () {},
                   style: TextButton.styleFrom(
                     foregroundColor: context.colorScheme.onPrimary,
                     padding: EdgeInsets.zero,
