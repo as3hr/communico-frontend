@@ -43,6 +43,7 @@ class AiCubit extends Cubit<AiState> {
       emit(state.copyWith(aiResponse: ""));
       emit(state.copyWith(
         aiResponse: "",
+        isLoading: false,
         aiMessageInitialized: false,
       ));
     }, onError: (error) {
