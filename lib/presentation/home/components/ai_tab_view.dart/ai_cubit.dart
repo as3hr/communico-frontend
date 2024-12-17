@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -25,10 +26,13 @@ class AiCubit extends Cubit<AiState> {
     }
   }
 
+  StreamSubscription? subscription;
+
   void generateAiResponse(String text) {
     emit(state.copyWith(isLoading: true));
     String aiResponse = "";
-    messageRepository.getAiResponse(text).listen(
+    final aiResponseStream = messageRepository.getAiResponse(text);
+    subscription = aiResponseStream.listen(
         (response) => response.fold((error) {}, (resp) {
               log("AI MESSAGE IS: $resp");
               if (!state.aiMessageInitialized) {
@@ -38,6 +42,7 @@ class AiCubit extends Cubit<AiState> {
               aiResponse += resp;
               emit(state.copyWith(aiResponse: aiResponse));
             }), onDone: () {
+      log("AI MESSAGE Completed: ${state.aiResponse}");
       final message = MessageEntity(text: aiResponse, userId: 0, isAi: true);
       appendMessageToAiChat(message);
       emit(state.copyWith(aiResponse: ""));
@@ -46,6 +51,7 @@ class AiCubit extends Cubit<AiState> {
         isLoading: false,
         aiMessageInitialized: false,
       ));
+      subscription?.cancel();
     }, onError: (error) {
       log("ERROR IS: ${error.toString()}");
       emit(state.copyWith(

@@ -1,5 +1,6 @@
 import 'package:socket_io_client/socket_io_client.dart';
 
+const localUrl = "http://localhost:5000";
 const baseUrl = "https://communico.as3hr.dev";
 const baseApiUrl = "$baseUrl/api";
 const tokenKey = "API_TOKEN_KEY";

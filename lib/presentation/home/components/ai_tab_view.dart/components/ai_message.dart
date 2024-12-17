@@ -3,6 +3,8 @@ import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../helpers/styles/styles.dart';
+
 class AiMessage extends StatelessWidget {
   const AiMessage({
     super.key,
@@ -41,10 +43,10 @@ class AiMessage extends StatelessWidget {
                 ),
                 child: Text(
                   message.text,
-                  style: const TextStyle(
+                  style: Styles.mediumStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.white,
+                    color: context.colorScheme.onSurface,
+                    family: FontFamily.patrickHand,
                   ),
                 )),
           ),

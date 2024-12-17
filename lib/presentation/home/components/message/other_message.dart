@@ -3,6 +3,7 @@ import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../helpers/styles/styles.dart';
 import '../../../../helpers/utils.dart';
 
 class OtherMessage extends StatelessWidget {
@@ -51,10 +52,10 @@ class OtherMessage extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   message.text,
-                  style: const TextStyle(
+                  style: Styles.mediumStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.white,
+                    color: context.colorScheme.onSurface,
+                    family: FontFamily.patrickHand,
                   ),
                 ),
               ],
@@ -65,9 +66,10 @@ class OtherMessage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               formatDate(message.timeStamp),
-              style: TextStyle(
+              style: Styles.lightStyle(
                 fontSize: 12,
-                color: context.colorScheme.onSurface.withOpacity(0.6),
+                color: context.colorScheme.onSurface,
+                family: FontFamily.patrickHand,
               ),
             ),
           ),

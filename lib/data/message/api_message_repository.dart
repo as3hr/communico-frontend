@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/domain/failures/message_failure.dart';
 import 'package:communico_frontend/domain/repositories/message_repository.dart';
 import 'package:communico_frontend/network/network_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:universal_html/html.dart';
 
 import '../../domain/model/message_json.dart';
 import '../../domain/model/paginate.dart';
@@ -49,6 +49,7 @@ class ApiMessageRepository implements MessageRepository {
     );
 
     try {
+      String? token = window.localStorage['authToken'];
       final response = await dio.post(
         "/ai",
         data: {
@@ -56,16 +57,14 @@ class ApiMessageRepository implements MessageRepository {
         },
         options: Options(
           responseType: ResponseType.stream,
-          headers: {"Accept": "text/plain", "Accept-Charset": "utf-8"},
+          headers: {"Authorization": "Bearer $token"},
         ),
       );
 
-      await for (var chunk in (response.data as ResponseBody)
-          .stream
-          .transform(utf8.decoder.cast())
-          .transform(const LineSplitter())) {
-        if (chunk.isNotEmpty) {
-          yield right(chunk);
+      await for (List<int> chunk in (response.data as ResponseBody).stream) {
+        final stringChunk = utf8.decode(chunk);
+        if (stringChunk.isNotEmpty) {
+          yield right(stringChunk);
         }
       }
     } on DioException catch (e) {

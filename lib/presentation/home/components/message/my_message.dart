@@ -42,6 +42,11 @@ class MyMessage extends StatelessWidget {
                     )),
                 child: Text(
                   message.text,
+                  style: Styles.mediumStyle(
+                    fontSize: 14,
+                    color: context.colorScheme.onSurface,
+                    family: FontFamily.patrickHand,
+                  ),
                 ),
               ),
               1.verticalSpace,
@@ -50,7 +55,7 @@ class MyMessage extends StatelessWidget {
                 style: Styles.lightStyle(
                   fontSize: 12,
                   color: context.colorScheme.onSurface,
-                  family: FontFamily.bangers,
+                  family: FontFamily.patrickHand,
                 ),
               ),
             ],
