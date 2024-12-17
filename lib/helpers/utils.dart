@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:communico_frontend/navigation/app_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../domain/model/paginate.dart';
@@ -83,4 +84,21 @@ Paginate<T> updatedPagination<T>({
   pagination =
       pagination.copyWith(data: updatedResults, skip: skip, next: next);
   return pagination;
+}
+
+FocusNode getFieldFocusNode(void Function() callBack) {
+  return FocusNode(
+    onKeyEvent: (node, evt) {
+      if (!HardwareKeyboard.instance.isShiftPressed &&
+          HardwareKeyboard.instance
+              .isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
+        if (evt is KeyDownEvent) {
+          callBack.call();
+        }
+        return KeyEventResult.handled;
+      } else {
+        return KeyEventResult.ignored;
+      }
+    },
+  );
 }

@@ -1,15 +1,28 @@
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../helpers/styles/app_colors.dart';
 import '../../../../helpers/widgets/input_form_field.dart';
 
-class ChatRoomFooter extends StatelessWidget {
+class ChatRoomFooter extends StatefulWidget {
   const ChatRoomFooter(
       {super.key, required this.onSendMessage, required this.textController});
   final TextEditingController textController;
   final void Function() onSendMessage;
+
+  @override
+  State<ChatRoomFooter> createState() => _ChatRoomFooterState();
+}
+
+class _ChatRoomFooterState extends State<ChatRoomFooter> {
+  late FocusNode focusNode;
+  @override
+  void initState() {
+    super.initState();
+    focusNode = getFieldFocusNode(widget.onSendMessage);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +48,10 @@ class ChatRoomFooter extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: InputFormField(
-                textEditingController: textController,
+                textEditingController: widget.textController,
                 hintText: "Write a message ...",
                 onChanged: (val) {},
-                onSubmit: (val) {
-                  onSendMessage.call();
-                },
+                focusNode: focusNode,
                 showBorder: false,
               ),
             ),
@@ -48,7 +59,7 @@ class ChatRoomFooter extends StatelessWidget {
           1.horizontalSpace,
           InkWell(
             onTap: () {
-              onSendMessage.call();
+              widget.onSendMessage.call();
             },
             child: Container(
                 decoration: BoxDecoration(

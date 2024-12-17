@@ -42,6 +42,8 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  empty() => emit(ChatState.empty());
+
 // only append the incoming message if it is from someone else
   listenToDirectMessage() {
     socket.on('newMessage', (data) {

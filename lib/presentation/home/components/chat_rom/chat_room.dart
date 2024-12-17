@@ -50,7 +50,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 0.8.sh,
+      height: 0.9.sh,
       child: Column(
         children: [
           Expanded(

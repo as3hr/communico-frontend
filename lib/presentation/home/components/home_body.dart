@@ -2,7 +2,6 @@ import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/header.dart';
-import 'package:communico_frontend/presentation/home/components/sub_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,42 +17,43 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvokedWithResult: (_, __) {},
-      child: SelectionArea(
-        child: BlocBuilder<HomeCubit, HomeState>(
-          bloc: cubit,
-          builder: (context, state) {
-            return DefaultTabController(
-              length: 3,
-              animationDuration: const Duration(milliseconds: 600),
-              child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Header(username: cubit.user!.username),
-                      5.verticalSpace,
-                      const SubHeader(),
-                      5.verticalSpace,
-                      const Expanded(
-                        child: TabBarView(
-                          physics: NeverScrollableScrollPhysics(),
-                          children: [
-                            ChatTabView(),
-                            GroupTabView(),
-                            AiTabView(),
-                          ],
-                        ),
+    return SelectionArea(
+      child: BlocBuilder<HomeCubit, HomeState>(
+        bloc: cubit,
+        builder: (context, state) {
+          return DefaultTabController(
+            length: 3,
+            animationDuration: const Duration(milliseconds: 600),
+            child: Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
+              child: Center(
+                child: Column(
+                  children: [
+                    5.verticalSpace,
+                    Header(
+                        userName: cubit.user!.username,
+                        logOut: () {
+                          Navigator.pop(context);
+                          cubit.closeStates();
+                        }),
+                    5.verticalSpace,
+                    const Expanded(
+                      child: TabBarView(
+                        physics: NeverScrollableScrollPhysics(),
+                        children: [
+                          ChatTabView(),
+                          GroupTabView(),
+                          AiTabView(),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

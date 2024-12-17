@@ -66,10 +66,12 @@ class _InputFormFieldState extends State<InputFormField> {
       keyboardType: widget.keyboardType,
       inputFormatters: widget.inputFormatters,
       onTap: widget.onTap,
-      onFieldSubmitted: widget.onSubmit,
+      autofocus: true,
       validator: widget.validator,
+      maxLines: null,
+      minLines: 1,
       onChanged: widget.onChanged,
-      textInputAction: TextInputAction.done,
+      textInputAction: TextInputAction.newline,
       cursorColor: context.colorScheme.onPrimary,
       cursorHeight: 20,
       decoration: InputDecoration(
@@ -87,7 +89,7 @@ class _InputFormFieldState extends State<InputFormField> {
         errorStyle: Styles.boldStyle(
           fontSize: 12,
           color: AppColor.red,
-          family: FontFamily.dmSans,
+          family: FontFamily.bangers,
         ),
       ),
       onTapOutside: (event) {

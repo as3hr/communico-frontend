@@ -74,7 +74,7 @@ class _ChatsListState extends State<ChatsList> {
             ),
           ),
           body: SizedBox(
-            height: 0.8.sh,
+            height: 0.9.sh,
             child: Column(
               children: [
                 Container(

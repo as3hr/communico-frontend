@@ -24,11 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-        bloc: cubit,
-        builder: (context, state) {
-          return Scaffold(
-              body: state.isLoading ? const LoadingHome() : const HomeBody());
-        });
+    return PopScope(
+      onPopInvokedWithResult: (_, __) {
+        cubit.closeStates();
+      },
+      child: BlocBuilder<HomeCubit, HomeState>(
+          bloc: cubit,
+          builder: (context, state) {
+            return Scaffold(
+                body: state.isLoading ? const LoadingHome() : const HomeBody());
+          }),
+    );
   }
 }

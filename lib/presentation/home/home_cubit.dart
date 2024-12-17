@@ -22,12 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
       getIt<ChatCubit>().getChats(),
       getIt<GroupCubit>().getGroups(),
     ]).then((_) {
-      Future.delayed(
-          const Duration(
-            seconds: 1,
-          ), () {
-        emit(state.copyWith(isLoading: false));
-      });
+      emit(state.copyWith(isLoading: false));
     });
   }
 
@@ -45,6 +40,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   bool isMyMessage(MessageEntity message) {
     return user != null && (user!.id == message.userId) ? true : false;
+  }
+
+  void closeStates() {
+    emit(HomeState.empty());
+    getIt<ChatCubit>().empty();
+    getIt<GroupCubit>().empty();
   }
 
   UserEntity? get user => getIt<UserStore>().getUser();

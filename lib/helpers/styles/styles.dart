@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-enum FontFamily { varela, dmSans }
+enum FontFamily { patrickHand, bangers }
 
 class Styles {
   static InputDecoration inputFieldDecoration(
@@ -16,7 +16,7 @@ class Styles {
       fillColor: AppColor.lightGrey,
       errorStyle: boldStyle(
         fontSize: 12, color: AppColor.red,
-        family: FontFamily.dmSans,
+        family: FontFamily.bangers,
         // family: FontFamily.varela
       ),
       errorBorder: InputBorder.none,
@@ -24,7 +24,7 @@ class Styles {
       contentPadding: const EdgeInsets.all(8),
       focusedErrorBorder: InputBorder.none,
       hintStyle: mediumStyle(
-          fontSize: 15, color: AppColor.grey, family: FontFamily.varela),
+          fontSize: 15, color: AppColor.grey, family: FontFamily.patrickHand),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
           color: AppColor.darkBackground,
@@ -49,7 +49,7 @@ class Styles {
       fontWeight: FontWeight.w900,
       fontSize: fontSize,
       color: color,
-      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
     );
   }
 
@@ -62,7 +62,7 @@ class Styles {
       fontWeight: FontWeight.w700,
       fontSize: fontSize,
       color: color,
-      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
     );
   }
 
@@ -75,7 +75,7 @@ class Styles {
       fontWeight: FontWeight.w600,
       fontSize: fontSize,
       color: color,
-      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
     );
   }
 
@@ -88,7 +88,7 @@ class Styles {
       fontWeight: FontWeight.w500,
       fontSize: fontSize,
       color: color,
-      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
     );
   }
 
@@ -101,7 +101,7 @@ class Styles {
       fontWeight: FontWeight.w300,
       fontSize: fontSize,
       color: color,
-      // fontFamily: family == FontFamily.dmSans ? "dmSans" : "Varela",
+      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
     );
   }
 

@@ -50,7 +50,7 @@ class MyMessage extends StatelessWidget {
                 style: Styles.lightStyle(
                   fontSize: 12,
                   color: context.colorScheme.onSurface,
-                  family: FontFamily.dmSans,
+                  family: FontFamily.bangers,
                 ),
               ),
             ],

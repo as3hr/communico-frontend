@@ -42,6 +42,8 @@ class GroupCubit extends Cubit<GroupState> {
     }
   }
 
+  empty() => emit(GroupState.empty());
+
   appendMessageToGroup(MessageEntity message) {
     state.currentGroup.messagePagination.data.insert(0, message);
     emit(state.copyWith(groupPagination: state.groupPagination));

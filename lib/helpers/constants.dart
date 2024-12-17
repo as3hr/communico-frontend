@@ -1,11 +1,11 @@
 import 'package:socket_io_client/socket_io_client.dart';
 
-// final baseUrl = dotenv.env['base_url'].toString();
-const baseUrl = "https://communico.as3hr.dev/api";
+const baseUrl = "http://localhost:5000";
+const baseApiUrl = "$baseUrl/api";
 const tokenKey = "API_TOKEN_KEY";
-var socket = io("https://communico.as3hr.dev", {
+var socket = io(baseUrl, {
   'transports': ['websocket'],
   'autoConnect': true,
-  'debug': true,
-  'path': '/socket.io/',
+  // 'debug': true,
+  // 'path': '/socket.io/',
 });

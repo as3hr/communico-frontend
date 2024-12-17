@@ -20,7 +20,7 @@ class ThemeSwitch extends StatelessWidget {
             valueListenable: adaptiveTheme.modeChangeNotifier,
             builder: (context, theme, child) {
               return SizedBox(
-                height: 0.03.sh,
+                height: 0.027.sh,
                 child: FlutterSwitch(
                   value: adaptiveTheme.mode.isDark,
                   padding: 4.0,
