@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/domain/failures/message_failure.dart';
@@ -7,7 +6,6 @@ import 'package:communico_frontend/domain/repositories/message_repository.dart';
 import 'package:communico_frontend/network/network_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../../domain/model/message_json.dart';
 import '../../domain/model/paginate.dart';
@@ -52,26 +50,28 @@ class ApiMessageRepository implements MessageRepository {
 
     try {
       final response = await dio.post(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContentStream?key=${dotenv.env['GEMINI_API_KEY'].toString()}",
-        // "/ai",
+        "/ai",
         data: {
           "prompt": prompt,
         },
-        // queryParameters: {
-        //   "prompt": prompt,
-        // },
         options: Options(
-            responseType: ResponseType.stream,
-            headers: {"Accept": "text/plain", "Accept-Charset": "utf-8"}),
+          responseType: ResponseType.stream,
+          headers: {"Accept": "text/plain", "Accept-Charset": "utf-8"},
+        ),
       );
+
       await for (var chunk in (response.data as ResponseBody)
           .stream
-          .transform(utf8.decoder.cast())) {
-        log("CHUNK IS: $chunk");
-        yield right(chunk);
+          .transform(utf8.decoder.cast())
+          .transform(const LineSplitter())) {
+        if (chunk.isNotEmpty) {
+          yield right(chunk);
+        }
       }
-    } catch (e, _) {
-      rethrow;
+    } on DioException catch (e) {
+      yield left(MessageFailure(error: e.message ?? ""));
+    } catch (e) {
+      yield left(MessageFailure(error: e.toString()));
     }
   }
 }

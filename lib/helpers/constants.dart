@@ -6,6 +6,6 @@ const tokenKey = "API_TOKEN_KEY";
 var socket = io(baseUrl, {
   'transports': ['websocket'],
   'autoConnect': true,
-  // 'debug': true,
-  // 'path': '/socket.io/',
+  'debug': true,
+  'path': '/socket.io/',
 });
