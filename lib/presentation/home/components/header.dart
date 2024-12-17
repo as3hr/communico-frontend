@@ -1,4 +1,5 @@
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/presentation/home/components/radio/radio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:one_clock/one_clock.dart';
 
@@ -142,20 +143,18 @@ class _HeaderState extends State<Header> {
                   ],
                 ),
                 const AppVerticalDivider(),
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    foregroundColor: context.colorScheme.onPrimary,
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Text(
-                    "Radio",
-                    style: Styles.mediumStyle(
-                      fontSize: 15,
-                      color: context.colorScheme.onPrimary,
-                      family: FontFamily.patrickHand,
+                Row(
+                  children: [
+                    Text(
+                      "Radio: ",
+                      style: Styles.mediumStyle(
+                        fontSize: 15,
+                        color: context.colorScheme.onPrimary,
+                        family: FontFamily.patrickHand,
+                      ),
                     ),
-                  ),
+                    const RadioPlayer(videoId: "jfKfPfyJRdk"),
+                  ],
                 ),
                 const AppVerticalDivider(),
                 IconButton(

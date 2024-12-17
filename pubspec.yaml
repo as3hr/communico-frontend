@@ -42,6 +42,7 @@ dependencies:
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
   get_it: ^8.0.2
+  youtube_player_iframe: ^5.2.1
   dartz: ^0.10.1
   pretty_dio_logger: ^1.4.0
   socket_io_client: ^3.0.2
