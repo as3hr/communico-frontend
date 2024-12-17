@@ -42,7 +42,10 @@ class Communico extends StatelessWidget {
                         debugShowCheckedModeBanner: false,
                         navigatorKey: AppNavigation.navigatorKey,
                         onGenerateRoute: generateRoute,
-                        initialRoute: window.localStorage['authToken'] != null
+                        initialRoute: window.localStorage['authToken'] !=
+                                    null ||
+                                (window.localStorage['authToken']?.isNotEmpty ??
+                                    false)
                             ? RouteName.home
                             : RouteName.getIn,
                       );

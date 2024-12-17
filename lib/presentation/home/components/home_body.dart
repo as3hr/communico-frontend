@@ -5,6 +5,7 @@ import 'package:communico_frontend/presentation/home/components/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:universal_html/html.dart';
 
 import '../../../di/service_locator.dart';
 import '../home_cubit.dart';
@@ -36,6 +37,7 @@ class HomeBody extends StatelessWidget {
                         logOut: () {
                           Navigator.pop(context);
                           cubit.closeStates();
+                          window.localStorage['authToken'] = "";
                         }),
                     5.verticalSpace,
                     const Expanded(
