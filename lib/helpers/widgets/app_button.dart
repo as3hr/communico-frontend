@@ -1,6 +1,8 @@
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../styles/styles.dart';
+
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
@@ -38,10 +40,10 @@ class AppButton extends StatelessWidget {
             Center(
               child: Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                style: Styles.boldStyle(
+                  fontSize: 20,
+                  color: AppColor.white,
+                  family: FontFamily.kanit,
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -43,10 +44,10 @@ class OtherMessage extends StatelessWidget {
               children: [
                 Text(
                   message.sender?.username ?? "",
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.white,
+                  style: Styles.mediumStyle(
+                    fontSize: 15,
+                    color: context.colorScheme.onPrimary,
+                    family: FontFamily.kanit,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -54,8 +55,8 @@ class OtherMessage extends StatelessWidget {
                   message.text,
                   style: Styles.mediumStyle(
                     fontSize: 14,
-                    color: context.colorScheme.onSurface,
-                    family: FontFamily.patrickHand,
+                    color: AppColor.white,
+                    family: FontFamily.montserrat,
                   ),
                 ),
               ],
@@ -68,8 +69,8 @@ class OtherMessage extends StatelessWidget {
               formatDate(message.timeStamp),
               style: Styles.lightStyle(
                 fontSize: 12,
-                color: context.colorScheme.onSurface,
-                family: FontFamily.patrickHand,
+                color: AppColor.white,
+                family: FontFamily.montserrat,
               ),
             ),
           ),

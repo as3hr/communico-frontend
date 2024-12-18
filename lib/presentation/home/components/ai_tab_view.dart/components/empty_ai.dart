@@ -1,7 +1,9 @@
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../helpers/styles/app_images.dart';
+import '../../../../../helpers/styles/styles.dart';
 
 class EmptyAi extends StatelessWidget {
   const EmptyAi({super.key});
@@ -11,42 +13,37 @@ class EmptyAi extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        5.verticalSpace,
+        Text(
+          "Note: This conversation is temporary and will not be saved. All messages will be cleared upon closing the site.",
+          textAlign: TextAlign.center,
+          style: Styles.boldStyle(
+            fontSize: 15,
+            color: AppColor.white,
+            family: FontFamily.montserrat,
+          ),
+        ),
         const Spacer(),
         Center(
           child: Text(
             "Welcome to Your AI Buddy!",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: AppColor.white,
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Styles.boldStyle(
+              fontSize: 25,
+              color: AppColor.white,
+              family: FontFamily.kanit,
+            ),
           ),
         ),
         const SizedBox(height: 10),
         Text(
-          "Note:",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColor.white,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          "This conversation is temporary and will not be saved. All messages will be cleared upon closing the site.",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColor.white,
-              ),
-        ),
-        const SizedBox(height: 20),
-        Text(
           "Tip: Feel free to ask anything or explore ideas!",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColor.white,
-                fontStyle: FontStyle.italic,
-              ),
+          style: Styles.mediumStyle(
+            fontSize: 15,
+            color: AppColor.white,
+            family: FontFamily.kanit,
+          ),
         ),
         const SizedBox(height: 20),
         Center(

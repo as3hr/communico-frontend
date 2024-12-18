@@ -18,6 +18,7 @@ class GroupRoomDetail extends StatelessWidget {
       builder: (context, state) {
         final currentGroup = state.currentGroup;
         return Container(
+          width: 0.3.sw,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: context.colorScheme.primary,

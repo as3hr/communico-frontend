@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../di/service_locator.dart';
 import '../../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/styles/styles.dart';
 import '../../../../../helpers/widgets/animated_banner.dart';
 import '../../../../../helpers/widgets/input_form_field.dart';
 import 'chat_creation.dart';
@@ -158,18 +159,37 @@ class _ChatsListState extends State<ChatsList> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(participant.user?.username ??
-                                                ""),
+                                            Text(
+                                              participant.user?.username ?? "",
+                                              style: Styles.mediumStyle(
+                                                fontSize: 15,
+                                                color: context
+                                                    .colorScheme.onPrimary,
+                                                family: FontFamily.kanit,
+                                              ),
+                                            ),
                                             const Spacer(),
                                             2.horizontalSpace,
-                                            Text(formatDate(message.timeStamp)),
+                                            Text(
+                                              formatDate(message.timeStamp),
+                                              style: Styles.mediumStyle(
+                                                fontSize: 13,
+                                                color: context
+                                                    .colorScheme.onPrimary,
+                                                family: FontFamily.montserrat,
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         1.verticalSpace,
                                         Text(
                                           message.text,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             overflow: TextOverflow.ellipsis,
+                                            fontSize: 15,
+                                            color:
+                                                context.colorScheme.onPrimary,
+                                            fontFamily: "Montserrat",
                                           ),
                                         ),
                                       ],

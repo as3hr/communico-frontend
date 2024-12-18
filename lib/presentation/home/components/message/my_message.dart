@@ -1,5 +1,4 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +43,8 @@ class MyMessage extends StatelessWidget {
                   message.text,
                   style: Styles.mediumStyle(
                     fontSize: 14,
-                    color: context.colorScheme.onSurface,
-                    family: FontFamily.patrickHand,
+                    color: AppColor.white,
+                    family: FontFamily.kanit,
                   ),
                 ),
               ),
@@ -54,8 +53,8 @@ class MyMessage extends StatelessWidget {
                 formatDate(message.timeStamp),
                 style: Styles.lightStyle(
                   fontSize: 12,
-                  color: context.colorScheme.onSurface,
-                  family: FontFamily.patrickHand,
+                  color: AppColor.white,
+                  family: FontFamily.montserrat,
                 ),
               ),
             ],

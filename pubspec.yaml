@@ -93,12 +93,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Bangers
+    - family: Kanit
       fonts:
-        - asset: assets/fonts/Bangers.ttf
-    - family: Patrick Hand
+        - asset: assets/fonts/Kanit.ttf
+    - family: Montserrat
       fonts:
-        - asset: assets/fonts/PatrickHand.ttf
+        - asset: assets/fonts/Montserrat.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../di/service_locator.dart';
+import '../../../../helpers/styles/styles.dart';
 import '../../home_cubit.dart';
 
 class ChatRoom extends StatefulWidget {
@@ -65,7 +66,17 @@ class _ChatRoomState extends State<ChatRoom> {
                   children: [
                     Container(
                       height: 0.05.sh,
-                      color: context.colorScheme.secondary,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.secondary,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 6,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Row(
                         children: [
                           if (context.isMobile || context.isTablet) ...[
@@ -80,7 +91,25 @@ class _ChatRoomState extends State<ChatRoom> {
                             ),
                           ],
                           10.horizontalSpace,
-                          Text(widget.params.roomTitle),
+                          Text(
+                            widget.params.roomTitle,
+                            style: Styles.mediumStyle(
+                              fontSize: 20,
+                              color: context.colorScheme.onPrimary,
+                              family: FontFamily.kanit,
+                            ),
+                          ),
+                          const Spacer(),
+                          if (widget.params.isGroup)
+                            IconButton(
+                              onPressed: () {
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                              icon: const Icon(
+                                Icons.menu,
+                              ),
+                            ),
+                          10.horizontalSpace,
                         ],
                       ),
                     ),

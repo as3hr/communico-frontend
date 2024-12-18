@@ -36,16 +36,14 @@ class Communico extends StatelessWidget {
                     useInheritedMediaQuery: true,
                     designSize: const Size(300, 200),
                     builder: (context, _) {
+                      final token = window.localStorage['authToken'] ?? "";
                       return MaterialApp(
                         theme: light,
                         darkTheme: dark,
                         debugShowCheckedModeBanner: false,
                         navigatorKey: AppNavigation.navigatorKey,
                         onGenerateRoute: generateRoute,
-                        initialRoute: window.localStorage['authToken'] !=
-                                    null ||
-                                (window.localStorage['authToken']?.isNotEmpty ??
-                                    false)
+                        initialRoute: (token.isNotEmpty)
                             ? RouteName.home
                             : RouteName.getIn,
                       );

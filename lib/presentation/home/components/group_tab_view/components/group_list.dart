@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../di/service_locator.dart';
 import '../../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/styles/styles.dart';
 import '../../../../../helpers/widgets/animated_banner.dart';
 import '../../../../../helpers/widgets/input_form_field.dart';
 import '../group_cubit.dart';
@@ -147,13 +148,50 @@ class _GroupListState extends State<GroupList> {
                                     });
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    child: ListTile(
-                                      title: Text(group.name),
-                                      subtitle: Text(message?.text ?? ""),
-                                      trailing: Text(formatDate(
-                                          message?.timeStamp ??
-                                              DateTime.now())),
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              group.name,
+                                              style: Styles.mediumStyle(
+                                                fontSize: 15,
+                                                color: context
+                                                    .colorScheme.onPrimary,
+                                                family: FontFamily.kanit,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            2.horizontalSpace,
+                                            Text(
+                                              formatDate(message?.timeStamp ??
+                                                  DateTime.now()),
+                                              style: Styles.mediumStyle(
+                                                fontSize: 13,
+                                                color: context
+                                                    .colorScheme.onPrimary,
+                                                family: FontFamily.montserrat,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        1.verticalSpace,
+                                        Text(
+                                          message?.text ?? "",
+                                          style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontSize: 15,
+                                            color:
+                                                context.colorScheme.onPrimary,
+                                            fontFamily: "Montserrat",
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),

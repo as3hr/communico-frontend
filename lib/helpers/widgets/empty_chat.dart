@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../styles/app_colors.dart';
+import '../styles/styles.dart';
 
 class EmptyChat extends StatelessWidget {
   const EmptyChat({
@@ -29,11 +30,10 @@ class EmptyChat extends StatelessWidget {
           Center(
             child: Text(
               text,
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: 2,
+              style: Styles.boldStyle(
+                fontSize: 20,
+                color: AppColor.white,
+                family: FontFamily.kanit,
               ),
             ),
           ),

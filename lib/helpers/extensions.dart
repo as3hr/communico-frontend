@@ -1,14 +1,11 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 extension Responsive on BuildContext {
   double get screenWidth => MediaQuery.of(this).size.width;
   double get screenHeight => MediaQuery.of(this).size.height;
   bool get keyBoardVisible => MediaQuery.of(this).viewInsets.bottom >= 0;
-  bool get isDark => AdaptiveTheme.of(this).mode.isDark;
-  bool get isLight => AdaptiveTheme.of(this).mode.isLight;
-  bool get isWeb => screenWidth > 1024;
-  bool get isTablet => screenWidth > 600 && screenWidth <= 1024;
+  bool get isWeb => screenWidth > 1400;
+  bool get isTablet => screenWidth > 600 && screenWidth <= 1400;
   bool get isMobile => screenWidth <= 600;
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
 }

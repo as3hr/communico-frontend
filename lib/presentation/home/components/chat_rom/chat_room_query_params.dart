@@ -9,6 +9,7 @@ class ChatRoomQueryParams {
   final void Function() scrollAndCall;
   final TextEditingController textController;
   final ScrollController scrollController;
+  final bool isGroup;
   const ChatRoomQueryParams({
     required this.messages,
     required this.onSendMessage,
@@ -16,5 +17,6 @@ class ChatRoomQueryParams {
     required this.textController,
     required this.scrollAndCall,
     required this.scrollController,
+    this.isGroup = false,
   });
 }

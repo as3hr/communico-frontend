@@ -77,7 +77,7 @@ class ChatTabView extends StatelessWidget {
                           )),
                     ],
                     if (context.isMobile || context.isTablet)
-                      const Expanded(flex: 2, child: ChatsList()),
+                      const Expanded(child: ChatsList()),
                   ],
                 );
         });

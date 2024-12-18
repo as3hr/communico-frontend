@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-enum FontFamily { patrickHand, bangers }
+enum FontFamily { montserrat, kanit }
 
 class Styles {
   static InputDecoration inputFieldDecoration(
@@ -16,7 +16,7 @@ class Styles {
       fillColor: AppColor.lightGrey,
       errorStyle: boldStyle(
         fontSize: 12, color: AppColor.red,
-        family: FontFamily.bangers,
+        family: FontFamily.kanit,
         // family: FontFamily.varela
       ),
       errorBorder: InputBorder.none,
@@ -24,7 +24,7 @@ class Styles {
       contentPadding: const EdgeInsets.all(8),
       focusedErrorBorder: InputBorder.none,
       hintStyle: mediumStyle(
-          fontSize: 15, color: AppColor.grey, family: FontFamily.patrickHand),
+          fontSize: 15, color: AppColor.grey, family: FontFamily.montserrat),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
           color: AppColor.darkBackground,
@@ -49,7 +49,7 @@ class Styles {
       fontWeight: FontWeight.w900,
       fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
+      fontFamily: family == FontFamily.kanit ? "Kanit" : "Montserrat",
     );
   }
 
@@ -59,10 +59,10 @@ class Styles {
     required FontFamily family,
   }) {
     return TextStyle(
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w800,
       fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
+      fontFamily: family == FontFamily.kanit ? "Kanit" : "Montserrat",
     );
   }
 
@@ -72,10 +72,10 @@ class Styles {
     required FontFamily family,
   }) {
     return TextStyle(
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w300,
       fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
+      fontFamily: family == FontFamily.kanit ? "Kanit" : "Montserrat",
     );
   }
 
@@ -88,7 +88,7 @@ class Styles {
       fontWeight: FontWeight.w500,
       fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
+      fontFamily: family == FontFamily.kanit ? "Kanit" : "Montserrat",
     );
   }
 
@@ -101,7 +101,7 @@ class Styles {
       fontWeight: FontWeight.w300,
       fontSize: fontSize,
       color: color,
-      fontFamily: family == FontFamily.bangers ? "Bangers" : "PatrickHand",
+      fontFamily: family == FontFamily.kanit ? "Kanit" : "Montserrat",
     );
   }
 

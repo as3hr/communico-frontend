@@ -77,6 +77,11 @@ class _InputFormFieldState extends State<InputFormField> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 8),
         hintText: widget.hintText,
+        hintStyle: Styles.lightStyle(
+          fontSize: 15,
+          color: AppColor.white,
+          family: FontFamily.montserrat,
+        ),
         suffixIcon: widget.suffixIcon,
         border: !widget.showBorder ? InputBorder.none : null,
         fillColor: context.colorScheme.primary,
@@ -89,7 +94,7 @@ class _InputFormFieldState extends State<InputFormField> {
         errorStyle: Styles.boldStyle(
           fontSize: 12,
           color: AppColor.red,
-          family: FontFamily.bangers,
+          family: FontFamily.kanit,
         ),
       ),
       onTapOutside: (event) {

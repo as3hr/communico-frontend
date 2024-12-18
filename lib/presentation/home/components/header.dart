@@ -48,31 +48,30 @@ class _HeaderState extends State<Header> {
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: context.colorScheme.primary,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: context.isWeb
-                ? HeaderContent(
-                    currentQuote: currentQuote,
-                    logOut: widget.logOut,
-                    userName: widget.userName,
-                  )
-                : SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: HeaderContent(
-                        currentQuote: currentQuote,
-                        logOut: widget.logOut,
-                        userName: widget.userName)),
-          ),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: context.colorScheme.primary,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: context.isMobile || context.isTablet
+                  ? SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: HeaderContent(
+                          currentQuote: currentQuote,
+                          logOut: widget.logOut,
+                          userName: widget.userName))
+                  : HeaderContent(
+                      currentQuote: currentQuote,
+                      logOut: widget.logOut,
+                      userName: widget.userName,
+                    )),
         ),
       ],
     );
@@ -96,11 +95,13 @@ class HeaderContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Text(
-          "Welcome $userName!",
-          style: Styles.boldStyle(
-            fontSize: 15,
-            color: context.colorScheme.onPrimary,
-            family: FontFamily.patrickHand,
+          "welcome $userName!",
+          style: const TextStyle(
+            fontSize: 20,
+            color: AppColor.white,
+            fontFamily: "Kanit",
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         TabBar(
@@ -109,14 +110,14 @@ class HeaderContent extends StatelessWidget {
           padding: const EdgeInsets.all(0),
           indicatorColor: Colors.transparent,
           labelStyle: Styles.semiBoldStyle(
-            fontSize: 12,
+            fontSize: 15,
             color: context.colorScheme.onPrimary,
-            family: FontFamily.patrickHand,
+            family: FontFamily.montserrat,
           ),
           unselectedLabelStyle: Styles.mediumStyle(
-            fontSize: 12,
+            fontSize: 15,
             color: context.colorScheme.onPrimary.withOpacity(0.6),
-            family: FontFamily.patrickHand,
+            family: FontFamily.montserrat,
           ),
           tabs: [
             const Text("Direct Messages"),
@@ -140,10 +141,10 @@ class HeaderContent extends StatelessWidget {
         const AppVerticalDivider(),
         Text(
           "Quote: $currentQuote",
-          style: Styles.lightStyle(
-            fontSize: 12,
+          style: Styles.mediumStyle(
+            fontSize: 15,
             color: context.colorScheme.onPrimary,
-            family: FontFamily.patrickHand,
+            family: FontFamily.montserrat,
           ),
         ),
         const AppVerticalDivider(),
@@ -151,10 +152,10 @@ class HeaderContent extends StatelessWidget {
           children: [
             Text(
               "Local Time: ",
-              style: Styles.lightStyle(
-                fontSize: 12,
+              style: Styles.mediumStyle(
+                fontSize: 15,
                 color: context.colorScheme.onPrimary.withOpacity(0.8),
-                family: FontFamily.patrickHand,
+                family: FontFamily.montserrat,
               ),
             ),
             DigitalClock(
@@ -167,11 +168,25 @@ class HeaderContent extends StatelessWidget {
           ],
         ),
         const AppVerticalDivider(),
-        const Row(
+        Row(
           children: [
-            Text("Light"),
-            ThemeSwitch(),
-            Text("Dark"),
+            Text(
+              "Light",
+              style: Styles.mediumStyle(
+                fontSize: 15,
+                color: context.colorScheme.onPrimary,
+                family: FontFamily.montserrat,
+              ),
+            ),
+            const ThemeSwitch(),
+            Text(
+              "Dark",
+              style: Styles.mediumStyle(
+                fontSize: 15,
+                color: context.colorScheme.onPrimary,
+                family: FontFamily.montserrat,
+              ),
+            ),
           ],
         ),
         const AppVerticalDivider(),
@@ -182,7 +197,7 @@ class HeaderContent extends StatelessWidget {
               style: Styles.mediumStyle(
                 fontSize: 15,
                 color: context.colorScheme.onPrimary,
-                family: FontFamily.patrickHand,
+                family: FontFamily.montserrat,
               ),
             ),
             const RadioPlayer(videoId: "jfKfPfyJRdk"),
