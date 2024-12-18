@@ -15,6 +15,7 @@ class EmptyAi extends StatelessWidget {
         Center(
           child: Text(
             "Welcome to Your AI Buddy!",
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: AppColor.white,
                   fontWeight: FontWeight.bold,
@@ -24,6 +25,7 @@ class EmptyAi extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           "Note:",
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppColor.white,
                 fontWeight: FontWeight.bold,
@@ -32,6 +34,7 @@ class EmptyAi extends StatelessWidget {
         const SizedBox(height: 5),
         Text(
           "This conversation is temporary and will not be saved. All messages will be cleared upon closing the site.",
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColor.white,
               ),
@@ -39,6 +42,7 @@ class EmptyAi extends StatelessWidget {
         const SizedBox(height: 20),
         Text(
           "Tip: Feel free to ask anything or explore ideas!",
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColor.white,
                 fontStyle: FontStyle.italic,

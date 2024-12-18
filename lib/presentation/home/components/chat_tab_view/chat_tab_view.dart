@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
+import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation.dart';
@@ -53,23 +55,29 @@ class ChatTabView extends StatelessWidget {
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Expanded(flex: 2, child: ChatsList()),
-                    5.horizontalSpace,
-                    Expanded(
-                        flex: 5,
-                        child: ChatRoom(
-                          onSendMessage: () {
-                            cubit.sendMessage();
-                          },
-                          scrollController: state
-                              .currentChat.messagePagination.scrollController,
-                          scrollAndCall: () {
-                            cubit.scrollAndCallMessages(state.currentChat);
-                          },
-                          textController: state.messageController,
-                          roomTitle: chatUser?.username ?? "",
-                          messages: currentChat.messagePagination.data,
-                        )),
+                    if (context.isWeb) ...[
+                      const Expanded(flex: 2, child: ChatsList()),
+                      5.horizontalSpace,
+                      Expanded(
+                          flex: 5,
+                          child: ChatRoom(
+                            params: ChatRoomQueryParams(
+                              onSendMessage: () {
+                                cubit.sendMessage();
+                              },
+                              scrollController: state.currentChat
+                                  .messagePagination.scrollController,
+                              scrollAndCall: () {
+                                cubit.scrollAndCallMessages(state.currentChat);
+                              },
+                              textController: state.messageController,
+                              roomTitle: chatUser?.username ?? "",
+                              messages: currentChat.messagePagination.data,
+                            ),
+                          )),
+                    ],
+                    if (context.isMobile || context.isTablet)
+                      const Expanded(flex: 2, child: ChatsList()),
                   ],
                 );
         });

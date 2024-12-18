@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
+import 'package:communico_frontend/presentation/home/home_navigator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../di/service_locator.dart';
@@ -18,8 +20,9 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatRepository chatRepository;
   final MessageRepository messageRepository;
   final Debouncer _debouncer;
+  final HomeNavigator navigator;
 
-  ChatCubit(this.chatRepository, this.messageRepository)
+  ChatCubit(this.chatRepository, this.messageRepository, this.navigator)
       : _debouncer = Debouncer(delay: const Duration(milliseconds: 800)),
         super(ChatState.empty());
 
@@ -40,6 +43,29 @@ class ChatCubit extends Cubit<ChatState> {
             ),
           );
     }
+  }
+
+  openChatRoom(ChatEntity chat) {
+    final chatUser = chat.participants.isNotEmpty
+        ? chat.participants
+            .firstWhere((participant) => participant.userId != user!.id)
+            .user
+        : null;
+
+    final params = ChatRoomQueryParams(
+      onSendMessage: () {
+        sendMessage();
+      },
+      scrollController: chat.messagePagination.scrollController,
+      scrollAndCall: () {
+        scrollAndCallMessages(chat);
+      },
+      textController: state.messageController,
+      roomTitle: chatUser?.username ?? "",
+      messages: chat.messagePagination.data,
+    );
+
+    navigator.goToChatRoom(params);
   }
 
   empty() => emit(ChatState.empty());

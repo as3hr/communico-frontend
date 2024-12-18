@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../di/service_locator.dart';
 import '../../../../helpers/widgets/animated_banner.dart';
 import '../chat_rom/chat_room.dart';
+import '../chat_rom/chat_room_query_params.dart';
 import 'group_cubit.dart';
 
 class GroupTabView extends StatelessWidget {
@@ -51,17 +52,19 @@ class GroupTabView extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ChatRoom(
-                          onSendMessage: () {
-                            cubit.sendMessage();
-                          },
-                          scrollController: state
-                              .currentGroup.messagePagination.scrollController,
-                          scrollAndCall: () {
-                            cubit.scrollAndCallMessages(state.currentGroup);
-                          },
-                          textController: state.groupMessageController,
-                          roomTitle: currentGroup.name,
-                          messages: currentGroup.messagePagination.data,
+                          params: ChatRoomQueryParams(
+                            onSendMessage: () {
+                              cubit.sendMessage();
+                            },
+                            scrollController: state.currentGroup
+                                .messagePagination.scrollController,
+                            scrollAndCall: () {
+                              cubit.scrollAndCallMessages(state.currentGroup);
+                            },
+                            textController: state.groupMessageController,
+                            roomTitle: currentGroup.name,
+                            messages: currentGroup.messagePagination.data,
+                          ),
                         )),
                     5.horizontalSpace,
                     const Expanded(flex: 2, child: GroupRoomDetail()),

@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:communico_frontend/presentation/auth/auth_page.dart';
+import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room.dart';
 import 'package:flutter/material.dart';
 import 'package:communico_frontend/navigation/route_name.dart';
 
@@ -21,6 +22,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case RouteName.getIn:
       return getRoute(const AuthPage(), TransitionType.fade);
+
+    case RouteName.chatRoom:
+      return getRoute(
+          ChatRoom(
+            params: args["params"],
+          ),
+          TransitionType.slide);
 
     default:
       return MaterialPageRoute(

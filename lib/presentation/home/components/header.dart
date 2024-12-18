@@ -60,117 +60,145 @@ class _HeaderState extends State<Header> {
                 ),
               ],
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: context.isWeb
+                ? HeaderContent(
+                    currentQuote: currentQuote,
+                    logOut: widget.logOut,
+                    userName: widget.userName,
+                  )
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: HeaderContent(
+                        currentQuote: currentQuote,
+                        logOut: widget.logOut,
+                        userName: widget.userName)),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HeaderContent extends StatelessWidget {
+  const HeaderContent({
+    super.key,
+    required this.currentQuote,
+    required this.logOut,
+    required this.userName,
+  });
+  final String userName;
+  final void Function() logOut;
+  final String currentQuote;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          "Welcome $userName!",
+          style: Styles.boldStyle(
+            fontSize: 15,
+            color: context.colorScheme.onPrimary,
+            family: FontFamily.patrickHand,
+          ),
+        ),
+        TabBar(
+          isScrollable: true,
+          dividerColor: Colors.transparent,
+          padding: const EdgeInsets.all(0),
+          indicatorColor: Colors.transparent,
+          labelStyle: Styles.semiBoldStyle(
+            fontSize: 12,
+            color: context.colorScheme.onPrimary,
+            family: FontFamily.patrickHand,
+          ),
+          unselectedLabelStyle: Styles.mediumStyle(
+            fontSize: 12,
+            color: context.colorScheme.onPrimary.withOpacity(0.6),
+            family: FontFamily.patrickHand,
+          ),
+          tabs: [
+            const Text("Direct Messages"),
+            const Text("Group Messages"),
+            Row(
               children: [
-                Text(
-                  "Welcome ${widget.userName}!",
-                  style: Styles.boldStyle(
-                    fontSize: 15,
-                    color: context.colorScheme.onPrimary,
-                    family: FontFamily.patrickHand,
+                ClipOval(
+                  child: Image.asset(
+                    AppImages.aiGif,
+                    height: 20,
+                    width: 20,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                TabBar(
-                  isScrollable: true,
-                  dividerColor: Colors.transparent,
-                  padding: const EdgeInsets.all(0),
-                  indicatorColor: Colors.transparent,
-                  labelStyle: Styles.semiBoldStyle(
-                    fontSize: 12,
-                    color: context.colorScheme.onPrimary,
-                    family: FontFamily.patrickHand,
-                  ),
-                  unselectedLabelStyle: Styles.mediumStyle(
-                    fontSize: 12,
-                    color: context.colorScheme.onPrimary.withOpacity(0.6),
-                    family: FontFamily.patrickHand,
-                  ),
-                  tabs: [
-                    const Text("Direct Messages"),
-                    const Text("Group Messages"),
-                    Row(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            AppImages.aiGif,
-                            height: 20,
-                            width: 20,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        const Text("Ask AI"),
-                      ],
-                    ),
-                  ],
-                ),
-                const AppVerticalDivider(),
-                Text(
-                  "Quote: $currentQuote",
-                  style: Styles.lightStyle(
-                    fontSize: 12,
-                    color: context.colorScheme.onPrimary,
-                    family: FontFamily.patrickHand,
-                  ),
-                ),
-                const AppVerticalDivider(),
-                Row(
-                  children: [
-                    Text(
-                      "Local Time: ",
-                      style: Styles.lightStyle(
-                        fontSize: 12,
-                        color: context.colorScheme.onPrimary.withOpacity(0.8),
-                        family: FontFamily.patrickHand,
-                      ),
-                    ),
-                    DigitalClock(
-                      showSeconds: false,
-                      isLive: true,
-                      textScaleFactor: 0.75,
-                      digitalClockTextColor: context.colorScheme.onPrimary,
-                      datetime: DateTime.now(),
-                    ),
-                  ],
-                ),
-                const AppVerticalDivider(),
-                const Row(
-                  children: [
-                    Text("Light"),
-                    ThemeSwitch(),
-                    Text("Dark"),
-                  ],
-                ),
-                const AppVerticalDivider(),
-                Row(
-                  children: [
-                    Text(
-                      "Radio: ",
-                      style: Styles.mediumStyle(
-                        fontSize: 15,
-                        color: context.colorScheme.onPrimary,
-                        family: FontFamily.patrickHand,
-                      ),
-                    ),
-                    const RadioPlayer(videoId: "jfKfPfyJRdk"),
-                  ],
-                ),
-                const AppVerticalDivider(),
-                IconButton(
-                  onPressed: () {
-                    widget.logOut.call();
-                  },
-                  icon: const Icon(
-                    Icons.power_settings_new_outlined,
-                    color: AppColor.red,
-                    size: 24,
-                  ),
-                  tooltip: 'Logout',
-                ),
+                const SizedBox(width: 5),
+                const Text("Ask AI"),
               ],
             ),
+          ],
+        ),
+        const AppVerticalDivider(),
+        Text(
+          "Quote: $currentQuote",
+          style: Styles.lightStyle(
+            fontSize: 12,
+            color: context.colorScheme.onPrimary,
+            family: FontFamily.patrickHand,
           ),
+        ),
+        const AppVerticalDivider(),
+        Row(
+          children: [
+            Text(
+              "Local Time: ",
+              style: Styles.lightStyle(
+                fontSize: 12,
+                color: context.colorScheme.onPrimary.withOpacity(0.8),
+                family: FontFamily.patrickHand,
+              ),
+            ),
+            DigitalClock(
+              showSeconds: false,
+              isLive: true,
+              textScaleFactor: 0.75,
+              digitalClockTextColor: context.colorScheme.onPrimary,
+              datetime: DateTime.now(),
+            ),
+          ],
+        ),
+        const AppVerticalDivider(),
+        const Row(
+          children: [
+            Text("Light"),
+            ThemeSwitch(),
+            Text("Dark"),
+          ],
+        ),
+        const AppVerticalDivider(),
+        Row(
+          children: [
+            Text(
+              "Radio: ",
+              style: Styles.mediumStyle(
+                fontSize: 15,
+                color: context.colorScheme.onPrimary,
+                family: FontFamily.patrickHand,
+              ),
+            ),
+            const RadioPlayer(videoId: "jfKfPfyJRdk"),
+          ],
+        ),
+        const AppVerticalDivider(),
+        IconButton(
+          onPressed: () {
+            logOut.call();
+          },
+          icon: const Icon(
+            Icons.power_settings_new_outlined,
+            color: AppColor.red,
+            size: 24,
+          ),
+          tooltip: 'Logout',
         ),
       ],
     );

@@ -47,6 +47,7 @@ class _ChatsListState extends State<ChatsList> {
         final chats = state.isSearching
             ? state.chatSearchList
             : state.chatPagination.data;
+
         return Scaffold(
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 30),
@@ -115,14 +116,22 @@ class _ChatsListState extends State<ChatsList> {
                         ? const Center(
                             child: Text("NO CHATS FOUND!"),
                           )
-                        : ListView.builder(
+                        : ListView.separated(
                             controller: state.chatPagination.scrollController,
                             itemCount: chats.length,
+                            separatorBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Divider(
+                                  thickness: 0.3,
+                                  color: context.colorScheme.secondary,
+                                ),
+                              );
+                            },
                             itemBuilder: (context, index) {
                               final chat = chats[index];
                               final message = chat.messages.last;
-                              final isSelected =
-                                  chat.id == state.currentChat.id;
                               final participant = chat.participants.firstWhere(
                                   (participant) =>
                                       participant.userId != cubit.user!.id);
@@ -130,15 +139,16 @@ class _ChatsListState extends State<ChatsList> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: InkWell(
                                   onTap: () {
-                                    cubit.updateCurrentChat(chat);
+                                    cubit.updateCurrentChat(chat).then((_) {
+                                      if (context.mounted) {
+                                        if (context.isMobile ||
+                                            context.isTablet) {
+                                          cubit.openChatRoom(chat);
+                                        }
+                                      }
+                                    });
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? context.colorScheme.secondary
-                                          : context.colorScheme.primary,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     padding: const EdgeInsets.all(12),
                                     child: Column(
                                       crossAxisAlignment:

@@ -3,19 +3,25 @@ import 'package:communico_frontend/presentation/home/components/chat_tab_view/ch
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_cubit.dart';
 import 'package:communico_frontend/presentation/home/home_cubit.dart';
+import 'package:communico_frontend/presentation/home/home_navigator.dart';
 
 import '../../../di/service_locator.dart';
 import '../../home/components/group_tab_view/components/group_creation.dart/group_creation_cubit.dart';
 
 class HomeModule {
   static Future<void> configureHomeModuleInjection() async {
+    getIt.registerLazySingleton<HomeNavigator>(
+      () => HomeNavigator(
+        getIt(),
+      ),
+    );
     getIt.registerLazySingleton<AiCubit>(
       () => AiCubit(
         getIt(),
       ),
     );
     getIt.registerLazySingleton<ChatCubit>(
-      () => ChatCubit(getIt(), getIt()),
+      () => ChatCubit(getIt(), getIt(), getIt()),
     );
     getIt.registerLazySingleton<ChatCreationCubit>(
       () => ChatCreationCubit(
@@ -27,7 +33,11 @@ class HomeModule {
       () => GroupCreationCubit(getIt()),
     );
     getIt.registerLazySingleton<GroupCubit>(
-      () => GroupCubit(getIt(), getIt()),
+      () => GroupCubit(
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
     );
     getIt.registerLazySingleton<HomeCubit>(
       () => HomeCubit(),

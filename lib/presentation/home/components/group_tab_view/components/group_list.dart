@@ -115,29 +115,38 @@ class _GroupListState extends State<GroupList> {
                         ? const Center(
                             child: Text("NO GROUPS FOUND!"),
                           )
-                        : ListView.builder(
+                        : ListView.separated(
                             controller: state.groupPagination.scrollController,
                             itemCount: groups.length,
+                            separatorBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Divider(
+                                  thickness: 0.3,
+                                  color: context.colorScheme.secondary,
+                                ),
+                              );
+                            },
                             itemBuilder: (context, index) {
                               final group = groups[index];
                               final message = group.messages.isNotEmpty
                                   ? group.messages.last
                                   : null;
-                              final isSelected =
-                                  group.id == state.currentGroup.id;
                               return Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: InkWell(
                                   onTap: () {
-                                    cubit.updateCurrentGroup(group);
+                                    cubit.updateCurrentGroup(group).then((_) {
+                                      if (context.mounted) {
+                                        if (context.isMobile ||
+                                            context.isTablet) {
+                                          cubit.openChatRoom(group);
+                                        }
+                                      }
+                                    });
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? context.colorScheme.secondary
-                                          : context.colorScheme.primary,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     padding: const EdgeInsets.all(4),
                                     child: ListTile(
                                       title: Text(group.name),

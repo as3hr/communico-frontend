@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
+import 'package:communico_frontend/presentation/home/home_navigator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../di/service_locator.dart';
@@ -13,13 +14,15 @@ import '../../../../domain/repositories/message_repository.dart';
 import '../../../../domain/stores/user_store.dart';
 import '../../../../helpers/constants.dart';
 import '../../../../helpers/deboouncer.dart';
+import '../chat_rom/chat_room_query_params.dart';
 
 class GroupCubit extends Cubit<GroupState> {
   final MessageRepository messageRepository;
   final GroupRepository groupRepository;
   final Debouncer _debouncer;
+  final HomeNavigator navigator;
 
-  GroupCubit(this.messageRepository, this.groupRepository)
+  GroupCubit(this.messageRepository, this.groupRepository, this.navigator)
       : _debouncer = Debouncer(delay: const Duration(milliseconds: 800)),
         super(GroupState.empty());
 
@@ -43,6 +46,22 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
   empty() => emit(GroupState.empty());
+
+  openChatRoom(GroupEntity group) {
+    final params = ChatRoomQueryParams(
+      onSendMessage: () {
+        sendMessage();
+      },
+      scrollController: group.messagePagination.scrollController,
+      scrollAndCall: () {
+        scrollAndCallMessages(group);
+      },
+      textController: state.groupMessageController,
+      roomTitle: group.name,
+      messages: group.messagePagination.data,
+    );
+    navigator.goToChatRoom(params);
+  }
 
   appendMessageToGroup(MessageEntity message) {
     state.currentGroup.messagePagination.data.insert(0, message);

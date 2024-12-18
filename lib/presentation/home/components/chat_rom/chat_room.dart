@@ -1,6 +1,6 @@
-import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_footer.dart';
+import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:communico_frontend/presentation/home/components/message/my_message.dart';
 import 'package:communico_frontend/presentation/home/components/message/other_message.dart';
 import 'package:flutter/material.dart';
@@ -12,36 +12,25 @@ import '../../home_cubit.dart';
 class ChatRoom extends StatefulWidget {
   const ChatRoom({
     super.key,
-    required this.messages,
-    required this.onSendMessage,
-    required this.roomTitle,
-    required this.textController,
-    required this.scrollAndCall,
-    required this.scrollController,
+    required this.params,
   });
-  final String roomTitle;
-  final List<MessageEntity> messages;
-  final void Function() onSendMessage;
-  final void Function() scrollAndCall;
-  final TextEditingController textController;
-  final ScrollController scrollController;
-
-  static final cubit = getIt<HomeCubit>();
+  final ChatRoomQueryParams params;
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  final cubit = getIt<HomeCubit>();
   @override
   void initState() {
     super.initState();
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.hasClients) {
+    widget.params.scrollController.addListener(() {
+      if (widget.params.scrollController.hasClients) {
         final threshold =
-            widget.scrollController.position.maxScrollExtent * 0.2;
-        if (widget.scrollController.position.pixels >= threshold) {
-          widget.scrollAndCall();
+            widget.params.scrollController.position.maxScrollExtent * 0.2;
+        if (widget.params.scrollController.position.pixels >= threshold) {
+          widget.params.scrollAndCall();
         }
       }
     });
@@ -49,68 +38,81 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 0.9.sh,
-      child: Column(
-        children: [
-          Expanded(
-            flex: 7,
-            child: Container(
-              decoration: BoxDecoration(
-                color: context.colorScheme.primary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(16),
-              ),
-              constraints: BoxConstraints(
-                maxHeight: 0.6.sh,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 0.05.sh,
-                    color: context.colorScheme.secondary,
-                    child: Row(
-                      children: [
-                        10.horizontalSpace,
-                        Text(widget.roomTitle),
-                      ],
+    return Material(
+      child: SizedBox(
+        height: 0.9.sh,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 7,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: context.colorScheme.primary,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: const Offset(0, 4),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      reverse: true,
-                      controller: widget.scrollController,
-                      itemCount: widget.messages.length,
-                      itemBuilder: (context, index) {
-                        final message = widget.messages[index];
-                        final isMyMessage = ChatRoom.cubit.isMyMessage(message);
-                        return isMyMessage
-                            ? MyMessage(
-                                message: message,
-                                key: ValueKey(index.toString()))
-                            : OtherMessage(
-                                message: message,
-                                key: ValueKey(index.toString()));
-                      },
+                  ],
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                constraints: BoxConstraints(
+                  maxHeight: 0.6.sh,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 0.05.sh,
+                      color: context.colorScheme.secondary,
+                      child: Row(
+                        children: [
+                          if (context.isMobile || context.isTablet) ...[
+                            10.horizontalSpace,
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back_ios_new,
+                              ),
+                            ),
+                          ],
+                          10.horizontalSpace,
+                          Text(widget.params.roomTitle),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: ListView.builder(
+                        reverse: true,
+                        controller: widget.params.scrollController,
+                        itemCount: widget.params.messages.length,
+                        itemBuilder: (context, index) {
+                          final message = widget.params.messages[index];
+                          final isMyMessage = cubit.isMyMessage(message);
+                          return isMyMessage
+                              ? MyMessage(
+                                  message: message,
+                                  key: ValueKey(index.toString()))
+                              : OtherMessage(
+                                  message: message,
+                                  key: ValueKey(index.toString()));
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          2.verticalSpace,
-          ChatRoomFooter(
-            textController: widget.textController,
-            onSendMessage: widget.onSendMessage,
-          ),
-        ],
+            2.verticalSpace,
+            ChatRoomFooter(
+              textController: widget.params.textController,
+              onSendMessage: widget.params.onSendMessage,
+            ),
+          ],
+        ),
       ),
     );
   }
