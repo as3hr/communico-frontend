@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../di/service_locator.dart';
+import '../../../../../../helpers/styles/styles.dart';
 import '../../../../../../helpers/widgets/app_button.dart';
 import '../../../../../../helpers/widgets/input_field.dart';
 import 'group_creation_cubit.dart';
@@ -29,6 +30,7 @@ class GroupCreationForm extends StatelessWidget {
               cubit.closeDialog();
             },
             child: PageView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               controller: state.pageController,
               itemCount: state.formPages.length,
               itemBuilder: (context, index) {
@@ -63,15 +65,6 @@ class GroupCreationMemberSelection extends StatelessWidget {
                 onSubmitted: (val) {},
                 prefixIcon: Icons.public,
               ),
-              if (state.selectedUsers.isNotEmpty)
-                Container(
-                  color: AppColor.violet,
-                  child: Row(
-                    children: state.selectedUsers.map((user) {
-                      return Text(user.username);
-                    }).toList(),
-                  ),
-                ),
               if (state.filteredUsers.isNotEmpty)
                 Container(
                   constraints: BoxConstraints(maxHeight: 0.2.sh),
@@ -97,6 +90,37 @@ class GroupCreationMemberSelection extends StatelessWidget {
                   ),
                 ),
               const Spacer(),
+              if (state.selectedUsers.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: state.selectedUsers.map((user) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: GestureDetector(
+                            onTap: () {
+                              cubit.selectGroupUser(user);
+                            },
+                            child: Chip(
+                              backgroundColor: context.colorScheme.primary,
+                              label: Text(
+                                user.username,
+                                style: Styles.boldStyle(
+                                  fontSize: 12,
+                                  color: context.colorScheme.onPrimary,
+                                  family: FontFamily.montserrat,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              2.verticalSpace,
               AppButton(
                 title: "Next",
                 backgroundColor: state.selectedUsers.isNotEmpty
@@ -130,57 +154,95 @@ class GroupCreationNaming extends StatelessWidget {
       bloc: cubit,
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  1.horizontalSpace,
-                  InkWell(
-                    onTap: () {
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                    onPressed: () {
                       state.pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
                       );
                     },
-                    child: const Icon(Icons.arrow_back_ios),
                   ),
                   Expanded(
                     child: InputField(
-                      hintText: "enter group name",
+                      hintText: "Enter group name",
                       onChanged: (val) {
                         cubit.onGroupNameChanged(val);
                       },
-                      onSubmitted: (val) {},
+                      onSubmitted: (_) {
+                        if (state.name.isNotEmpty) {
+                          cubit.createGroup();
+                          Navigator.pop(context);
+                        }
+                      },
                     ),
                   ),
                 ],
               ),
-              if (state.selectedUsers.isNotEmpty)
-                Column(
-                  children: [
-                    const Text("Members"),
-                    1.verticalSpace,
-                    const Divider(
-                      color: AppColor.white,
-                      thickness: 0.3,
-                    ),
-                    1.verticalSpace,
-                    Container(
-                      constraints: BoxConstraints(maxHeight: 0.2.sh),
-                      color: context.colorScheme.secondary,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: state.selectedUsers.map((user) {
-                            return Text(user.username);
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 20),
+              if (state.selectedUsers.isNotEmpty) ...[
+                const Text(
+                  "Members",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 10),
+                const Divider(color: Colors.white54, thickness: 0.5),
+                const SizedBox(height: 10),
+                Container(
+                  constraints: BoxConstraints(maxHeight: 0.1.sh),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: state.selectedUsers.map((user) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 10),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 15,
+                                child: Text(
+                                  user.username[0].toUpperCase(),
+                                  style: Styles.lightStyle(
+                                    fontSize: 12,
+                                    color: AppColor.white,
+                                    family: FontFamily.montserrat,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                user.username,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    color: AppColor.white,
+                                    fontFamily: "Montserrat",
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: () {
+                                  cubit.selectGroupUser(user);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
               const Spacer(),
               AppButton(
                 title: "Create Group",
@@ -193,7 +255,7 @@ class GroupCreationNaming extends StatelessWidget {
                       }
                     : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
             ],
           ),
         );

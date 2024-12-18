@@ -152,6 +152,8 @@ class _GroupListState extends State<GroupList> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
@@ -180,17 +182,20 @@ class _GroupListState extends State<GroupList> {
                                             ),
                                           ],
                                         ),
-                                        1.verticalSpace,
-                                        Text(
-                                          message?.text ?? "",
-                                          style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 15,
-                                            color:
-                                                context.colorScheme.onPrimary,
-                                            fontFamily: "Montserrat",
+                                        if (message?.text.isNotEmpty ??
+                                            false) ...[
+                                          1.verticalSpace,
+                                          Text(
+                                            message?.text ?? "",
+                                            style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 15,
+                                              color:
+                                                  context.colorScheme.onPrimary,
+                                              fontFamily: "Montserrat",
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ],
                                     ),
                                   ),
