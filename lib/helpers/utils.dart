@@ -102,3 +102,16 @@ FocusNode getFieldFocusNode(void Function() callBack) {
     },
   );
 }
+
+List<String> quotes = [
+  "Live with purpose.",
+  "Dream big daily.",
+  "Joy is a choice.",
+  "Simplify your life.",
+  "Hustle and grow.",
+  "Cherish small moments.",
+  "Stay curious always.",
+  "Learn, adapt, thrive.",
+  "Kindness is power.",
+  "Create your legacy.",
+];

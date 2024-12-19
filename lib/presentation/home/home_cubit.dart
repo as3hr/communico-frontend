@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:communico_frontend/helpers/constants.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/radio/station.dart';
 import 'package:communico_frontend/presentation/home/home_state.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -38,6 +39,10 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
+  void updateStation(Station station) {
+    emit(state.copyWith(currentStation: station.copyWith(isPlaying: true)));
+  }
+
   bool isMyMessage(MessageEntity message) {
     return user != null && (user!.id == message.userId) ? true : false;
   }
@@ -49,4 +54,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   UserEntity? get user => getIt<UserStore>().getUser();
+
+  void toggleStationMute() {
+    emit(state.copyWith(
+        currentStation: state.currentStation
+            .copyWith(isMuted: !state.currentStation.isMuted)));
+  }
 }

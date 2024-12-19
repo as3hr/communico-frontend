@@ -23,7 +23,7 @@ class GroupCreationForm extends StatelessWidget {
       bloc: cubit,
       builder: (context, state) {
         return SizedBox(
-          width: 0.3.sw,
+          width: 0.5.sw,
           height: 0.4.sh,
           child: PopScope(
             onPopInvokedWithResult: (_, __) {
@@ -99,7 +99,7 @@ class GroupCreationMemberSelection extends StatelessWidget {
                       children: state.selectedUsers.map((user) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: GestureDetector(
+                          child: InkWell(
                             onTap: () {
                               cubit.selectGroupUser(user);
                             },

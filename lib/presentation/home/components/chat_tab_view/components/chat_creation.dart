@@ -23,7 +23,7 @@ class ChatCreationForm extends StatelessWidget {
       bloc: cubit,
       builder: (context, state) {
         return SizedBox(
-          width: 0.3.sw,
+          width: 0.5.sw,
           height: 0.4.sh,
           child: PopScope(
             onPopInvokedWithResult: (_, __) {
