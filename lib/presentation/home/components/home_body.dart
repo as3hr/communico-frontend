@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:universal_html/html.dart';
 
 import '../../../di/service_locator.dart';
+import '../../../helpers/styles/app_colors.dart';
 import '../home_cubit.dart';
 import '../home_state.dart';
 
@@ -31,6 +32,28 @@ class HomeBody extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
+                    if (state.currentStation != null) ...[
+                      2.verticalSpace,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.music_note_sharp,
+                            color: AppColor.white,
+                          ),
+                          Text(
+                            "playing ${state.currentStation!.title}",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: AppColor.white,
+                              fontFamily: "Kanit",
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     5.verticalSpace,
                     Header(
                         userName: cubit.user!.username,

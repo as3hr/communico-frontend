@@ -3,9 +3,11 @@ import 'dart:ui';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/presentation/home/components/radio/radio_banner.dart';
 import 'package:communico_frontend/presentation/home/components/radio/radio_player.dart';
+import 'package:communico_frontend/presentation/home/components/radio/station.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_clock/one_clock.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../di/service_locator.dart';
 import '../../../helpers/styles/app_colors.dart';
@@ -66,7 +68,7 @@ class Header extends StatelessWidget {
   }
 }
 
-class HeaderContent extends StatelessWidget {
+class HeaderContent extends StatefulWidget {
   const HeaderContent({
     super.key,
     required this.currentQuote,
@@ -77,7 +79,28 @@ class HeaderContent extends StatelessWidget {
   final void Function() logOut;
   final String currentQuote;
 
-  static final cubit = getIt<HomeCubit>();
+  @override
+  State<HeaderContent> createState() => _HeaderContentState();
+}
+
+class _HeaderContentState extends State<HeaderContent> {
+  final cubit = getIt<HomeCubit>();
+  late YoutubePlayerController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = YoutubePlayerController.fromVideoId(
+      videoId: Station.stations.first.id,
+      autoPlay: false,
+      params: const YoutubePlayerParams(
+        showControls: false,
+        showFullscreenButton: false,
+        mute: false,
+        loop: true,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +111,7 @@ class HeaderContent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              "welcome $userName!",
+              "welcome ${widget.userName}!",
               style: const TextStyle(
                 fontSize: 20,
                 color: AppColor.white,
@@ -133,7 +156,7 @@ class HeaderContent extends StatelessWidget {
             ),
             const AppVerticalDivider(),
             Text(
-              "Quote: $currentQuote",
+              "Quote: ${widget.currentQuote}",
               style: Styles.mediumStyle(
                 fontSize: 15,
                 color: context.colorScheme.onPrimary,
@@ -200,9 +223,11 @@ class HeaderContent extends StatelessWidget {
                       builder: (_) {
                         return BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                          child: const AnimatedBanner(
+                          child: AnimatedBanner(
                             backgroundColor: Colors.black,
-                            content: RadioBanner(),
+                            content: RadioBanner(
+                              controller: controller,
+                            ),
                           ),
                         );
                       },
@@ -212,13 +237,15 @@ class HeaderContent extends StatelessWidget {
                     Icons.radio,
                   ),
                 ),
-                const RadioPlayer(),
+                RadioPlayer(
+                  controller: controller,
+                ),
               ],
             ),
             const AppVerticalDivider(),
             IconButton(
               onPressed: () {
-                logOut.call();
+                widget.logOut.call();
               },
               icon: const Icon(
                 Icons.power_settings_new_outlined,

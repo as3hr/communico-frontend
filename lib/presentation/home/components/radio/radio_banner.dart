@@ -11,7 +11,8 @@ import '../../../../helpers/styles/styles.dart';
 import '../../home_state.dart';
 
 class RadioBanner extends StatelessWidget {
-  const RadioBanner({super.key});
+  const RadioBanner({super.key, required this.controller});
+  final YoutubePlayerController controller;
 
   static final cubit = getIt<HomeCubit>();
 
@@ -21,7 +22,7 @@ class RadioBanner extends StatelessWidget {
       bloc: cubit,
       builder: (context, state) {
         return YoutubePlayerControllerProvider(
-          controller: state.controller,
+          controller: controller,
           child: Container(
             color: Colors.transparent,
             width: 0.5.sw,
@@ -36,60 +37,50 @@ class RadioBanner extends StatelessWidget {
               },
               itemBuilder: (context, index) {
                 final station = Station.stations[index];
-                return InkWell(
-                  onTap: () {
-                    context.ytController.stopVideo();
-                    context.ytController.loadVideoById(videoId: station.id);
-                    context.ytController.playVideoAt(Station.playListIds
-                        .indexWhere((id) => id == station.id));
-                    cubit.updateStation(station);
-                    Navigator.pop(context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          2.horizontalSpace,
-                          Expanded(
-                            child: Text(
-                              station.title.toUpperCase(),
-                              style: Styles.boldStyle(
-                                fontSize: 25,
-                                color: AppColor.white,
-                                family: FontFamily.kanit,
-                              ),
+                return YoutubeValueBuilder(
+                    controller: controller,
+                    builder: (context, value) {
+                      return InkWell(
+                        onTap: () {
+                          cubit.updateStation(station, context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              children: [
+                                2.horizontalSpace,
+                                Expanded(
+                                  child: Text(
+                                    station.title.toUpperCase(),
+                                    style: Styles.boldStyle(
+                                      fontSize: 25,
+                                      color: AppColor.white,
+                                      family: FontFamily.kanit,
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                  onPressed: () {
+                                    cubit.updateStation(station, context);
+                                  },
+                                  iconSize: 20,
+                                  color: AppColor.white,
+                                  icon: Icon(
+                                    station.id == state.currentStation?.id
+                                        ? Icons.pause
+                                        : Icons.play_arrow_outlined,
+                                  ),
+                                ),
+                                2.horizontalSpace,
+                              ],
                             ),
                           ),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () {
-                              context.ytController.stopVideo();
-                              context.ytController
-                                  .loadVideoById(videoId: station.id);
-                              context.ytController.playVideoAt(Station
-                                  .playListIds
-                                  .indexWhere((id) => id == station.id));
-                              cubit.updateStation(
-                                station,
-                              );
-                              Navigator.pop(context);
-                            },
-                            iconSize: 20,
-                            color: AppColor.white,
-                            icon: Icon(
-                              station.id == state.currentStation.id
-                                  ? Icons.pause
-                                  : Icons.play_arrow_outlined,
-                            ),
-                          ),
-                          2.horizontalSpace,
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                        ),
+                      );
+                    });
               },
             ),
           ),

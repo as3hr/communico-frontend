@@ -1,82 +1,70 @@
-import 'dart:developer';
-
 import 'package:communico_frontend/presentation/home/home_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../../di/service_locator.dart';
-import '../../home_state.dart';
 
 class RadioPlayer extends StatelessWidget {
-  const RadioPlayer({super.key});
+  const RadioPlayer({super.key, required this.controller});
+  final YoutubePlayerController controller;
 
   static final cubit = getIt<HomeCubit>();
+  static final isMuted = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      bloc: cubit,
-      builder: (context, state) {
-        final controller = state.controller;
-        final station = state.currentStation;
-        final isMuted = station.isMuted;
-        log("PLAYER LOG: ${controller.value.playerState}");
-        return YoutubePlayerScaffold(
+    return YoutubePlayerScaffold(
+        controller: controller,
+        builder: (context, player) {
+          return YoutubePlayerControllerProvider(
             controller: controller,
-            builder: (context, player) {
-              return YoutubePlayerControllerProvider(
+            child: YoutubeValueBuilder(
                 controller: controller,
-                child: Row(
-                  children: [
-                    YoutubeValueBuilder(
-                      controller: controller,
-                      builder: (context, value) {
-                        return Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Positioned(
-                                left: -1000,
-                                top: -1000,
-                                child: SizedBox(
-                                    width: 000001,
-                                    height: 000001,
-                                    child: player)),
-                            IconButton(
-                              icon: Icon(
-                                value.playerState == PlayerState.playing
-                                    ? Icons.pause
-                                    : Icons.play_arrow,
-                              ),
-                              onPressed: () {
-                                value.playerState == PlayerState.playing
-                                    ? context.ytController.pauseVideo()
-                                    : context.ytController.playVideo();
-                              },
+                builder: (context, value) {
+                  final isPlaying = value.playerState == PlayerState.playing;
+
+                  return Row(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Positioned(
+                              top: -1000,
+                              left: -1000,
+                              child: SizedBox(
+                                  width: 0000001,
+                                  height: 0000001,
+                                  child: player)),
+                          IconButton(
+                            icon: Icon(
+                              isPlaying ? Icons.pause : Icons.play_arrow,
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                    YoutubeValueBuilder(
-                      builder: (context, value) {
-                        return IconButton(
-                          icon: Icon(
-                              isMuted ? Icons.volume_off : Icons.volume_up),
-                          onPressed: () {
-                            cubit.toggleStationMute();
-                            isMuted
-                                ? context.ytController.unMute()
-                                : context.ytController.mute();
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              );
-            });
-      },
-    );
+                            onPressed: () {
+                              isPlaying
+                                  ? context.ytController.pauseVideo()
+                                  : context.ytController.playVideo();
+                            },
+                          ),
+                        ],
+                      ),
+                      ValueListenableBuilder<bool>(
+                          valueListenable: isMuted,
+                          builder: (context, value, _) {
+                            return IconButton(
+                              icon: Icon(
+                                  value ? Icons.volume_off : Icons.volume_up),
+                              onPressed: () {
+                                isMuted.value = !isMuted.value;
+                                value
+                                    ? context.ytController.unMute()
+                                    : context.ytController.mute();
+                              },
+                            );
+                          })
+                    ],
+                  );
+                }),
+          );
+        });
   }
 }

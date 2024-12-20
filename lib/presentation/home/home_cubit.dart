@@ -6,7 +6,9 @@ import 'package:communico_frontend/presentation/home/components/chat_tab_view/ch
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/radio/station.dart';
 import 'package:communico_frontend/presentation/home/home_state.dart';
+import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../di/service_locator.dart';
 import '../../domain/entities/message_entity.dart';
@@ -39,8 +41,21 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  void updateStation(Station station) {
-    emit(state.copyWith(currentStation: station.copyWith(isPlaying: true)));
+  void updateStation(Station station, BuildContext context) {
+    context.ytController.stopVideo();
+    context.ytController.update(
+      metaData: YoutubeMetaData(
+        videoId: station.id,
+        title: station.title,
+      ),
+      fullScreenOption: const FullScreenOption(enabled: false),
+    );
+    context.ytController.loadVideoById(videoId: station.id);
+    context.ytController.playVideo();
+    emit(state.copyWith(currentStation: station));
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
   }
 
   bool isMyMessage(MessageEntity message) {
@@ -54,10 +69,4 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   UserEntity? get user => getIt<UserStore>().getUser();
-
-  void toggleStationMute() {
-    emit(state.copyWith(
-        currentStation: state.currentStation
-            .copyWith(isMuted: !state.currentStation.isMuted)));
-  }
 }
