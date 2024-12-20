@@ -67,7 +67,7 @@ class AuthPage extends StatelessWidget {
                               } else if (val.length > 10) {
                                 return "Wow, planning a novel? Keep it short, champ!";
                               } else if (!regex.hasMatch(val)) {
-                                return "Only lowercase letters, underscores, '.' allowed.";
+                                return "Only lowercase letters, numbers, underscores, '.' allowed.";
                               }
                               return null;
                             },
@@ -79,6 +79,21 @@ class AuthPage extends StatelessWidget {
                             },
                             prefixIcon: Icons.person),
                         const SizedBox(height: 20),
+                        if (state.passwordProtected) ...[
+                          InputField(
+                            hintText: "Enter your password",
+                            onChanged: (val) {
+                              state.password = val;
+                            },
+                            onSubmitted: (val) {
+                              if (state.password?.isNotEmpty ?? false) {
+                                cubit.getIn();
+                              }
+                            },
+                            prefixIcon: Icons.lock_outline_rounded,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
                         AppButton(
                             title: "GET IN",
                             onTap: () {

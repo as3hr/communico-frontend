@@ -14,10 +14,13 @@ class ApiUserRepository implements UserRepository {
   ApiUserRepository(this.networkRepository);
 
   @override
-  Future<Either<UserFailure, UserEntity>> getIn(String username) async {
-    final response = await networkRepository.post(url: "/users/", data: {
-      "username": username,
-    });
+  Future<Either<UserFailure, UserEntity>> getIn(
+      {required String username, String? password}) async {
+    final data = {
+      'username': username.trim(),
+      'password': password?.trim(),
+    };
+    final response = await networkRepository.post(url: "/users/", data: data);
     if (response.failed) {
       return left(UserFailure(error: response.message));
     }

@@ -42,7 +42,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void updateStation(Station station, BuildContext context) {
-    context.ytController.stopVideo();
     context.ytController.update(
       metaData: YoutubeMetaData(
         videoId: station.id,
@@ -51,7 +50,6 @@ class HomeCubit extends Cubit<HomeState> {
       fullScreenOption: const FullScreenOption(enabled: false),
     );
     context.ytController.loadVideoById(videoId: station.id);
-    context.ytController.playVideo();
     emit(state.copyWith(currentStation: station));
     if (context.mounted) {
       Navigator.pop(context);
@@ -69,4 +67,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   UserEntity? get user => getIt<UserStore>().getUser();
+
+  void startStation(BuildContext context) {
+    if (state.currentStation == null) {
+      context.ytController.loadVideoById(videoId: Station.stations.first.id);
+      emit(state.copyWith(currentStation: Station.stations.first));
+    }
+  }
 }

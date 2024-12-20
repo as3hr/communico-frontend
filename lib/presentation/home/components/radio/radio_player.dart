@@ -1,3 +1,4 @@
+import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/presentation/home/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -21,8 +22,7 @@ class RadioPlayer extends StatelessWidget {
             child: YoutubeValueBuilder(
                 controller: controller,
                 builder: (context, value) {
-                  final isPlaying = value.playerState == PlayerState.playing;
-
+                  final playerState = value.playerState;
                   return Row(
                     children: [
                       Stack(
@@ -35,16 +35,27 @@ class RadioPlayer extends StatelessWidget {
                                   width: 0000001,
                                   height: 0000001,
                                   child: player)),
-                          IconButton(
-                            icon: Icon(
-                              isPlaying ? Icons.pause : Icons.play_arrow,
-                            ),
-                            onPressed: () {
-                              isPlaying
-                                  ? context.ytController.pauseVideo()
-                                  : context.ytController.playVideo();
-                            },
-                          ),
+                          (playerState == PlayerState.buffering)
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: AppColor.grey,
+                                  ),
+                                )
+                              : IconButton(
+                                  icon: Icon(
+                                    playerState == PlayerState.playing
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                  ),
+                                  onPressed: () {
+                                    cubit.startStation(context);
+                                    playerState == PlayerState.playing
+                                        ? context.ytController.pauseVideo()
+                                        : context.ytController.playVideo();
+                                  },
+                                ),
                         ],
                       ),
                       ValueListenableBuilder<bool>(

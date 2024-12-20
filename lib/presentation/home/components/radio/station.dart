@@ -19,21 +19,30 @@ class Station {
 
   static final stations = [
     // Lofi hip hop
-    Station(id: "jfKfPfyJRdk", title: "Lofi Girl"),
+    Station(id: "jfKfPfyJRdk", title: "Lofi Music"),
     Station(id: "7NOSDKb0HlU", title: "Chillhop Music"),
-    // Station(id: "lP26UCnoH9s", title: "STEEZYASFUCK"),
-    // Station(id: "HBPtQVzRZUY", title: "the bootleg boy 2"),
-    // Jazz
+    Station(id: "5yx6BWlEVcY", title: "Nujabes Style Radio"),
+    Station(id: "ldPf3yqq3-8", title: "Piano Solo Radio"),
+    Station(id: "rUxyKA_-grg", title: "Coffee Shop Radio"),
+
+    // Jazz & Chill
     Station(id: "Dx5qFachd3A", title: "Cafe Music BGM"),
-    // Station(id: "JJq34sWY4GY", title: "Cozy Coffee Shop"),
-    // Station(id: "xl0NMRAnqbA", title: "Piano Jazz Music"),
-    // Synthwave
-    // Station(id: "4xDzrJKXOOY", title: "Synthwave-lofi"),
-    // Station(id: "q-I_K2YQLy8", title: "The Prime Thanatos"),
-    // House
-    // Station(id: "UedTcufyrHc", title: "Deep House Radio"),
-    // Station(id: "hIf_x11fRxE", title: "Tropical House Radio"),
-    // Station(id: "wBgSH-CGPzg", title: "Tomorrowland Radio"),
-    // Station(id: "JOXRElW1LCA", title: "Toolroom Live"),
+    Station(id: "DSGyEsJ17cI", title: "Jazzy & Coffee Music"),
+    Station(id: "MCLmZh6z1mw", title: "Peaceful Piano Radio"),
+    Station(id: "gwDoRPcPxtc", title: "Jazz Cafe Radio"),
+
+    // Ambient & Study
+    Station(id: "-5KAN9_CzSA", title: "ChilledCow Study Music"),
+    Station(id: "MVPTGNGiI-4", title: "Ambient Study Music"),
+    Station(id: "lP6-qyqv8Tg", title: "Relaxing Music Radio"),
+    Station(id: "21qNxnCS8WU", title: "ChillHop YT Radio"),
+
+    // Nature & Meditation
+    Station(id: "5qap5aO4i9A", title: "Relaxing Nature Sounds"),
+    Station(id: "y7e-GC6oGhg", title: "Calm Piano Music"),
+    Station(id: "WWTJ3mUmep0", title: "Meditation Music"),
+
+    // Classical & Piano
+    Station(id: "M1yxRGTvlD8", title: "Classical Music Radio"),
   ];
 }

@@ -124,7 +124,7 @@ class _GroupListState extends State<GroupList> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: Divider(
-                                  thickness: 0.3,
+                                  thickness: 0.5,
                                   color: context.colorScheme.secondary,
                                 ),
                               );

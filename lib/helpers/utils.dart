@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/navigation/app_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 import '../domain/model/paginate.dart';
+import 'styles/styles.dart';
 
 List<T> parseList<T>(
   data,
@@ -35,11 +38,12 @@ Future<void> showToast(String message) async {
           insetAnimationDuration: const Duration(milliseconds: 500),
           elevation: 0,
           child: Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.topRight,
             child: Container(
+              constraints: BoxConstraints(maxWidth: 0.2.sw, maxHeight: 0.1.sh),
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: Colors.red,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -48,9 +52,10 @@ Future<void> showToast(String message) async {
                   Flexible(
                     child: Text(
                       message,
-                      style: const TextStyle(
+                      style: Styles.lightStyle(
                         fontSize: 15,
-                        color: Colors.white,
+                        color: AppColor.white,
+                        family: FontFamily.kanit,
                       ),
                       textAlign: TextAlign.center,
                     ),

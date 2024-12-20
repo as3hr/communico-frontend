@@ -1,7 +1,7 @@
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_tab_view.dart';
-import 'package:communico_frontend/presentation/home/components/header.dart';
+import 'package:communico_frontend/presentation/home/components/header/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,13 +39,13 @@ class HomeBody extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.music_note_sharp,
-                            color: AppColor.white,
+                            color: AppColor.violet,
                           ),
                           Text(
                             "playing ${state.currentStation!.title}",
                             style: const TextStyle(
                               fontSize: 15,
-                              color: AppColor.white,
+                              color: AppColor.violet,
                               fontFamily: "Kanit",
                               fontWeight: FontWeight.bold,
                               fontStyle: FontStyle.italic,
