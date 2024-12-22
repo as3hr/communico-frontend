@@ -7,10 +7,15 @@ import '../../../../helpers/styles/app_colors.dart';
 import '../../../../helpers/widgets/input_form_field.dart';
 
 class ChatRoomFooter extends StatefulWidget {
-  const ChatRoomFooter(
-      {super.key, required this.onSendMessage, required this.textController});
+  const ChatRoomFooter({
+    super.key,
+    required this.onSendMessage,
+    required this.textController,
+    this.onChanged,
+  });
   final TextEditingController textController;
   final void Function() onSendMessage;
+  final void Function(String text)? onChanged;
 
   @override
   State<ChatRoomFooter> createState() => _ChatRoomFooterState();
@@ -50,7 +55,9 @@ class _ChatRoomFooterState extends State<ChatRoomFooter> {
               child: InputFormField(
                 textEditingController: widget.textController,
                 hintText: "Write a message ...",
-                onChanged: (val) {},
+                onChanged: (val) {
+                  widget.onChanged?.call(val);
+                },
                 focusNode: focusNode,
                 showBorder: false,
               ),

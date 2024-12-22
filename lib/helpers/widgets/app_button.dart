@@ -9,12 +9,18 @@ class AppButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.content,
+    this.padding,
+    this.width,
+    this.height,
     this.backgroundColor = AppColor.violet,
   });
   final String title;
   final void Function()? onTap;
   final Widget? content;
   final Color backgroundColor;
+  final EdgeInsetsGeometry? padding;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +29,9 @@ class AppButton extends StatelessWidget {
         onTap?.call();
       },
       child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        width: width ?? double.infinity,
+        height: height,
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           gradient: LinearGradient(

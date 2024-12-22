@@ -2,7 +2,6 @@ import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../helpers/styles/app_images.dart';
 import '../../../../../helpers/styles/styles.dart';
 
 class EmptyAi extends StatelessWidget {
@@ -43,16 +42,6 @@ class EmptyAi extends StatelessWidget {
             fontSize: 15,
             color: AppColor.white,
             family: FontFamily.kanit,
-          ),
-        ),
-        const SizedBox(height: 20),
-        Center(
-          child: ClipOval(
-            child: Image.asset(
-              AppImages.aiGif,
-              height: 50,
-              width: 50,
-            ),
           ),
         ),
         const Spacer(),

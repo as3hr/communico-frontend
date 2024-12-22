@@ -1,15 +1,18 @@
+import 'dart:async';
+
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:flutter/material.dart';
 
 class AiState {
+  final controller = StreamController<String>.broadcast(sync: true);
   TextEditingController currentAiMessageController;
   List<MessageEntity> messages;
   bool aiMessageInitialized;
   bool isLoading;
-  String aiResponse;
+  String prompt;
 
   AiState({
-    required this.aiResponse,
+    required this.prompt,
     required this.currentAiMessageController,
     required this.messages,
     this.isLoading = false,
@@ -19,7 +22,7 @@ class AiState {
   factory AiState.empty() => AiState(
         currentAiMessageController: TextEditingController(),
         messages: [],
-        aiResponse: "",
+        prompt: "",
       );
 
   copyWith({
@@ -27,10 +30,10 @@ class AiState {
     List<MessageEntity>? messages,
     bool? aiMessageInitialized,
     bool? isLoading,
-    String? aiResponse,
+    String? prompt,
   }) =>
       AiState(
-        aiResponse: "",
+        prompt: "",
         currentAiMessageController:
             currentAiMessageController ?? this.currentAiMessageController,
         messages: messages ?? this.messages,

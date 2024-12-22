@@ -18,31 +18,18 @@ class Station {
   }
 
   static final stations = [
-    // Lofi hip hop
-    Station(id: "jfKfPfyJRdk", title: "Lofi Music"),
-    Station(id: "7NOSDKb0HlU", title: "Chillhop Music"),
-    Station(id: "5yx6BWlEVcY", title: "Nujabes Style Radio"),
-    Station(id: "ldPf3yqq3-8", title: "Piano Solo Radio"),
-    Station(id: "rUxyKA_-grg", title: "Coffee Shop Radio"),
-
-    // Jazz & Chill
-    Station(id: "Dx5qFachd3A", title: "Cafe Music BGM"),
-    Station(id: "DSGyEsJ17cI", title: "Jazzy & Coffee Music"),
-    Station(id: "MCLmZh6z1mw", title: "Peaceful Piano Radio"),
-    Station(id: "gwDoRPcPxtc", title: "Jazz Cafe Radio"),
-
-    // Ambient & Study
-    Station(id: "-5KAN9_CzSA", title: "ChilledCow Study Music"),
-    Station(id: "MVPTGNGiI-4", title: "Ambient Study Music"),
-    Station(id: "lP6-qyqv8Tg", title: "Relaxing Music Radio"),
-    Station(id: "21qNxnCS8WU", title: "ChillHop YT Radio"),
-
-    // Nature & Meditation
-    Station(id: "5qap5aO4i9A", title: "Relaxing Nature Sounds"),
-    Station(id: "y7e-GC6oGhg", title: "Calm Piano Music"),
-    Station(id: "WWTJ3mUmep0", title: "Meditation Music"),
-
-    // Classical & Piano
-    Station(id: "M1yxRGTvlD8", title: "Classical Music Radio"),
+    Station(id: "jfKfPfyJRdk", title: "lofi radio"),
+    Station(id: "7NOSDKb0HlU", title: "chillhop music"),
+    Station(id: "5yx6BWlEVcY", title: "nujabes style radio"),
+    Station(id: "5Qe16QYs9bE", title: "maxim"),
+    Station(id: "ldPf3yqq3-8", title: "piano solo radio"),
+    Station(id: "KPhqU--Mq1A", title: "rocky"),
+    Station(id: "sgEJ4sOwboM", title: "summer tropical radio"),
+    Station(id: "f02mOEt11OQ", title: "code-fi"),
+    Station(id: "OxNeZiOr_zs", title: "@shuraa"),
+    Station(id: "GedLli_YXEI", title: "weekend-fi"),
+    Station(id: "J6kDgywJi_4", title: "beast"),
+    Station(id: "Dx5qFachd3A", title: "cafe music"),
+    Station(id: "DSGyEsJ17cI", title: "jazzy & coffee music"),
   ];
 }

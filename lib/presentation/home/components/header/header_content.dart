@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/presentation/home/components/header/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_clock/one_clock.dart';
@@ -8,10 +9,8 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../../di/service_locator.dart';
 import '../../../../helpers/styles/app_colors.dart';
-import '../../../../helpers/styles/app_images.dart';
 import '../../../../helpers/styles/styles.dart';
 import '../../../../helpers/widgets/animated_banner.dart';
-import '../../../../helpers/widgets/theme_switch.dart';
 import '../../../../helpers/widgets/vertical_divider.dart';
 import '../../home_cubit.dart';
 import '../../home_state.dart';
@@ -48,6 +47,13 @@ class _HeaderContentState extends State<HeaderContent> {
         loop: true,
       ),
     );
+    controller.stream.listen(playNextOnEnd);
+  }
+
+  playNextOnEnd(YoutubePlayerValue streamData) {
+    if (streamData.playerState == PlayerState.ended) {
+      cubit.playNext(context);
+    }
   }
 
   @override
@@ -65,6 +71,7 @@ class _HeaderContentState extends State<HeaderContent> {
                 color: AppColor.white,
                 fontFamily: "Kanit",
                 fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -83,23 +90,10 @@ class _HeaderContentState extends State<HeaderContent> {
                 color: context.colorScheme.onPrimary.withOpacity(0.6),
                 family: FontFamily.montserrat,
               ),
-              tabs: [
-                const Text("Direct Messages"),
-                const Text("Group Messages"),
-                Row(
-                  children: [
-                    ClipOval(
-                      child: Image.asset(
-                        AppImages.aiGif,
-                        height: 20,
-                        width: 20,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    const Text("Ask AI"),
-                  ],
-                ),
+              tabs: const [
+                Text("Direct Messages"),
+                Text("Group Messages"),
+                Text("Ask AI"),
               ],
             ),
             const AppVerticalDivider(),
@@ -136,22 +130,50 @@ class _HeaderContentState extends State<HeaderContent> {
             Row(
               children: [
                 Text(
-                  "Light",
+                  "Backgrounds: ",
                   style: Styles.mediumStyle(
                     fontSize: 15,
                     color: context.colorScheme.onPrimary,
                     family: FontFamily.montserrat,
                   ),
                 ),
-                const ThemeSwitch(),
-                Text(
-                  "Dark",
-                  style: Styles.mediumStyle(
-                    fontSize: 15,
-                    color: context.colorScheme.onPrimary,
-                    family: FontFamily.montserrat,
-                  ),
-                ),
+                DropdownMenu<Background>(
+                    menuStyle: const MenuStyle(
+                      alignment: Alignment.bottomLeft,
+                    ),
+                    hintText: state.currentBackground?.title ?? "Select",
+                    textStyle: Styles.mediumStyle(
+                      fontSize: 15,
+                      color: context.colorScheme.onPrimary,
+                      family: FontFamily.kanit,
+                    ),
+                    enableSearch: false,
+                    textAlign: TextAlign.center,
+                    inputDecorationTheme: const InputDecorationTheme(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    enableFilter: false,
+                    requestFocusOnTap: false,
+                    onSelected: (background) {
+                      if (background != null) {
+                        cubit.updateBackground(background);
+                      }
+                    },
+                    dropdownMenuEntries: state.backgrounds.map((background) {
+                      return DropdownMenuEntry<Background>(
+                        value: background,
+                        label: background.title,
+                        labelWidget: Text(
+                          background.title,
+                          style: Styles.mediumStyle(
+                            fontSize: 15,
+                            color: context.colorScheme.onPrimary,
+                            family: FontFamily.kanit,
+                          ),
+                        ),
+                      );
+                    }).toList()),
               ],
             ),
             const AppVerticalDivider(),

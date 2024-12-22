@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -22,44 +21,48 @@ class AiCubit extends Cubit<AiState> {
       );
       state.currentAiMessageController.clear();
       appendMessageToAiChat(message);
-      generateAiResponse(message.text);
+      generateAiResponse(text: message.text);
     }
   }
 
-  StreamSubscription? subscription;
-
-  void generateAiResponse(String text) {
+  void generateAiResponse({String? text}) {
     emit(state.copyWith(isLoading: true));
+    final aiResponseStream = messageRepository.getAiResponse(text ?? "");
     String aiResponse = "";
-    final aiResponseStream = messageRepository.getAiResponse(text);
-    subscription = aiResponseStream.listen(
-        (response) => response.fold((error) {}, (resp) {
+    final subscription = aiResponseStream.listen(
+        (response) => response.fold((error) {
+              log("RESPONSE ERROR: ${error.error}");
+            }, (resp) {
               log("AI MESSAGE IS: $resp");
+              aiResponse += resp;
+              state.controller.add(aiResponse);
               if (!state.aiMessageInitialized) {
                 emit(state.copyWith(
                     aiMessageInitialized: true, isLoading: false));
               }
-              aiResponse += resp;
-              emit(state.copyWith(aiResponse: aiResponse));
             }), onDone: () {
-      log("AI MESSAGE Completed: ${state.aiResponse}");
+      log("STREAM IS IN DONE NOW");
+      state.controller.close();
       final message = MessageEntity(text: aiResponse, userId: 0, isAi: true);
       appendMessageToAiChat(message);
-      emit(state.copyWith(aiResponse: ""));
       emit(state.copyWith(
-        aiResponse: "",
         isLoading: false,
+        prompt: "",
         aiMessageInitialized: false,
       ));
-      subscription?.cancel();
     }, onError: (error) {
+      state.controller.close();
       log("ERROR IS: ${error.toString()}");
       emit(state.copyWith(
-        aiResponse: "",
+        prompt: "",
         aiMessageInitialized: false,
         isLoading: false,
       ));
     });
+
+    state.controller.onCancel = () {
+      subscription.cancel();
+    };
   }
 
   appendMessageToAiChat(MessageEntity message) {

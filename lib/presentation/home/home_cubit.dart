@@ -14,6 +14,7 @@ import '../../di/service_locator.dart';
 import '../../domain/entities/message_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/stores/user_store.dart';
+import 'components/header/background.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeState.empty());
@@ -41,7 +42,8 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  void updateStation(Station station, BuildContext context) {
+  void updateStation(Station station, BuildContext context,
+      {bool disablePop = false}) {
     context.ytController.update(
       metaData: YoutubeMetaData(
         videoId: station.id,
@@ -51,9 +53,6 @@ class HomeCubit extends Cubit<HomeState> {
     );
     context.ytController.loadVideoById(videoId: station.id);
     emit(state.copyWith(currentStation: station));
-    if (context.mounted) {
-      Navigator.pop(context);
-    }
   }
 
   bool isMyMessage(MessageEntity message) {
@@ -73,5 +72,28 @@ class HomeCubit extends Cubit<HomeState> {
       context.ytController.loadVideoById(videoId: Station.stations.first.id);
       emit(state.copyWith(currentStation: Station.stations.first));
     }
+  }
+
+  void playNext(BuildContext context) {
+    if (state.currentStation == null) {
+      // just start with first station if there is no station currently being played
+      startStation(context);
+    } else {
+      final currentStationIndex = Station.stations
+          .indexWhere((station) => station.id == state.currentStation?.id);
+      if (currentStationIndex == Station.stations.length - 1) {
+        // if the station is the last one then play the first one at the list
+        final station = Station.stations.first;
+        updateStation(station, context);
+      } else {
+        // play the next station according to the index of the list.
+        final station = Station.stations[currentStationIndex + 1];
+        updateStation(station, context);
+      }
+    }
+  }
+
+  void updateBackground(Background background) {
+    emit(state.copyWith(currentBackground: background));
   }
 }

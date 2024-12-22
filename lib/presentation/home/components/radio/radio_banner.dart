@@ -53,7 +53,7 @@ class RadioBanner extends StatelessWidget {
                                 2.horizontalSpace,
                                 Expanded(
                                   child: Text(
-                                    station.title.toUpperCase(),
+                                    station.title.toLowerCase(),
                                     style: Styles.boldStyle(
                                       fontSize: 25,
                                       color: AppColor.white,

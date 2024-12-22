@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:communico_frontend/navigation/app_navigation.dart';
 import 'package:communico_frontend/navigation/route_generator.dart';
 import 'package:communico_frontend/navigation/route_name.dart';
@@ -27,27 +26,19 @@ class Communico extends StatelessWidget {
           ),
         ],
         builder: (context) {
-          return AdaptiveTheme(
-              light: AppTheme.theme(),
-              initial: AdaptiveThemeMode.dark,
-              dark: AppTheme.theme(dark: true),
-              builder: (light, dark) {
-                return ScreenUtilInit(
-                    useInheritedMediaQuery: true,
-                    designSize: const Size(300, 200),
-                    builder: (context, _) {
-                      final token = window.localStorage['authToken'] ?? "";
-                      return MaterialApp(
-                        theme: light,
-                        darkTheme: dark,
-                        debugShowCheckedModeBanner: false,
-                        navigatorKey: AppNavigation.navigatorKey,
-                        onGenerateRoute: generateRoute,
-                        initialRoute: (token.isNotEmpty)
-                            ? RouteName.home
-                            : RouteName.getIn,
-                      );
-                    });
+          return ScreenUtilInit(
+              useInheritedMediaQuery: true,
+              designSize: const Size(300, 200),
+              builder: (context, _) {
+                final token = window.localStorage['authToken'] ?? "";
+                return MaterialApp(
+                  theme: AppTheme.theme(dark: true),
+                  debugShowCheckedModeBanner: false,
+                  navigatorKey: AppNavigation.navigatorKey,
+                  onGenerateRoute: generateRoute,
+                  initialRoute:
+                      (token.isNotEmpty) ? RouteName.home : RouteName.getIn,
+                );
               });
         });
   }

@@ -58,6 +58,14 @@ class RadioPlayer extends StatelessWidget {
                                 ),
                         ],
                       ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.skip_next,
+                        ),
+                        onPressed: () {
+                          cubit.playNext(context);
+                        },
+                      ),
                       ValueListenableBuilder<bool>(
                           valueListenable: isMuted,
                           builder: (context, value, _) {
@@ -71,7 +79,7 @@ class RadioPlayer extends StatelessWidget {
                                     : context.ytController.mute();
                               },
                             );
-                          })
+                          }),
                     ],
                   );
                 }),

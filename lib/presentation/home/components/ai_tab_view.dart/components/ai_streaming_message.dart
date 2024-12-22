@@ -2,6 +2,9 @@ import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../helpers/styles/app_colors.dart';
+import '../../../../../helpers/styles/styles.dart';
+
 class AiStreamingMessage extends StatelessWidget {
   const AiStreamingMessage({
     super.key,
@@ -40,10 +43,10 @@ class AiStreamingMessage extends StatelessWidget {
                 ),
                 child: Text(
                   text,
-                  style: const TextStyle(
+                  style: Styles.mediumStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.white,
+                    color: AppColor.white,
+                    family: FontFamily.montserrat,
                   ),
                 )),
           ),
