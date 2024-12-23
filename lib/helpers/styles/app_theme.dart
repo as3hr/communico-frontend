@@ -2,19 +2,7 @@ import 'app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static const lightColortheme = ColorScheme(
-    brightness: Brightness.light,
-    primary: AppColor.lightPrimary,
-    onPrimary: AppColor.white,
-    secondary: AppColor.lightSecondary,
-    onSecondary: AppColor.lightGrey,
-    error: AppColor.red,
-    onError: AppColor.white,
-    surface: AppColor.lightBackground,
-    onSurface: AppColor.darkGrey,
-  );
-
-  static const darkColortheme = ColorScheme(
+  static const colortheme = ColorScheme(
     brightness: Brightness.dark,
     primary: AppColor.darkPrimary,
     onPrimary: AppColor.white,
@@ -26,19 +14,18 @@ class AppTheme {
     onSurface: AppColor.grey,
   );
 
-  static ThemeData theme({bool dark = false}) {
+  static ThemeData theme() {
     return ThemeData(
-      scaffoldBackgroundColor:
-          dark ? AppColor.darkBackground : AppColor.lightBackground,
+      scaffoldBackgroundColor: AppColor.darkBackground,
       useMaterial3: true,
-      colorScheme: dark ? darkColortheme : lightColortheme,
+      colorScheme: colortheme,
       fontFamily: "Varela",
-      textSelectionTheme: TextSelectionThemeData(
-        selectionColor: dark ? AppColor.darkSecondary : AppColor.lightGrey,
-        cursorColor: dark ? AppColor.white : AppColor.darkPrimary,
-        selectionHandleColor: dark ? AppColor.white : AppColor.lightPrimary,
+      textSelectionTheme: const TextSelectionThemeData(
+        selectionColor: AppColor.black1,
+        cursorColor: AppColor.white,
+        selectionHandleColor: AppColor.white,
       ),
-      textTheme: dark ? Typography.whiteCupertino : Typography.blackCupertino,
+      textTheme: Typography.whiteCupertino,
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }

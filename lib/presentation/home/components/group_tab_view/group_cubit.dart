@@ -47,6 +47,15 @@ class GroupCubit extends Cubit<GroupState> {
 
   empty() => emit(GroupState.empty());
 
+  toggleGroupField({required bool groupFieldEnabled}) {
+    emit(state.copyWith(groupFieldEnabled: groupFieldEnabled));
+  }
+
+  void onCloseIconTap() {
+    emit(state.copyWith(groupNameField: ""));
+    toggleGroupField(groupFieldEnabled: false);
+  }
+
   openChatRoom(GroupEntity group) {
     final params = ChatRoomQueryParams(
       onSendMessage: () {
@@ -174,4 +183,69 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
   UserEntity? get user => getIt<UserStore>().getUser();
+
+  List<UserEntity> get previousUsers => state.currentGroup.members
+          .where((member) => member.user!.id != user!.id)
+          .map((member) {
+        final user =
+            member.user?.copyWith(isSelected: true) ?? UserEntity.empty();
+        return user;
+      }).toList();
+
+  void updateGroup(GroupEntity currentGroup) {
+    groupRepository.updateGroup(currentGroup);
+    emit(state.copyWith(currentGroup: currentGroup, groupFieldEnabled: false));
+  }
+
+  void selectGroupUser(UserEntity curentUser, List<UserEntity> allUsers) {
+    allUsers.firstWhere((user) => user.id == curentUser.id).isSelected =
+        !curentUser.isSelected;
+
+    final selectedMembers = allUsers.where((user) => user.isSelected).toList();
+    if (selectedMembers.isNotEmpty) {
+      state.selectedUsers = selectedMembers;
+    } else {
+      state.selectedUsers = [];
+    }
+
+    emit(state.copyWith(
+      filteredUsers: state.filteredUsers,
+      selectedUsers: state.selectedUsers,
+    ));
+  }
+
+  void finalizeGroupMembers(List<UserEntity> users) {
+    final members = users
+        .map((user) => GroupMemberEntity(userId: user.id, user: user))
+        .toList();
+    state.currentGroup.members = [
+      ...members,
+      GroupMemberEntity(userId: user!.id, user: user)
+    ];
+    updateGroup(state.currentGroup);
+  }
+
+  fetchMembers() {
+    groupRepository
+        .getMembers(state.currentGroup.id)
+        .then((response) => response.fold((error) {}, (users) {
+              state.allUsers = users;
+            }));
+  }
+
+  closeDialog() {
+    emit(state.copyWith(selectedUsers: [], filteredUsers: []));
+  }
+
+  void searchMembers(String val) {
+    if (val.isNotEmpty) {
+      final users = state.allUsers
+          .where((user) =>
+              (user.username).toLowerCase().contains(val.toLowerCase()))
+          .toList();
+      emit(state.copyWith(filteredUsers: users));
+    } else {
+      emit(state.copyWith(filteredUsers: []));
+    }
+  }
 }

@@ -1,9 +1,9 @@
 import 'package:communico_frontend/helpers/extensions.dart';
-import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_footer.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:communico_frontend/presentation/home/components/message/my_message.dart';
 import 'package:communico_frontend/presentation/home/components/message/other_message.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -69,7 +69,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     ),
                     child: Stack(
                       children: [
-                        if (state.currentBackground != null)
+                        if (state.currentBackground?.image.isNotEmpty ?? false)
                           Positioned.fill(
                             child: Image.asset(
                               state.currentBackground!.image,
@@ -114,17 +114,6 @@ class _ChatRoomState extends State<ChatRoom> {
                                     ),
                                   ),
                                   const Spacer(),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Delete",
-                                      style: Styles.boldStyle(
-                                        fontSize: 20,
-                                        color: AppColor.red,
-                                        family: FontFamily.kanit,
-                                      ),
-                                    ),
-                                  ),
                                   if (widget.params.isGroup) ...[
                                     IconButton(
                                       onPressed: () {

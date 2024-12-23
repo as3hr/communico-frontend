@@ -28,14 +28,14 @@ class HomeState {
     bool? isLoading,
     String? currentQuote,
     Station? currentStation,
-    List<Background>? seasons,
+    List<Background>? backgrounds,
     Background? currentBackground,
   }) =>
       HomeState(
         isLoading: isLoading ?? this.isLoading,
         currentQuote: currentQuote ?? this.currentQuote,
         currentStation: currentStation ?? this.currentStation,
-        backgrounds: seasons ?? this.backgrounds,
+        backgrounds: backgrounds ?? this.backgrounds,
         currentBackground: currentBackground ?? this.currentBackground,
       );
 }

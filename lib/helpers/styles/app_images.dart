@@ -5,4 +5,5 @@ class AppImages {
   static const autumn = "$_baseDir/autumn.gif";
   static const bus = "$_baseDir/bus.gif";
   static const rain = "$_baseDir/rain.gif";
+  static const night = "$_baseDir/night.gif";
 }

@@ -55,7 +55,8 @@ class AiChatRoom extends StatelessWidget {
                       BlocBuilder<HomeCubit, HomeState>(
                           bloc: getIt<HomeCubit>(),
                           builder: (context, homeState) {
-                            if (homeState.currentBackground != null) {
+                            if (homeState.currentBackground?.image.isNotEmpty ??
+                                false) {
                               return Positioned.fill(
                                 child: Image.asset(
                                   homeState.currentBackground!.image,

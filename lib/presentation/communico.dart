@@ -32,7 +32,7 @@ class Communico extends StatelessWidget {
               builder: (context, _) {
                 final token = window.localStorage['authToken'] ?? "";
                 return MaterialApp(
-                  theme: AppTheme.theme(dark: true),
+                  theme: AppTheme.theme(),
                   debugShowCheckedModeBanner: false,
                   navigatorKey: AppNavigation.navigatorKey,
                   onGenerateRoute: generateRoute,

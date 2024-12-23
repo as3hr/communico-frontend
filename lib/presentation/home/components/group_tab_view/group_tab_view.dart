@@ -26,7 +26,9 @@ class GroupTabView extends StatelessWidget {
     return Scaffold(
       endDrawer: const GroupRoomDetail(),
       drawerScrimColor: Colors.transparent,
-      onEndDrawerChanged: (isOpened) {},
+      onEndDrawerChanged: (isOpened) {
+        cubit.toggleGroupField(groupFieldEnabled: false);
+      },
       body: BlocBuilder<GroupCubit, GroupState>(
           bloc: cubit,
           builder: (context, state) {

@@ -99,21 +99,21 @@ class GroupCreationMemberSelection extends StatelessWidget {
                       children: state.selectedUsers.map((user) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: InkWell(
-                            onTap: () {
-                              cubit.selectGroupUser(user);
-                            },
-                            child: Chip(
-                              backgroundColor: context.colorScheme.primary,
-                              label: Text(
-                                user.username,
-                                style: Styles.boldStyle(
-                                  fontSize: 12,
-                                  color: context.colorScheme.onPrimary,
-                                  family: FontFamily.montserrat,
-                                ),
+                          child: Chip(
+                            backgroundColor: context.colorScheme.primary,
+                            label: Text(
+                              user.username,
+                              style: Styles.boldStyle(
+                                fontSize: 12,
+                                color: context.colorScheme.onPrimary,
+                                family: FontFamily.montserrat,
                               ),
                             ),
+                            deleteIconColor: AppColor.red,
+                            onDeleted: () {
+                              cubit.selectGroupUser(user);
+                            },
+                            deleteIcon: const Icon(Icons.cancel_outlined),
                           ),
                         );
                       }).toList(),

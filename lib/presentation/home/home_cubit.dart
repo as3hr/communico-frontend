@@ -96,4 +96,8 @@ class HomeCubit extends Cubit<HomeState> {
   void updateBackground(Background background) {
     emit(state.copyWith(currentBackground: background));
   }
+
+  void removeBg() {
+    emit(state.copyWith(currentBackground: Background.empty()));
+  }
 }

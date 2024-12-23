@@ -174,6 +174,18 @@ class _HeaderContentState extends State<HeaderContent> {
                         ),
                       );
                     }).toList()),
+                if (state.currentBackground != null)
+                  IconButton(
+                    onPressed: () {
+                      cubit.removeBg();
+                    },
+                    icon: const Icon(
+                      Icons.highlight_remove_sharp,
+                      color: AppColor.red,
+                      size: 24,
+                    ),
+                    tooltip: 'Remove Background',
+                  ),
               ],
             ),
             const AppVerticalDivider(),

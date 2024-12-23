@@ -1,8 +1,8 @@
-import 'package:communico_frontend/domain/entities/group_entity.dart';
 import 'package:communico_frontend/domain/repositories/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../di/service_locator.dart';
+import '../../../../../../domain/entities/group_entity.dart';
 import '../../../../../../domain/entities/user_entity.dart';
 import '../../group_cubit.dart';
 import 'group_creation_state.dart';
