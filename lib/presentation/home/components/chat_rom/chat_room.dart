@@ -1,6 +1,8 @@
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_footer.dart';
+import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_header.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
+import 'package:communico_frontend/presentation/home/components/message/message_actions_params.dart';
 import 'package:communico_frontend/presentation/home/components/message/my_message.dart';
 import 'package:communico_frontend/presentation/home/components/message/other_message.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../di/service_locator.dart';
-import '../../../../helpers/styles/styles.dart';
 import '../../home_cubit.dart';
 import '../../home_state.dart';
 import '../group_tab_view/components/group_room_detail.dart';
@@ -17,8 +18,10 @@ class ChatRoom extends StatefulWidget {
   const ChatRoom({
     super.key,
     required this.params,
+    required this.messageActionsParams,
   });
   final ChatRoomQueryParams params;
+  final MessageActionsParams messageActionsParams;
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -87,57 +90,7 @@ class _ChatRoomState extends State<ChatRoom> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  height: 0.05.sh,
-                                  decoration: BoxDecoration(
-                                    color: context.colorScheme.secondary,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 6,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      if (context.isMobile ||
-                                          context.isTablet) ...[
-                                        2.horizontalSpace,
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const Icon(
-                                            Icons.arrow_back_ios_new,
-                                          ),
-                                        ),
-                                      ],
-                                      2.horizontalSpace,
-                                      Text(
-                                        widget.params.roomTitle,
-                                        style: Styles.mediumStyle(
-                                          fontSize: 20,
-                                          color: context.colorScheme.onPrimary,
-                                          family: FontFamily.kanit,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      if (widget.params.isGroup) ...[
-                                        IconButton(
-                                          onPressed: () {
-                                            Scaffold.of(context)
-                                                .openEndDrawer();
-                                          },
-                                          icon: const Icon(
-                                            Icons.menu,
-                                          ),
-                                        ),
-                                      ],
-                                      2.horizontalSpace,
-                                    ],
-                                  ),
-                                ),
+                                ChatRoomHeader(params: widget.params),
                                 Expanded(
                                   child: ListView.builder(
                                     reverse: true,
@@ -150,9 +103,13 @@ class _ChatRoomState extends State<ChatRoom> {
                                           cubit.isMyMessage(message);
                                       return isMyMessage
                                           ? MyMessage(
+                                              messageActionsParams:
+                                                  widget.messageActionsParams,
                                               message: message,
                                               key: ValueKey(index.toString()))
                                           : OtherMessage(
+                                              messageActionsParams:
+                                                  widget.messageActionsParams,
                                               message: message,
                                               key: ValueKey(index.toString()));
                                     },

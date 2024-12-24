@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/navigation/app_navigation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,46 @@ List<T> parseList<T>(
 ) {
   final parsedData = (data as List?)?.cast<Map<String, dynamic>>();
   return parsedData?.map(fromJson).toList().cast<T>() ?? [];
+}
+
+Future<bool> showConfirmationDialog(String title) async {
+  final context = AppNavigation.context;
+  return await showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            actionsPadding: const EdgeInsets.all(0),
+            backgroundColor: context.colorScheme.primary,
+            title: Text(title,
+                style: Styles.semiBoldStyle(
+                  fontSize: 16,
+                  color: context.colorScheme.onPrimary,
+                  family: FontFamily.montserrat,
+                )),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('No',
+                    style: Styles.mediumStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.onPrimary,
+                      family: FontFamily.montserrat,
+                    )),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text('Yes',
+                    style: Styles.mediumStyle(
+                        family: FontFamily.montserrat,
+                        fontSize: 14,
+                        color: context.colorScheme.onPrimary)),
+              ),
+            ],
+          );
+        },
+      ) ??
+      false;
 }
 
 Future<void> showToast(String message, {Color? backgroundColor}) async {

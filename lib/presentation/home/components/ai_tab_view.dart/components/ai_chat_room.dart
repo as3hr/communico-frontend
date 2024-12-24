@@ -78,6 +78,7 @@ class AiChatRoom extends StatelessWidget {
                                               message: message,
                                               key: ValueKey(index.toString()))
                                           : MyMessage(
+                                              showActions: false,
                                               message: message,
                                               key: ValueKey(index.toString()));
                                     },

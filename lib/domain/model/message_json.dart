@@ -75,6 +75,7 @@ class MessageJson implements BaseModel<MessageEntity> {
       );
 
   Map<String, dynamic> toChatJson() => {
+        "id": id,
         "text": text,
         "timestamp": timeStamp.toIso8601String(),
         "userId": userId,
@@ -82,6 +83,7 @@ class MessageJson implements BaseModel<MessageEntity> {
       };
 
   Map<String, dynamic> toGroupJson() => {
+        "id": id,
         "text": text,
         "timestamp": timeStamp.toIso8601String(),
         "userId": userId,

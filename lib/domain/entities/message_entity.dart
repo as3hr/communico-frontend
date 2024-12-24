@@ -1,6 +1,7 @@
 import 'package:communico_frontend/domain/entities/chat_entity.dart';
 import 'package:communico_frontend/domain/entities/user_entity.dart';
 import 'package:communico_frontend/domain/model/message_json.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'group_entity.dart';
 
@@ -15,9 +16,11 @@ class MessageEntity {
   int? chatId;
   int? groupId;
   bool isAi; // for identifying ai messages in room
+  ValueNotifier<bool> isHovered; // for identifying hoverState in chatRoom
 
   MessageEntity({
     this.id = 0,
+    ValueNotifier<bool>? isHovered,
     required this.text,
     this.isAi = false,
     DateTime? timeStamp,
@@ -27,7 +30,8 @@ class MessageEntity {
     this.groupId,
     this.chatId,
     this.sender,
-  }) : timeStamp = timeStamp ?? DateTime.now();
+  })  : timeStamp = timeStamp ?? DateTime.now(),
+        isHovered = isHovered ?? ValueNotifier<bool>(false);
 
   MessageEntity copyWith({
     int? id,
@@ -40,6 +44,7 @@ class MessageEntity {
     int? chatId,
     int? groupId,
     bool? isAi,
+    ValueNotifier<bool>? isHovered,
   }) {
     return MessageEntity(
       id: id ?? this.id,
@@ -52,6 +57,7 @@ class MessageEntity {
       chatId: chatId ?? this.chatId,
       groupId: groupId ?? this.groupId,
       sender: sender ?? this.sender,
+      isHovered: isHovered ?? this.isHovered,
     );
   }
 

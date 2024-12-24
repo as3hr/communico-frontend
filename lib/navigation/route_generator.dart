@@ -26,6 +26,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case RouteName.chatRoom:
       return getRoute(
           ChatRoom(
+            messageActionsParams: args["messageActionsParams"],
             params: args["params"],
           ),
           TransitionType.slide);

@@ -3,36 +3,54 @@ import 'package:flutter/material.dart';
 import '../styles/app_colors.dart';
 import '../styles/styles.dart';
 
-class InputField extends StatelessWidget {
+class InputField extends StatefulWidget {
   const InputField({
     super.key,
     required this.hintText,
     required this.onChanged,
     required this.onSubmitted,
     this.prefixIcon,
+    this.prefilledValue,
     this.validator,
   });
   final void Function(String) onChanged;
   final void Function(String) onSubmitted;
   final String hintText;
+  final String? prefilledValue;
   final IconData? prefixIcon;
   final String? Function(String?)? validator;
 
   @override
+  State<InputField> createState() => _InputFieldState();
+}
+
+class _InputFieldState extends State<InputField> {
+  final controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.prefilledValue != null) {
+      controller.text = widget.prefilledValue!;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onChanged: (val) {
-        onChanged.call(val);
+        widget.onChanged.call(val);
       },
       onFieldSubmitted: (val) {
-        onSubmitted.call(val);
+        widget.onSubmitted.call(val);
       },
       style: const TextStyle(color: Colors.white),
       validator: (val) {
-        return validator?.call(val);
+        return widget.validator?.call(val);
       },
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         hintStyle: Styles.lightStyle(
           fontSize: 15,
           color: AppColor.white,
@@ -40,7 +58,7 @@ class InputField extends StatelessWidget {
         ),
         filled: true,
         fillColor: Colors.grey.shade900,
-        prefixIcon: Icon(prefixIcon, color: Colors.grey.shade600),
+        prefixIcon: Icon(widget.prefixIcon, color: Colors.grey.shade600),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,

@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
+import 'package:communico_frontend/presentation/home/components/message/message_actions_params.dart';
 import 'package:communico_frontend/presentation/home/home_navigator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../di/service_locator.dart';
@@ -65,7 +67,10 @@ class ChatCubit extends Cubit<ChatState> {
       messages: chat.messagePagination.data,
     );
 
-    navigator.goToChatRoom(params);
+    final messageActionsParams =
+        MessageActionsParams(onDelete: (messageId) {}, onReply: (messageId) {});
+
+    navigator.goToChatRoom(params, messageActionsParams);
   }
 
   empty() => emit(ChatState.empty());
@@ -77,6 +82,25 @@ class ChatCubit extends Cubit<ChatState> {
       final message = MessageJson.fromJson(data).toDomain();
       if (message.userId != user!.id) {
         appendMessageToChat(message);
+      }
+    });
+
+    socket.on("messageDeletion", (data) {
+      final message = MessageJson.fromJson(data).toDomain();
+      if (message.userId != user!.id) {
+        state.currentChat.messagePagination.data
+            .removeWhere((currentMessage) => message.id == currentMessage.id);
+        emit(state.copyWith(currentChat: state.currentChat));
+      }
+    });
+
+    socket.on("messageUpdation", (data) {
+      final message = MessageJson.fromJson(data).toDomain();
+      if (message.userId != user!.id) {
+        state.currentChat.messagePagination.data
+            .firstWhere((currentMessage) => message.id == currentMessage.id)
+            .text = message.text;
+        emit(state.copyWith(currentChat: state.currentChat));
       }
     });
   }
@@ -122,6 +146,30 @@ class ChatCubit extends Cubit<ChatState> {
       state.messageController.text = "";
     }
   }
+
+  Future<void> deleteMessage(MessageEntity entity) async {
+    state.currentChat.messagePagination.data
+        .removeWhere((message) => message.id == entity.id);
+    emit(state.copyWith(currentChat: state.currentChat));
+    socket.emit(
+      "messageDeleted",
+      entity.toChatJson(),
+    );
+  }
+
+  void updateMessage(MessageEntity entity, BuildContext context) {
+    state.currentChat.messagePagination.data
+        .firstWhere((message) => message.id == entity.id)
+        .text = entity.text;
+    emit(state.copyWith(currentChat: state.currentChat));
+    socket.emit(
+      "messageUpdated",
+      entity.toChatJson(),
+    );
+    Navigator.pop(context);
+  }
+
+  void generateReplyTo(MessageEntity entity) {}
 
   emitMessage(MessageEntity message) {
     socket.emit(

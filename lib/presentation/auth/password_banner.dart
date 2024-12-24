@@ -27,7 +27,7 @@ class PasswordBanner extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   InputField(
-                    hintText: "Enter your password",
+                    hintText: "Enter password",
                     onChanged: (val) {
                       state.password = val;
                     },

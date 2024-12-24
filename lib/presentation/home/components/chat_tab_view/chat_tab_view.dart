@@ -7,13 +7,16 @@ import 'package:communico_frontend/presentation/home/components/chat_tab_view/ch
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/message/message_updation_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../di/service_locator.dart';
+import '../../../../helpers/utils.dart';
 import '../../../../helpers/widgets/animated_banner.dart';
 import '../chat_rom/chat_room.dart';
+import '../message/message_actions_params.dart';
 import 'components/chats_list.dart';
 
 class ChatTabView extends StatelessWidget {
@@ -61,6 +64,37 @@ class ChatTabView extends StatelessWidget {
                       Expanded(
                           flex: 5,
                           child: ChatRoom(
+                            messageActionsParams: MessageActionsParams(
+                              onDelete: (entity) async {
+                                if (await showConfirmationDialog(
+                                    "Are you sure you want to delete this message permanantly?")) {
+                                  cubit.deleteMessage(entity);
+                                }
+                              },
+                              onReply: (entity) {
+                                cubit.generateReplyTo(entity);
+                              },
+                              onUpdate: (entity) {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 8, sigmaY: 8),
+                                      child: AnimatedBanner(
+                                        content: MessageUpdationBanner(
+                                          message: entity,
+                                          onTap: (message) {
+                                            cubit.updateMessage(
+                                                entity, context);
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                             params: ChatRoomQueryParams(
                               onSendMessage: () {
                                 cubit.sendMessage();

@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/presentation/home/components/header/background.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_clock/one_clock.dart';

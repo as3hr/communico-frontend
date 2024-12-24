@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
 import 'package:communico_frontend/presentation/home/home_navigator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../di/service_locator.dart';
@@ -15,6 +16,7 @@ import '../../../../domain/stores/user_store.dart';
 import '../../../../helpers/constants.dart';
 import '../../../../helpers/deboouncer.dart';
 import '../chat_rom/chat_room_query_params.dart';
+import '../message/message_actions_params.dart';
 
 class GroupCubit extends Cubit<GroupState> {
   final MessageRepository messageRepository;
@@ -56,6 +58,30 @@ class GroupCubit extends Cubit<GroupState> {
     toggleGroupField(groupFieldEnabled: false);
   }
 
+  Future<void> deleteMessage(MessageEntity entity) async {
+    state.currentGroup.messagePagination.data
+        .removeWhere((message) => message.id == entity.id);
+    emit(state.copyWith(currentGroup: state.currentGroup));
+    socket.emit(
+      "groupMessageDeleted",
+      entity.toGroupJson(),
+    );
+  }
+
+  void updateMessage(MessageEntity entity, BuildContext context) {
+    state.currentGroup.messagePagination.data
+        .firstWhere((message) => message.id == entity.id)
+        .text = entity.text;
+    emit(state.copyWith(currentGroup: state.currentGroup));
+    socket.emit(
+      "groupMessageUpdated",
+      entity.toGroupJson(),
+    );
+    Navigator.pop(context);
+  }
+
+  void generateReplyTo(MessageEntity entity) {}
+
   openChatRoom(GroupEntity group) {
     final params = ChatRoomQueryParams(
       onSendMessage: () {
@@ -70,7 +96,11 @@ class GroupCubit extends Cubit<GroupState> {
       roomTitle: group.name,
       messages: group.messagePagination.data,
     );
-    navigator.goToChatRoom(params);
+
+    final messageActionsParams =
+        MessageActionsParams(onDelete: (messageId) {}, onReply: (messageId) {});
+
+    navigator.goToChatRoom(params, messageActionsParams);
   }
 
   appendMessageToGroup(MessageEntity message) {
@@ -147,6 +177,23 @@ class GroupCubit extends Cubit<GroupState> {
       final message = MessageJson.fromJson(data).toDomain();
       if (message.userId != user!.id) {
         appendMessageToGroup(message);
+      }
+    });
+
+    socket.on("groupMessageDeletion", (data) {
+      final message = MessageJson.fromJson(data).toDomain();
+      if (message.userId != user!.id) {
+        deleteMessage(message);
+      }
+    });
+
+    socket.on("groupMessageUpdation", (data) {
+      final message = MessageJson.fromJson(data).toDomain();
+      if (message.userId != user!.id) {
+        state.currentGroup.messagePagination.data
+            .firstWhere((currentMessage) => message.id == currentMessage.id)
+            .text = message.text;
+        emit(state.copyWith(currentGroup: state.currentGroup));
       }
     });
   }
