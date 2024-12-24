@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/presentation/home/components/header/background.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_clock/one_clock.dart';
@@ -22,10 +23,12 @@ class HeaderContent extends StatefulWidget {
     super.key,
     required this.currentQuote,
     required this.logOut,
+    required this.updatePassword,
     required this.userName,
   });
   final String userName;
   final void Function() logOut;
+  final void Function() updatePassword;
   final String currentQuote;
 
   @override
@@ -224,6 +227,18 @@ class _HeaderContentState extends State<HeaderContent> {
                   controller: controller,
                 ),
               ],
+            ),
+            const AppVerticalDivider(),
+            IconButton(
+              onPressed: () {
+                widget.updatePassword.call();
+              },
+              icon: const Icon(
+                Icons.lock_reset,
+                color: Colors.blue,
+                size: 24,
+              ),
+              tooltip: 'Update Password',
             ),
             const AppVerticalDivider(),
             IconButton(

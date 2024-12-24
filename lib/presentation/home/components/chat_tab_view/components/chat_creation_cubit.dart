@@ -56,7 +56,7 @@ class ChatCreationCubit extends Cubit<ChatCreationState> {
 
   fetchUsers() {
     userRepository
-        .fetchUsers()
+        .fetchUsers(url: "/users/chats/")
         .then((response) => response.fold((error) {}, (users) {
               state.allUsers = users;
             }));

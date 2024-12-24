@@ -30,8 +30,23 @@ class ApiUserRepository implements UserRepository {
   }
 
   @override
-  Future<Either<UserFailure, List<UserEntity>>> fetchUsers() async {
-    final response = await networkRepository.get(url: "/users/chats/");
+  Future<Either<UserFailure, UserEntity>> updatePassword(
+      {required String password}) async {
+    final response = await networkRepository.put(url: "/users/", data: {
+      'password': password.trim(),
+    });
+    if (response.failed) {
+      return left(UserFailure(error: response.message));
+    }
+    final user = UserJson.fromJson(response.data["data"]).toDomain();
+    getIt<UserStore>().setUser(user);
+    return right(user);
+  }
+
+  @override
+  Future<Either<UserFailure, List<UserEntity>>> fetchUsers(
+      {String url = "/users/"}) async {
+    final response = await networkRepository.get(url: url);
     if (response.failed) {
       return left(UserFailure(error: response.message));
     }

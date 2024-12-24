@@ -4,8 +4,8 @@ extension Responsive on BuildContext {
   double get screenWidth => MediaQuery.of(this).size.width;
   double get screenHeight => MediaQuery.of(this).size.height;
   bool get keyBoardVisible => MediaQuery.of(this).viewInsets.bottom >= 0;
-  bool get isWeb => screenWidth > 1640;
-  bool get isTablet => screenWidth > 600 && screenWidth <= 1640;
+  bool get isWeb => screenWidth > 1400;
+  bool get isTablet => screenWidth > 600 && screenWidth <= 1400;
   bool get isMobile => screenWidth <= 600;
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
 }

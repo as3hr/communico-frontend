@@ -18,7 +18,7 @@ List<T> parseList<T>(
   return parsedData?.map(fromJson).toList().cast<T>() ?? [];
 }
 
-Future<void> showToast(String message) async {
+Future<void> showToast(String message, {Color? backgroundColor}) async {
   if (AppNavigation.context.mounted) {
     showDialog(
       context: AppNavigation.context,
@@ -43,7 +43,7 @@ Future<void> showToast(String message) async {
               constraints: BoxConstraints(maxWidth: 0.2.sw, maxHeight: 0.1.sh),
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: backgroundColor ?? Colors.red,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(

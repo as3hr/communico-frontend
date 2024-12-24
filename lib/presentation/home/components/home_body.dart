@@ -5,7 +5,6 @@ import 'package:communico_frontend/presentation/home/components/header/header.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:universal_html/html.dart';
 
 import '../../../di/service_locator.dart';
 import '../../../helpers/styles/app_colors.dart';
@@ -55,13 +54,7 @@ class HomeBody extends StatelessWidget {
                       ),
                     ],
                     5.verticalSpace,
-                    Header(
-                        userName: cubit.user!.username,
-                        logOut: () {
-                          Navigator.pop(context);
-                          cubit.closeStates();
-                          window.localStorage['authToken'] = "";
-                        }),
+                    const Header(),
                     5.verticalSpace,
                     const Expanded(
                       child: TabBarView(

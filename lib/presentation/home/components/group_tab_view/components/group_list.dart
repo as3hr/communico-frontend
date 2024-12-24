@@ -110,7 +110,6 @@ class _GroupListState extends State<GroupList> {
                           offset: const Offset(0, 4),
                         ),
                       ],
-                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: groups.isEmpty
                         ? const Center(
@@ -134,70 +133,66 @@ class _GroupListState extends State<GroupList> {
                               final message = group.messages.isNotEmpty
                                   ? group.messages.last
                                   : null;
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    cubit.updateCurrentGroup(group).then((_) {
-                                      if (context.mounted) {
-                                        if (context.isMobile ||
-                                            context.isTablet) {
-                                          cubit.openChatRoom(group);
-                                        }
+                              return IconButton(
+                                onPressed: () {
+                                  cubit.updateCurrentGroup(group).then((_) {
+                                    if (context.mounted) {
+                                      if (context.isMobile ||
+                                          context.isTablet) {
+                                        cubit.openChatRoom(group);
                                       }
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              group.name,
-                                              style: Styles.mediumStyle(
-                                                fontSize: 15,
-                                                color: context
-                                                    .colorScheme.onPrimary,
-                                                family: FontFamily.kanit,
-                                              ),
-                                            ),
-                                            const Spacer(),
-                                            2.horizontalSpace,
-                                            Text(
-                                              formatDate(message?.timeStamp ??
-                                                  DateTime.now()),
-                                              style: Styles.mediumStyle(
-                                                fontSize: 13,
-                                                color: context
-                                                    .colorScheme.onPrimary,
-                                                family: FontFamily.montserrat,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        if (message?.text.isNotEmpty ??
-                                            false) ...[
-                                          1.verticalSpace,
+                                    }
+                                  });
+                                },
+                                icon: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
                                           Text(
-                                            message?.text ?? "",
-                                            style: TextStyle(
-                                              overflow: TextOverflow.ellipsis,
+                                            group.name,
+                                            style: Styles.mediumStyle(
                                               fontSize: 15,
                                               color:
                                                   context.colorScheme.onPrimary,
-                                              fontFamily: "Montserrat",
+                                              family: FontFamily.kanit,
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          2.horizontalSpace,
+                                          Text(
+                                            formatDate(message?.timeStamp ??
+                                                DateTime.now()),
+                                            style: Styles.mediumStyle(
+                                              fontSize: 13,
+                                              color:
+                                                  context.colorScheme.onPrimary,
+                                              family: FontFamily.montserrat,
                                             ),
                                           ),
                                         ],
+                                      ),
+                                      if (message?.text.isNotEmpty ??
+                                          false) ...[
+                                        1.verticalSpace,
+                                        Text(
+                                          message?.text ?? "",
+                                          style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontSize: 15,
+                                            color:
+                                                context.colorScheme.onPrimary,
+                                            fontFamily: "Montserrat",
+                                          ),
+                                        ),
                                       ],
-                                    ),
+                                    ],
                                   ),
                                 ),
                               );

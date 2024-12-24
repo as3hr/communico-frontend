@@ -34,7 +34,7 @@ class EmptyAi extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        5.verticalSpace,
         Text(
           "Tip: Feel free to ask anything or explore ideas!",
           textAlign: TextAlign.center,

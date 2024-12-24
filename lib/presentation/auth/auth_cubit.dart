@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:communico_frontend/presentation/auth/auth_navigator.dart';
 import 'package:communico_frontend/presentation/auth/auth_state.dart';
+import 'package:flutter/material.dart';
 
 import '../../domain/repositories/user_repository.dart';
 import '../../helpers/utils.dart';
@@ -19,10 +20,11 @@ class AuthCubit extends Cubit<AuthState> {
             (error) {
               if (error.error.trim() == "Password Protected!") {
                 emit(state.copyWith(isLoading: false, passwordProtected: true));
+                showToast("This account is Password Protected!");
               } else {
                 emit(state.copyWith(isLoading: false));
+                showToast(error.error);
               }
-              showToast(error.error);
             },
             (user) async {
               emit(state.copyWith(isLoading: false, user: user));
@@ -31,4 +33,27 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
   }
+
+  void updatePassword(BuildContext context) {
+    emit(state.copyWith(isLoading: true));
+    userRepository.updatePassword(password: state.password!).then(
+          (response) => response.fold(
+            (error) {
+              emit(state.copyWith(isLoading: false));
+              showToast(error.error);
+              Navigator.pop(context);
+            },
+            (user) {
+              emit(state.copyWith(isLoading: false));
+              Navigator.pop(context);
+              showToast(
+                "Password Updated Successfully!",
+                backgroundColor: Colors.blue,
+              );
+            },
+          ),
+        );
+  }
+
+  empty() => emit(AuthState.empty());
 }

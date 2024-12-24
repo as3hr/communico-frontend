@@ -61,6 +61,7 @@ class GroupCubit extends Cubit<GroupState> {
       onSendMessage: () {
         sendMessage();
       },
+      isGroup: true,
       scrollController: group.messagePagination.scrollController,
       scrollAndCall: () {
         scrollAndCallMessages(group);

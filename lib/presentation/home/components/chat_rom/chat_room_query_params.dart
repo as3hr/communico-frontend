@@ -9,10 +9,12 @@ class ChatRoomQueryParams {
   final void Function() scrollAndCall;
   final TextEditingController textController;
   final ScrollController scrollController;
+  final void Function()? onEndDrawerChanged;
   final bool isGroup;
   const ChatRoomQueryParams({
     required this.messages,
     required this.onSendMessage,
+    this.onEndDrawerChanged,
     required this.roomTitle,
     required this.textController,
     required this.scrollAndCall,

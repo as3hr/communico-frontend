@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_streaming_message.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/empty_ai.dart';
@@ -28,7 +26,6 @@ class AiChatRoom extends StatelessWidget {
     return BlocBuilder<AiCubit, AiState>(
       bloc: cubit,
       builder: (context, state) {
-        log("INITIALIZED: ${state.aiMessageInitialized}");
         return SizedBox(
           height: 0.9.sh,
           child: Column(
@@ -90,7 +87,6 @@ class AiChatRoom extends StatelessWidget {
                                   StreamBuilder<String>(
                                     stream: state.controller.stream,
                                     builder: (context, snapshot) {
-                                      log("CONNECTION STATE: ${snapshot.connectionState}");
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
                                         return const LoadingMessage();

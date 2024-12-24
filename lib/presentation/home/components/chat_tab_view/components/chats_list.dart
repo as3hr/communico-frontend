@@ -136,64 +136,60 @@ class _ChatsListState extends State<ChatsList> {
                               final participant = chat.participants.firstWhere(
                                   (participant) =>
                                       participant.userId != cubit.user!.id);
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    cubit.updateCurrentChat(chat).then((_) {
-                                      if (context.mounted) {
-                                        if (context.isMobile ||
-                                            context.isTablet) {
-                                          cubit.openChatRoom(chat);
-                                        }
+                              return IconButton(
+                                onPressed: () {
+                                  cubit.updateCurrentChat(chat).then((_) {
+                                    if (context.mounted) {
+                                      if (context.isMobile ||
+                                          context.isTablet) {
+                                        cubit.openChatRoom(chat);
                                       }
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              participant.user?.username ?? "",
-                                              style: Styles.mediumStyle(
-                                                fontSize: 15,
-                                                color: context
-                                                    .colorScheme.onPrimary,
-                                                family: FontFamily.kanit,
-                                              ),
+                                    }
+                                  });
+                                },
+                                icon: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            participant.user?.username ?? "",
+                                            style: Styles.mediumStyle(
+                                              fontSize: 15,
+                                              color:
+                                                  context.colorScheme.onPrimary,
+                                              family: FontFamily.kanit,
                                             ),
-                                            const Spacer(),
-                                            2.horizontalSpace,
-                                            Text(
-                                              formatDate(message.timeStamp),
-                                              style: Styles.mediumStyle(
-                                                fontSize: 13,
-                                                color: context
-                                                    .colorScheme.onPrimary,
-                                                family: FontFamily.montserrat,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        1.verticalSpace,
-                                        Text(
-                                          message.text,
-                                          style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 15,
-                                            color:
-                                                context.colorScheme.onPrimary,
-                                            fontFamily: "Montserrat",
                                           ),
+                                          const Spacer(),
+                                          2.horizontalSpace,
+                                          Text(
+                                            formatDate(message.timeStamp),
+                                            style: Styles.mediumStyle(
+                                              fontSize: 13,
+                                              color:
+                                                  context.colorScheme.onPrimary,
+                                              family: FontFamily.montserrat,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      1.verticalSpace,
+                                      Text(
+                                        message.text,
+                                        style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 15,
+                                          color: context.colorScheme.onPrimary,
+                                          fontFamily: "Montserrat",
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
