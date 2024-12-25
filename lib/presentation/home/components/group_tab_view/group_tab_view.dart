@@ -23,6 +23,8 @@ class GroupTabView extends StatelessWidget {
   const GroupTabView({super.key});
 
   static final cubit = getIt<GroupCubit>();
+  static final replyTo = ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCubit, GroupState>(
@@ -58,15 +60,16 @@ class GroupTabView extends StatelessWidget {
                       Expanded(
                           flex: 5,
                           child: ChatRoom(
+                            replyTo: replyTo,
+                            onReply: (entity, show) {
+                              cubit.triggerReplyTo(entity, show);
+                            },
                             messageActionsParams: MessageActionsParams(
                               onDelete: (entity) async {
                                 if (await showConfirmationDialog(
                                     "Are you sure you want to delete this message permanantly?")) {
                                   cubit.deleteMessage(entity);
                                 }
-                              },
-                              onReply: (entity) {
-                                cubit.generateReplyTo(entity);
                               },
                               onUpdate: (entity) {
                                 showDialog(
@@ -93,6 +96,7 @@ class GroupTabView extends StatelessWidget {
                               isGroup: true,
                               onSendMessage: () {
                                 cubit.sendMessage();
+                                replyTo.value = false;
                               },
                               onEndDrawerChanged: () {
                                 cubit.toggleGroupField(

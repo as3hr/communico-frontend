@@ -26,6 +26,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case RouteName.chatRoom:
       return getRoute(
           ChatRoom(
+            replyTo: ValueNotifier(false),
+            onReply: (message, show) {},
             messageActionsParams: args["messageActionsParams"],
             params: args["params"],
           ),

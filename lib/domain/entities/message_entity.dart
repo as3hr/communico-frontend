@@ -12,9 +12,11 @@ class MessageEntity {
   int userId;
   UserEntity? sender;
   ChatEntity? chat;
+  MessageEntity? replyTo;
   GroupEntity? group;
   int? chatId;
   int? groupId;
+  int? replyToId;
   bool isAi; // for identifying ai messages in room
   ValueNotifier<bool> isHovered; // for identifying hoverState in chatRoom
 
@@ -30,6 +32,8 @@ class MessageEntity {
     this.groupId,
     this.chatId,
     this.sender,
+    this.replyTo,
+    this.replyToId,
   })  : timeStamp = timeStamp ?? DateTime.now(),
         isHovered = isHovered ?? ValueNotifier<bool>(false);
 
@@ -43,6 +47,8 @@ class MessageEntity {
     GroupEntity? group,
     int? chatId,
     int? groupId,
+    int? replyToId,
+    MessageEntity? replyTo,
     bool? isAi,
     ValueNotifier<bool>? isHovered,
   }) {
@@ -58,6 +64,8 @@ class MessageEntity {
       groupId: groupId ?? this.groupId,
       sender: sender ?? this.sender,
       isHovered: isHovered ?? this.isHovered,
+      replyTo: replyTo ?? this.replyTo,
+      replyToId: replyToId ?? this.replyToId,
     );
   }
 

@@ -8,15 +8,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../helpers/styles/styles.dart';
 import '../../../../helpers/utils.dart';
 import 'message_actions_params.dart';
+import 'reply_to_box.dart';
 
 class OtherMessage extends StatelessWidget {
   const OtherMessage({
     super.key,
     required this.message,
     required this.messageActionsParams,
+    required this.onReplyTap,
+    required this.onReplySelection,
   });
   final MessageEntity message;
   final MessageActionsParams messageActionsParams;
+  final void Function() onReplyTap;
+  final void Function() onReplySelection;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +64,14 @@ class OtherMessage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (message.replyTo != null)
+                        ReplyToBox(
+                          message: message.replyTo!,
+                          onTap: () {
+                            onReplyTap.call();
+                          },
+                          color: context.colorScheme.secondary,
+                        ),
                       Text(
                         message.sender?.username ?? "",
                         style: Styles.mediumStyle(
@@ -86,6 +99,7 @@ class OtherMessage extends StatelessWidget {
                         return MessageActions(
                           params: messageActionsParams,
                           message: message,
+                          onReplyTap: onReplySelection,
                           isOtherMessage: true,
                         );
                       }

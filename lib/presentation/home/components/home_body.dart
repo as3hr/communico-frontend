@@ -44,7 +44,7 @@ class HomeBody extends StatelessWidget {
                             "playing ${state.currentStation!.title}",
                             style: const TextStyle(
                               fontSize: 15,
-                              color: AppColor.violet,
+                              color: AppColor.white,
                               fontFamily: "Kanit",
                               fontWeight: FontWeight.bold,
                               fontStyle: FontStyle.italic,

@@ -80,7 +80,14 @@ class GroupCubit extends Cubit<GroupState> {
     Navigator.pop(context);
   }
 
-  void generateReplyTo(MessageEntity entity) {}
+  void triggerReplyTo(MessageEntity? entity, bool show) {
+    if (show) {
+      state.currentReplyTo = entity;
+    } else {
+      state.currentReplyTo = null;
+    }
+    emit(state.copyWith(currentReplyTo: entity));
+  }
 
   openChatRoom(GroupEntity group) {
     final params = ChatRoomQueryParams(
@@ -97,8 +104,7 @@ class GroupCubit extends Cubit<GroupState> {
       messages: group.messagePagination.data,
     );
 
-    final messageActionsParams =
-        MessageActionsParams(onDelete: (messageId) {}, onReply: (messageId) {});
+    final messageActionsParams = MessageActionsParams(onDelete: (messageId) {});
 
     navigator.goToChatRoom(params, messageActionsParams);
   }
@@ -113,11 +119,17 @@ class GroupCubit extends Cubit<GroupState> {
       MessageEntity message = MessageEntity(
         text: state.groupMessageController.text,
         userId: user!.id,
+        sender: user,
       );
       message.groupId = state.currentGroup.id;
+      if (state.currentReplyTo != null) {
+        message.replyTo = state.currentReplyTo;
+        message.replyToId = state.currentReplyTo!.id;
+      }
       appendMessageToGroup(message);
       emitMessage(message);
       state.groupMessageController.text = "";
+      emit(state.copyWith(currentReplyTo: null));
     }
   }
 

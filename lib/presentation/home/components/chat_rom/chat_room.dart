@@ -1,4 +1,7 @@
+import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/styles/app_colors.dart';
+import 'package:communico_frontend/helpers/styles/styles.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_footer.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_header.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
@@ -19,15 +22,20 @@ class ChatRoom extends StatefulWidget {
     super.key,
     required this.params,
     required this.messageActionsParams,
+    required this.onReply,
+    required this.replyTo,
   });
   final ChatRoomQueryParams params;
   final MessageActionsParams messageActionsParams;
+  final void Function(MessageEntity? message, bool show) onReply;
+  final ValueNotifier<bool> replyTo;
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  late MessageEntity currentReplyToMessage;
   final cubit = getIt<HomeCubit>();
   @override
   void initState() {
@@ -43,6 +51,14 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
+  void animateToTargetMessage(int id) {
+    widget.params.scrollController.animateTo(
+      id.toDouble(),
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeIn,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,77 +72,215 @@ class _ChatRoomState extends State<ChatRoom> {
           bloc: cubit,
           builder: (context, state) {
             return Material(
-              child: SizedBox(
-                height: 0.9.sh,
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 7,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.primary,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 6,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        constraints: BoxConstraints(
-                          maxHeight: 0.6.sh,
-                        ),
-                        child: Stack(
-                          children: [
-                            if (state.currentBackground?.image.isNotEmpty ??
-                                false)
-                              Positioned.fill(
-                                child: Image.asset(
-                                  state.currentBackground!.image,
-                                  fit: BoxFit.cover,
-                                ),
+              child: GestureDetector(
+                onTap: () {
+                  widget.replyTo.value = false;
+                  widget.onReply(null, false);
+                },
+                child: SizedBox(
+                  height: 0.9.sh,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: context.colorScheme.primary,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 6,
+                                offset: const Offset(0, 4),
                               ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ChatRoomHeader(params: widget.params),
-                                Expanded(
-                                  child: ListView.builder(
-                                    reverse: true,
-                                    controller: widget.params.scrollController,
-                                    itemCount: widget.params.messages.length,
-                                    itemBuilder: (context, index) {
-                                      final message =
-                                          widget.params.messages[index];
-                                      final isMyMessage =
-                                          cubit.isMyMessage(message);
-                                      return isMyMessage
-                                          ? MyMessage(
-                                              messageActionsParams:
-                                                  widget.messageActionsParams,
-                                              message: message,
-                                              key: ValueKey(index.toString()))
-                                          : OtherMessage(
-                                              messageActionsParams:
-                                                  widget.messageActionsParams,
-                                              message: message,
-                                              key: ValueKey(index.toString()));
-                                    },
+                            ],
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          constraints: BoxConstraints(
+                            maxHeight: 0.6.sh,
+                          ),
+                          child: Stack(
+                            children: [
+                              if (state.currentBackground?.image.isNotEmpty ??
+                                  false)
+                                Positioned.fill(
+                                  child: Image.asset(
+                                    state.currentBackground!.image,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ],
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ChatRoomHeader(params: widget.params),
+                                  Expanded(
+                                    child: ListView.builder(
+                                      reverse: true,
+                                      controller:
+                                          widget.params.scrollController,
+                                      itemCount: widget.params.messages.length,
+                                      itemBuilder: (context, index) {
+                                        final message =
+                                            widget.params.messages[index];
+                                        final isMyMessage =
+                                            cubit.isMyMessage(message);
+                                        return isMyMessage
+                                            ? MyMessage(
+                                                messageActionsParams:
+                                                    widget.messageActionsParams,
+                                                message: message,
+                                                onReplySelection: () {
+                                                  widget.replyTo.value = true;
+                                                  currentReplyToMessage =
+                                                      message;
+                                                  widget.onReply(message, true);
+                                                },
+                                                onReplyTap: () {
+                                                  animateToTargetMessage(
+                                                      message.id);
+                                                },
+                                                key: ValueKey(
+                                                    message.id.toString()))
+                                            : OtherMessage(
+                                                messageActionsParams:
+                                                    widget.messageActionsParams,
+                                                onReplySelection: () {
+                                                  widget.replyTo.value = true;
+                                                  currentReplyToMessage =
+                                                      message;
+                                                  widget.onReply(message, true);
+                                                },
+                                                onReplyTap: () {
+                                                  animateToTargetMessage(
+                                                      message.id);
+                                                },
+                                                message: message,
+                                                key: ValueKey(
+                                                  message.id.toString(),
+                                                ));
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ValueListenableBuilder(
+                                valueListenable: widget.replyTo,
+                                builder: (context, value, _) {
+                                  return Positioned(
+                                    bottom: 0,
+                                    child: AnimatedSlide(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      offset: value
+                                          ? Offset.zero
+                                          : const Offset(0, 1),
+                                      child: value
+                                          ? Container(
+                                              width: 0.5.sw,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 8),
+                                              decoration: BoxDecoration(
+                                                color: context
+                                                    .colorScheme.secondary,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.1),
+                                                    blurRadius: 4,
+                                                    offset: const Offset(0, -2),
+                                                  ),
+                                                ],
+                                                borderRadius:
+                                                    const BorderRadius.vertical(
+                                                  top: Radius.circular(16),
+                                                ),
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Replying to ${currentReplyToMessage.sender!.username}',
+                                                        style: Styles.boldStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                AppColor.white,
+                                                            family: FontFamily
+                                                                .montserrat),
+                                                      ),
+                                                      const Spacer(),
+                                                      IconButton(
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        constraints:
+                                                            const BoxConstraints(),
+                                                        icon: const Icon(
+                                                          Icons.close,
+                                                          size: 20,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        onPressed: () {
+                                                          widget.replyTo.value =
+                                                              false;
+                                                          widget.onReply(
+                                                              null, false);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: context
+                                                          .colorScheme.primary,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            currentReplyToMessage
+                                                                .text,
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: Styles.mediumStyle(
+                                                                fontSize: 12,
+                                                                color: AppColor
+                                                                    .white,
+                                                                family: FontFamily
+                                                                    .montserrat),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : const SizedBox.shrink(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    2.verticalSpace,
-                    ChatRoomFooter(
-                      textController: widget.params.textController,
-                      onSendMessage: widget.params.onSendMessage,
-                    ),
-                  ],
+                      2.verticalSpace,
+                      ChatRoomFooter(
+                        textController: widget.params.textController,
+                        onSendMessage: widget.params.onSendMessage,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

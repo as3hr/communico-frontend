@@ -23,6 +23,7 @@ class ChatTabView extends StatelessWidget {
   const ChatTabView({super.key});
 
   static final cubit = getIt<ChatCubit>();
+  static final replyTo = ValueNotifier<bool>(false);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatState>(
@@ -64,15 +65,16 @@ class ChatTabView extends StatelessWidget {
                       Expanded(
                           flex: 5,
                           child: ChatRoom(
+                            replyTo: replyTo,
+                            onReply: (entity, show) {
+                              cubit.triggerReplyTo(entity, show);
+                            },
                             messageActionsParams: MessageActionsParams(
                               onDelete: (entity) async {
                                 if (await showConfirmationDialog(
                                     "Are you sure you want to delete this message permanantly?")) {
                                   cubit.deleteMessage(entity);
                                 }
-                              },
-                              onReply: (entity) {
-                                cubit.generateReplyTo(entity);
                               },
                               onUpdate: (entity) {
                                 showDialog(
@@ -98,6 +100,7 @@ class ChatTabView extends StatelessWidget {
                             params: ChatRoomQueryParams(
                               onSendMessage: () {
                                 cubit.sendMessage();
+                                replyTo.value = false;
                               },
                               scrollController: state.currentChat
                                   .messagePagination.scrollController,

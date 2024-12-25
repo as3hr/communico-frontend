@@ -1,3 +1,4 @@
+import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../domain/entities/chat_entity.dart';
@@ -11,10 +12,12 @@ class ChatState {
   List<ChatEntity> chatSearchList;
   bool messageLoading;
   bool chatLoading;
+  MessageEntity? currentReplyTo;
 
   ChatState({
     this.chatLoading = false,
     this.messageLoading = false,
+    this.currentReplyTo,
     required this.messageController,
     required this.chatPagination,
     required this.chatSearchList,
@@ -37,6 +40,7 @@ class ChatState {
     bool? isSearching,
     bool? chatLoading,
     bool? messageLoading,
+    MessageEntity? currentReplyTo,
   }) =>
       ChatState(
         chatSearchList: chatSearchList ?? this.chatSearchList,
@@ -46,5 +50,6 @@ class ChatState {
         currentChat: currentChat ?? this.currentChat,
         chatLoading: chatLoading ?? this.chatLoading,
         messageLoading: messageLoading ?? this.messageLoading,
+        currentReplyTo: currentReplyTo ?? this.currentReplyTo,
       );
 }

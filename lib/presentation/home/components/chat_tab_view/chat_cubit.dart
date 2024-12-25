@@ -67,8 +67,7 @@ class ChatCubit extends Cubit<ChatState> {
       messages: chat.messagePagination.data,
     );
 
-    final messageActionsParams =
-        MessageActionsParams(onDelete: (messageId) {}, onReply: (messageId) {});
+    final messageActionsParams = MessageActionsParams(onDelete: (messageId) {});
 
     navigator.goToChatRoom(params, messageActionsParams);
   }
@@ -139,11 +138,17 @@ class ChatCubit extends Cubit<ChatState> {
       MessageEntity message = MessageEntity(
         text: state.messageController.text,
         userId: user!.id,
+        sender: user,
       );
       message.chatId = state.currentChat.id;
+      if (state.currentReplyTo != null) {
+        message.replyTo = state.currentReplyTo;
+        message.replyToId = state.currentReplyTo!.id;
+      }
       appendMessageToChat(message);
       emitMessage(message);
       state.messageController.text = "";
+      emit(state.copyWith(currentReplyTo: null));
     }
   }
 
@@ -169,7 +174,14 @@ class ChatCubit extends Cubit<ChatState> {
     Navigator.pop(context);
   }
 
-  void generateReplyTo(MessageEntity entity) {}
+  void triggerReplyTo(MessageEntity? entity, bool show) {
+    if (show) {
+      state.currentReplyTo = entity;
+    } else {
+      state.currentReplyTo = null;
+    }
+    emit(state.copyWith(currentReplyTo: entity));
+  }
 
   emitMessage(MessageEntity message) {
     socket.emit(

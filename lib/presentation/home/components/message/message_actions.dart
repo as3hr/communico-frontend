@@ -11,11 +11,13 @@ class MessageActions extends StatelessWidget {
     super.key,
     required this.params,
     required this.message,
+    required this.onReplyTap,
     this.isOtherMessage = false,
   });
   final MessageActionsParams params;
   final MessageEntity message;
   final bool isOtherMessage;
+  final void Function()? onReplyTap;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class MessageActions extends StatelessWidget {
         2.horizontalSpace,
         IconButton(
           onPressed: () {
-            params.onReply.call(message);
+            onReplyTap?.call();
           },
           icon: const Icon(Icons.reply),
           color: AppColor.grey,

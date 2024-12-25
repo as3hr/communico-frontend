@@ -1,6 +1,7 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
+import 'package:communico_frontend/presentation/home/components/message/reply_to_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,10 +15,14 @@ class MyMessage extends StatelessWidget {
     required this.message,
     this.showActions = true,
     this.messageActionsParams,
+    this.onReplySelection,
+    this.onReplyTap,
   });
   final MessageEntity message;
-  final bool showActions;
   final MessageActionsParams? messageActionsParams;
+  final bool showActions;
+  final void Function()? onReplyTap;
+  final void Function()? onReplySelection;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,7 @@ class MyMessage extends StatelessWidget {
                       return MessageActions(
                         params: messageActionsParams!,
                         message: message,
+                        onReplyTap: onReplySelection,
                       );
                     }
                     return const SizedBox();
@@ -70,13 +76,25 @@ class MyMessage extends StatelessWidget {
                         bottomLeft: Radius.circular(12),
                         bottomRight: Radius.zero,
                       )),
-                  child: Text(
-                    message.text,
-                    style: Styles.mediumStyle(
-                      fontSize: 14,
-                      color: AppColor.white,
-                      family: FontFamily.kanit,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (message.replyTo != null)
+                        ReplyToBox(
+                            message: message.replyTo!,
+                            onTap: () {
+                              onReplyTap?.call();
+                            },
+                            color: const Color(0xff9933FF).withOpacity(0.5)),
+                      Text(
+                        message.text,
+                        style: Styles.mediumStyle(
+                          fontSize: 14,
+                          color: AppColor.white,
+                          family: FontFamily.kanit,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 1.verticalSpace,
