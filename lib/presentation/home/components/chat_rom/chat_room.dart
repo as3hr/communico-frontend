@@ -136,7 +136,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                                 },
                                                 onReplyTap: () {
                                                   animateToTargetMessage(
-                                                      message.id);
+                                                      message.replyTo!.id);
                                                 },
                                                 key: ValueKey(
                                                     message.id.toString()))
@@ -151,7 +151,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                                 },
                                                 onReplyTap: () {
                                                   animateToTargetMessage(
-                                                      message.id);
+                                                      message.replyTo!.id);
                                                 },
                                                 message: message,
                                                 key: ValueKey(
