@@ -65,45 +65,50 @@ class AiChatRoom extends StatelessWidget {
                           }),
                       state.messages.isEmpty
                           ? const EmptyAi()
-                          : Column(
-                              children: [
-                                Expanded(
-                                  child: ListView.builder(
-                                    reverse: true,
-                                    itemCount: state.messages.length,
-                                    itemBuilder: (context, index) {
-                                      final message = state.messages[index];
-                                      return message.isAi
-                                          ? AiMessage(
-                                              message: message,
-                                              key: ValueKey(index.toString()))
-                                          : MyMessage(
-                                              showActions: false,
-                                              message: message,
-                                              key: ValueKey(index.toString()));
-                                    },
-                                  ),
-                                ),
-                                if (state.aiMessageInitialized)
-                                  StreamBuilder<String>(
-                                    stream: state.controller.stream,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const LoadingMessage();
-                                      } else if (snapshot.hasError) {
-                                        return Text('Error: ${snapshot.error}');
-                                      } else if (snapshot.hasData) {
-                                        return AiStreamingMessage(
-                                          text: snapshot.data!,
-                                        );
-                                      } else {
-                                        return const Text('No response');
-                                      }
-                                    },
-                                  ),
-                              ],
-                            ),
+                          : ListView.builder(
+                              reverse: true,
+                              itemCount: state.messages.length,
+                              itemBuilder: (context, index) {
+                                final message = state.messages[index];
+                                return message.aiStream
+                                    ? state.isLoading
+                                        ? const Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: LoadingMessage(),
+                                          )
+                                        : StreamBuilder<String>(
+                                            stream: state.controller.stream,
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const SizedBox();
+                                              } else if (snapshot.hasError) {
+                                                return const SizedBox();
+                                              } else if (snapshot.hasData) {
+                                                return AiStreamingMessage(
+                                                  text: snapshot.data!,
+                                                );
+                                              } else {
+                                                return const Text(
+                                                    'No response');
+                                              }
+                                            },
+                                          )
+                                    : message.isAi
+                                        ? AiMessage(
+                                            message: message,
+                                            key: ValueKey(
+                                              index.toString(),
+                                            ),
+                                          )
+                                        : MyMessage(
+                                            showActions: false,
+                                            message: message,
+                                            key: ValueKey(
+                                              index.toString(),
+                                            ),
+                                          );
+                              }),
                     ],
                   ),
                 ),

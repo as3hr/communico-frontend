@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/domain/failures/message_failure.dart';
 import 'package:communico_frontend/domain/repositories/message_repository.dart';
 import 'package:communico_frontend/network/network_repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 
 import '../../domain/model/message_json.dart';
 import '../../domain/model/paginate.dart';
@@ -37,15 +38,6 @@ class ApiMessageRepository implements MessageRepository {
 
   @override
   Stream<Either<MessageFailure, String>> getAiResponse(String prompt) async* {
-    final stream = Gemini.instance
-        .promptStream(parts: [Part.text(prompt)], model: "gemini-1.5-flash-8b");
-    await for (var data in stream) {
-      dynamic output = data?.content?.parts?.first;
-      if (output != null) {
-        yield right(output.text.toString());
-      }
-    }
-
     // final stream = Gemini.instance
     //     .promptStream(parts: [Part.text(prompt)], model: "gemini-1.5-flash-8b");
     // await for (var data in stream) {

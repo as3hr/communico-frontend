@@ -17,11 +17,13 @@ class MessageEntity {
   int? chatId;
   int? groupId;
   int? replyToId;
-  bool isAi; // for identifying ai messages in room
+  bool isAi; // for identifying ai completed messages in room
+  bool aiStream;
   ValueNotifier<bool> isHovered; // for identifying hoverState in chatRoom
 
   MessageEntity({
     this.id = 0,
+    this.aiStream = false,
     ValueNotifier<bool>? isHovered,
     required this.text,
     this.isAi = false,
@@ -51,6 +53,7 @@ class MessageEntity {
     MessageEntity? replyTo,
     bool? isAi,
     ValueNotifier<bool>? isHovered,
+    bool? aiStream,
   }) {
     return MessageEntity(
       id: id ?? this.id,
@@ -66,6 +69,7 @@ class MessageEntity {
       isHovered: isHovered ?? this.isHovered,
       replyTo: replyTo ?? this.replyTo,
       replyToId: replyToId ?? this.replyToId,
+      aiStream: aiStream ?? this.aiStream,
     );
   }
 

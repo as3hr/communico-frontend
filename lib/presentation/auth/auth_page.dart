@@ -1,4 +1,3 @@
-import 'package:communico_frontend/helpers/styles/app_images.dart';
 import 'package:communico_frontend/helpers/widgets/app_button.dart';
 import 'package:communico_frontend/helpers/widgets/background.dart';
 import 'package:communico_frontend/helpers/widgets/input_field.dart';
@@ -11,26 +10,11 @@ import '../../di/service_locator.dart';
 import '../../helpers/styles/app_colors.dart';
 import '../../helpers/styles/styles.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
 
-  @override
-  State<AuthPage> createState() => _AuthPageState();
-}
-
-class _AuthPageState extends State<AuthPage> {
-  final cubit = getIt<AuthCubit>();
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    loadImages();
-  }
-
-  loadImages() async {
-    await AppImages.preCacheImages(context);
-  }
+  static final cubit = getIt<AuthCubit>();
+  static final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

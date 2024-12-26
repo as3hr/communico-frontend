@@ -52,8 +52,8 @@ dependencies:
   flutter_switch: ^0.3.2
   intl: ^0.19.0
   one_clock: ^2.0.1
-  flutter_gemini: ^3.0.0
   flutter_dotenv: ^5.2.1
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
