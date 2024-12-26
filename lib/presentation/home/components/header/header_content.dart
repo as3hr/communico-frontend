@@ -210,7 +210,6 @@ class _HeaderContentState extends State<HeaderContent> {
                         return BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                           child: AnimatedBanner(
-                            backgroundColor: Colors.black,
                             content: RadioBanner(
                               controller: controller,
                             ),

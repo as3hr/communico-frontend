@@ -68,6 +68,7 @@ class _ChatRoomState extends State<ChatRoom> {
     return Scaffold(
       endDrawer: widget.params.isGroup ? const GroupRoomDetail() : null,
       drawerScrimColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
       onEndDrawerChanged: (isOpened) {
         widget.params.onEndDrawerChanged?.call();
       },
@@ -76,6 +77,7 @@ class _ChatRoomState extends State<ChatRoom> {
           bloc: cubit,
           builder: (context, state) {
             return Material(
+              color: Colors.transparent,
               child: GestureDetector(
                 onTap: () {
                   widget.replyTo.value = false;
@@ -187,8 +189,8 @@ class _ChatRoomState extends State<ChatRoom> {
                                                       horizontal: 16,
                                                       vertical: 8),
                                               decoration: BoxDecoration(
-                                                color: context
-                                                    .colorScheme.secondary,
+                                                color:
+                                                    context.colorScheme.primary,
                                                 boxShadow: [
                                                   BoxShadow(
                                                     color: Colors.black
@@ -241,8 +243,8 @@ class _ChatRoomState extends State<ChatRoom> {
                                                     padding:
                                                         const EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
-                                                      color: context
-                                                          .colorScheme.primary,
+                                                      color: context.colorScheme
+                                                          .secondary,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8),
@@ -283,7 +285,12 @@ class _ChatRoomState extends State<ChatRoom> {
                       2.verticalSpace,
                       ChatRoomFooter(
                         textController: widget.params.textController,
-                        onSendMessage: widget.params.onSendMessage,
+                        onSendMessage: () {
+                          widget.params.onSendMessage.call();
+                          final messages = widget.params.messages;
+                          final index = messages.lastIndexOf(messages.first);
+                          itemScrollController.jumpTo(index: index);
+                        },
                       ),
                     ],
                   ),

@@ -60,7 +60,7 @@ class _MessageUpdationBannerState extends State<MessageUpdationBanner> {
                     const SizedBox(height: 20),
                     AppButton(
                       backgroundColor:
-                          (value) ? AppColor.violet : AppColor.black3,
+                          (value) ? AppColor.styleColor : AppColor.black3,
                       title: "Update Message",
                       onTap: (value)
                           ? () {

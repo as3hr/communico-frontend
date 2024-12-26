@@ -4,10 +4,8 @@ class AnimatedBanner extends StatefulWidget {
   const AnimatedBanner({
     super.key,
     required this.content,
-    this.backgroundColor,
   });
   final Widget content;
-  final Color? backgroundColor;
   @override
   State<AnimatedBanner> createState() => _AnimatedImageBannerState();
 }
@@ -40,7 +38,7 @@ class _AnimatedImageBannerState extends State<AnimatedBanner>
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: AlertDialog(
-          backgroundColor: widget.backgroundColor,
+          backgroundColor: Colors.transparent,
           insetPadding: const EdgeInsets.symmetric(horizontal: 30),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 0, vertical: 10),

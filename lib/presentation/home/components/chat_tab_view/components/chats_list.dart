@@ -50,6 +50,7 @@ class _ChatsListState extends State<ChatsList> {
             : state.chatPagination.data;
 
         return Scaffold(
+          backgroundColor: Colors.transparent,
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 30),
             child: FloatingActionButton(
@@ -68,7 +69,7 @@ class _ChatsListState extends State<ChatsList> {
                   },
                 );
               },
-              backgroundColor: AppColor.violet,
+              backgroundColor: AppColor.styleColor,
               child: const Icon(
                 Icons.add,
                 color: AppColor.white,

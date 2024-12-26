@@ -22,7 +22,18 @@ class ChatCreationForm extends StatelessWidget {
     return BlocBuilder<ChatCreationCubit, ChatCreationState>(
       bloc: cubit,
       builder: (context, state) {
-        return SizedBox(
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                context.colorScheme.primary,
+                context.colorScheme.secondary
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
           width: 0.5.sw,
           height: 0.4.sh,
           child: PopScope(
@@ -63,6 +74,7 @@ class ChatCreationMemberSelection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
+              2.verticalSpace,
               InputField(
                 hintText: "search by username",
                 onChanged: (val) {
@@ -99,7 +111,7 @@ class ChatCreationMemberSelection extends StatelessWidget {
               AppButton(
                 title: "Next",
                 backgroundColor: state.selectedUser.id != 0
-                    ? AppColor.violet
+                    ? AppColor.styleColor
                     : AppColor.black3,
                 onTap: state.selectedUser.id != 0
                     ? () {
@@ -134,6 +146,7 @@ class MessageCreation extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              2.verticalSpace,
               Row(
                 children: [
                   2.horizontalSpace,
@@ -169,7 +182,7 @@ class MessageCreation extends StatelessWidget {
                       }
                     : null,
                 backgroundColor: state.message.isNotEmpty
-                    ? AppColor.violet
+                    ? AppColor.styleColor
                     : AppColor.black3,
               ),
               const SizedBox(height: 20),

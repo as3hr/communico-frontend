@@ -12,7 +12,7 @@ class AppButton extends StatelessWidget {
     this.padding,
     this.width,
     this.height,
-    this.backgroundColor = AppColor.violet,
+    this.backgroundColor = AppColor.styleColor,
   });
   final String title;
   final void Function()? onTap;

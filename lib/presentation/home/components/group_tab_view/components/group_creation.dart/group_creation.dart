@@ -22,7 +22,18 @@ class GroupCreationForm extends StatelessWidget {
     return BlocBuilder<GroupCreationCubit, GroupCreationState>(
       bloc: cubit,
       builder: (context, state) {
-        return SizedBox(
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                context.colorScheme.primary,
+                context.colorScheme.secondary
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
           width: 0.5.sw,
           height: 0.4.sh,
           child: PopScope(
@@ -57,6 +68,7 @@ class GroupCreationMemberSelection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
+              2.verticalSpace,
               InputField(
                 hintText: "search by username",
                 onChanged: (val) {
@@ -124,7 +136,7 @@ class GroupCreationMemberSelection extends StatelessWidget {
               AppButton(
                 title: "Next",
                 backgroundColor: state.selectedUsers.isNotEmpty
-                    ? AppColor.violet
+                    ? AppColor.styleColor
                     : AppColor.black3,
                 onTap: state.selectedUsers.isNotEmpty
                     ? () {
@@ -158,6 +170,7 @@ class GroupCreationNaming extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              2.verticalSpace,
               Row(
                 children: [
                   IconButton(
@@ -246,8 +259,9 @@ class GroupCreationNaming extends StatelessWidget {
               const Spacer(),
               AppButton(
                 title: "Create Group",
-                backgroundColor:
-                    state.name.isNotEmpty ? AppColor.violet : AppColor.black3,
+                backgroundColor: state.name.isNotEmpty
+                    ? AppColor.styleColor
+                    : AppColor.black3,
                 onTap: state.name.isNotEmpty
                     ? () {
                         cubit.createGroup();

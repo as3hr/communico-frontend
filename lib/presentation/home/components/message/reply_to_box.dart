@@ -1,7 +1,10 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
+import 'package:communico_frontend/domain/stores/user_store.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../di/service_locator.dart';
 
 class ReplyToBox extends StatelessWidget {
   const ReplyToBox({
@@ -39,7 +42,9 @@ class ReplyToBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Replying to...',
+                (message.sender?.username ?? "") == username
+                    ? 'Replying to You'
+                    : 'Replying to ${message.sender?.username}',
                 style: Styles.boldStyle(
                   fontSize: 10,
                   color: AppColor.white,
@@ -63,4 +68,6 @@ class ReplyToBox extends StatelessWidget {
       ),
     );
   }
+
+  String get username => getIt<UserStore>().getUser()?.username ?? "";
 }

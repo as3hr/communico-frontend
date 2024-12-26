@@ -2,28 +2,40 @@ import 'app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  // static const colortheme = ColorScheme(
+  //   brightness: Brightness.dark,
+  //   primary: AppColor.darkPrimary,
+  //   onPrimary: AppColor.white,
+  //   secondary: AppColor.darkSecondary,
+  //   onSecondary: AppColor.grey,
+  //   error: AppColor.red,
+  //   onError: AppColor.white,
+  //   surface: AppColor.darkBackground,
+  //   onSurface: AppColor.grey,
+  // );
+
   static const colortheme = ColorScheme(
     brightness: Brightness.dark,
-    primary: AppColor.darkPrimary,
+    primary: AppColor.primaryColor,
     onPrimary: AppColor.white,
-    secondary: AppColor.darkSecondary,
+    secondary: AppColor.secondaryColor,
     onSecondary: AppColor.grey,
     error: AppColor.red,
     onError: AppColor.white,
-    surface: AppColor.darkBackground,
-    onSurface: AppColor.grey,
+    surface: AppColor.primaryColor,
+    onSurface: AppColor.coolGray,
   );
 
   static ThemeData theme() {
     return ThemeData(
-      scaffoldBackgroundColor: AppColor.darkBackground,
+      scaffoldBackgroundColor: AppColor.primaryColor,
       useMaterial3: true,
       colorScheme: colortheme,
-      fontFamily: "Varela",
+      fontFamily: "Montserrat",
       textSelectionTheme: const TextSelectionThemeData(
-        selectionColor: AppColor.black1,
+        selectionColor: AppColor.darkBackground,
         cursorColor: AppColor.white,
-        selectionHandleColor: AppColor.white,
+        selectionHandleColor: AppColor.brightMagenta,
       ),
       textTheme: Typography.whiteCupertino,
       visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -66,43 +66,42 @@ Future<void> showToast(String message, {Color? backgroundColor}) async {
       barrierColor: Colors.transparent,
       barrierDismissible: false,
       builder: (context) {
-        Timer.periodic(const Duration(seconds: 2), (timer) {
+        Timer.periodic(const Duration(milliseconds: 1200), (timer) {
           Navigator.of(context, rootNavigator: true).pop('dialog');
           timer.cancel();
         });
 
         return Dialog(
           shadowColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.red,
           surfaceTintColor: Colors.transparent,
           insetAnimationCurve: Curves.easeIn,
+          insetPadding: const EdgeInsets.all(8),
           insetAnimationDuration: const Duration(milliseconds: 500),
           elevation: 0,
-          child: Align(
-            alignment: Alignment.topRight,
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 0.2.sw, maxHeight: 0.1.sh),
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
-              decoration: BoxDecoration(
-                color: backgroundColor ?? Colors.red,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      message,
-                      style: Styles.lightStyle(
-                        fontSize: 15,
-                        color: AppColor.white,
-                        family: FontFamily.kanit,
-                      ),
-                      textAlign: TextAlign.center,
+          alignment: Alignment.topRight,
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 0.2.sw, maxHeight: 0.1.sh),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Colors.red,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    message,
+                    style: Styles.lightStyle(
+                      fontSize: 15,
+                      color: AppColor.white,
+                      family: FontFamily.kanit,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

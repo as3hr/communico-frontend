@@ -14,7 +14,7 @@ class ChatRoomHeader extends StatelessWidget {
     return Container(
       height: 0.05.sh,
       decoration: BoxDecoration(
-        color: context.colorScheme.secondary,
+        color: context.colorScheme.primary,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),

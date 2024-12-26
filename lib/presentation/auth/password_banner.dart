@@ -1,3 +1,4 @@
+import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/presentation/auth/auth_cubit.dart';
 import 'package:communico_frontend/presentation/auth/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,18 @@ class PasswordBanner extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
       bloc: cubit,
       builder: (context, state) {
-        return SizedBox(
+        return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  context.colorScheme.primary,
+                  context.colorScheme.secondary
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
             width: 0.2.sw,
             child: Padding(
               padding:
@@ -26,6 +38,7 @@ class PasswordBanner extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  2.verticalSpace,
                   InputField(
                     hintText: "Enter password",
                     onChanged: (val) {

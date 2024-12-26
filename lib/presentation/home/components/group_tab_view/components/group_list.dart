@@ -49,6 +49,7 @@ class _GroupListState extends State<GroupList> {
             ? state.groupSearchList
             : state.groupPagination.data;
         return Scaffold(
+          backgroundColor: Colors.transparent,
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 30),
             child: FloatingActionButton(
@@ -67,7 +68,7 @@ class _GroupListState extends State<GroupList> {
                   },
                 );
               },
-              backgroundColor: AppColor.violet,
+              backgroundColor: AppColor.styleColor,
               child: const Icon(
                 Icons.add,
                 color: AppColor.white,
@@ -110,6 +111,7 @@ class _GroupListState extends State<GroupList> {
                           offset: const Offset(0, 4),
                         ),
                       ],
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: groups.isEmpty
                         ? const Center(

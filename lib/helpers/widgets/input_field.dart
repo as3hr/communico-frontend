@@ -57,7 +57,6 @@ class _InputFieldState extends State<InputField> {
           family: FontFamily.montserrat,
         ),
         filled: true,
-        fillColor: Colors.grey.shade900,
         prefixIcon: Icon(widget.prefixIcon, color: Colors.grey.shade600),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

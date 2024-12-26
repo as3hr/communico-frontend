@@ -1,4 +1,5 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
+import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
 import 'package:communico_frontend/presentation/home/components/message/reply_to_box.dart';
@@ -62,7 +63,7 @@ class MyMessage extends StatelessWidget {
                     maxWidth: 0.55.sw,
                   ),
                   decoration: BoxDecoration(
-                      color: AppColor.violet,
+                      color: context.colorScheme.primary,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
@@ -85,7 +86,8 @@ class MyMessage extends StatelessWidget {
                             onTap: () {
                               onReplyTap?.call();
                             },
-                            color: const Color(0xff9933FF).withOpacity(0.5)),
+                            color:
+                                context.colorScheme.primary.withOpacity(0.5)),
                       Text(
                         message.text,
                         style: Styles.mediumStyle(

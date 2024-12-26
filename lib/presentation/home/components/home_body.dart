@@ -1,3 +1,4 @@
+import 'package:communico_frontend/helpers/widgets/background.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_tab_view.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_tab_view.dart';
@@ -22,51 +23,53 @@ class HomeBody extends StatelessWidget {
       child: BlocBuilder<HomeCubit, HomeState>(
         bloc: cubit,
         builder: (context, state) {
-          return DefaultTabController(
-            length: 3,
-            animationDuration: const Duration(milliseconds: 600),
-            child: Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
-              child: Center(
-                child: Column(
-                  children: [
-                    if (state.currentStation != null) ...[
-                      2.verticalSpace,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.music_note_sharp,
-                            color: AppColor.violet,
-                          ),
-                          Text(
-                            "playing ${state.currentStation!.title}",
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: AppColor.white,
-                              fontFamily: "Kanit",
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
+          return Background(
+            child: DefaultTabController(
+              length: 3,
+              animationDuration: const Duration(milliseconds: 600),
+              child: Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: .03.sw, vertical: .01.sw),
+                child: Center(
+                  child: Column(
+                    children: [
+                      if (state.currentStation != null) ...[
+                        2.verticalSpace,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.music_note_sharp,
+                              color: AppColor.styleColor,
                             ),
-                          ),
-                        ],
+                            Text(
+                              "playing ${state.currentStation!.title}",
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: AppColor.white,
+                                fontFamily: "Kanit",
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      5.verticalSpace,
+                      const Header(),
+                      5.verticalSpace,
+                      const Expanded(
+                        child: TabBarView(
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            ChatTabView(),
+                            GroupTabView(),
+                            AiTabView(),
+                          ],
+                        ),
                       ),
                     ],
-                    5.verticalSpace,
-                    const Header(),
-                    5.verticalSpace,
-                    const Expanded(
-                      child: TabBarView(
-                        physics: NeverScrollableScrollPhysics(),
-                        children: [
-                          ChatTabView(),
-                          GroupTabView(),
-                          AiTabView(),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

@@ -70,7 +70,7 @@ class _ChatRoomFooterState extends State<ChatRoomFooter> {
             },
             child: Container(
                 decoration: BoxDecoration(
-                  color: AppColor.violet,
+                  color: AppColor.styleColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Center(

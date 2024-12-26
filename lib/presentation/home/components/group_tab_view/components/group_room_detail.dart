@@ -191,7 +191,18 @@ class GroupUpdationMemberSelection extends StatelessWidget {
       onPopInvokedWithResult: (_, __) {
         cubit.closeDialog();
       },
-      child: SizedBox(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              context.colorScheme.primary,
+              context.colorScheme.secondary
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
         width: 0.5.sw,
         height: 0.6.sh,
         child: BlocBuilder<GroupCubit, GroupState>(
@@ -204,6 +215,7 @@ class GroupUpdationMemberSelection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: [
+                  2.verticalSpace,
                   InputField(
                     hintText: "search by username",
                     onChanged: (val) {
@@ -274,7 +286,7 @@ class GroupUpdationMemberSelection extends StatelessWidget {
                   AppButton(
                     title: "Update Selected Members",
                     backgroundColor: selectedUsers.isNotEmpty
-                        ? AppColor.violet
+                        ? AppColor.styleColor
                         : AppColor.black3,
                     onTap: selectedUsers.isNotEmpty
                         ? () {

@@ -104,7 +104,6 @@ class GroupTabView extends StatelessWidget {
                             messages: currentGroup.messagePagination.data,
                           ),
                         )),
-                    5.horizontalSpace,
                   ],
                 );
         });

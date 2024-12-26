@@ -19,7 +19,7 @@ class EmptyChat extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colorScheme.primary,
         border: Border.all(
-          color: AppColor.black1,
+          color: Colors.transparent,
         ),
         borderRadius: BorderRadius.circular(10),
       ),
@@ -42,7 +42,7 @@ class EmptyChat extends StatelessWidget {
             child: FloatingActionButton(
               shape: const CircleBorder(),
               onPressed: onTap,
-              backgroundColor: AppColor.violet,
+              backgroundColor: AppColor.styleColor,
               child: const Icon(
                 Icons.add,
                 color: AppColor.white,
