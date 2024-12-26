@@ -20,12 +20,13 @@ class AuthState {
         user: UserEntity.empty(),
       );
 
-  copyWith(
-          {String? username,
-          bool? isLoading,
-          UserEntity? user,
-          String? password,
-          bool? passwordProtected}) =>
+  copyWith({
+    String? username,
+    bool? isLoading,
+    UserEntity? user,
+    String? password,
+    bool? passwordProtected,
+  }) =>
       AuthState(
         username: username ?? this.username,
         isLoading: isLoading ?? this.isLoading,

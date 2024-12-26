@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_creation.dart/group_creation_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/components/group_creation.dart/group_creation.dart';
@@ -52,68 +51,60 @@ class GroupTabView extends StatelessWidget {
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (context.isMobile || context.isTablet)
-                      const Expanded(child: GroupList()),
-                    if (context.isWeb) ...[
-                      const Expanded(flex: 2, child: GroupList()),
-                      5.horizontalSpace,
-                      Expanded(
-                          flex: 5,
-                          child: ChatRoom(
-                            replyTo: replyTo,
-                            onReply: (entity, show) {
-                              cubit.triggerReplyTo(entity, show);
+                    const Expanded(flex: 2, child: GroupList()),
+                    5.horizontalSpace,
+                    Expanded(
+                        flex: 5,
+                        child: ChatRoom(
+                          replyTo: replyTo,
+                          onReply: (entity, show) {
+                            cubit.triggerReplyTo(entity, show);
+                          },
+                          messageActionsParams: MessageActionsParams(
+                            onDelete: (entity) async {
+                              if (await showConfirmationDialog(
+                                  "Are you sure you want to delete this message permanantly?")) {
+                                cubit.deleteMessage(entity);
+                              }
                             },
-                            messageActionsParams: MessageActionsParams(
-                              onDelete: (entity) async {
-                                if (await showConfirmationDialog(
-                                    "Are you sure you want to delete this message permanantly?")) {
-                                  cubit.deleteMessage(entity);
-                                }
-                              },
-                              onUpdate: (entity) {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 8, sigmaY: 8),
-                                      child: AnimatedBanner(
-                                        content: MessageUpdationBanner(
-                                          message: entity,
-                                          onTap: (message) {
-                                            cubit.updateMessage(
-                                                entity, context);
-                                          },
-                                        ),
+                            onUpdate: (entity) {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return BackdropFilter(
+                                    filter:
+                                        ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                                    child: AnimatedBanner(
+                                      content: MessageUpdationBanner(
+                                        message: entity,
+                                        onTap: (message) {
+                                          cubit.updateMessage(entity, context);
+                                        },
                                       ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            params: ChatRoomQueryParams(
-                              isGroup: true,
-                              onSendMessage: () {
-                                cubit.sendMessage();
-                                replyTo.value = false;
-                              },
-                              onEndDrawerChanged: () {
-                                cubit.toggleGroupField(
-                                    groupFieldEnabled: false);
-                              },
-                              scrollController: state.currentGroup
-                                  .messagePagination.scrollController,
-                              scrollAndCall: () {
-                                cubit.scrollAndCallMessages(state.currentGroup);
-                              },
-                              textController: state.groupMessageController,
-                              roomTitle: currentGroup.name,
-                              messages: currentGroup.messagePagination.data,
-                            ),
-                          )),
-                      5.horizontalSpace,
-                    ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          params: ChatRoomQueryParams(
+                            isGroup: true,
+                            onSendMessage: () {
+                              cubit.sendMessage();
+                              replyTo.value = false;
+                            },
+                            onEndDrawerChanged: () {
+                              cubit.toggleGroupField(groupFieldEnabled: false);
+                            },
+                            scrollAndCall: () {
+                              cubit.scrollAndCallMessages(state.currentGroup);
+                            },
+                            textController: state.groupMessageController,
+                            roomTitle: currentGroup.name,
+                            messages: currentGroup.messagePagination.data,
+                          ),
+                        )),
+                    5.horizontalSpace,
                   ],
                 );
         });

@@ -27,9 +27,13 @@ class AuthCubit extends Cubit<AuthState> {
               }
             },
             (user) async {
-              emit(state.copyWith(
-                  isLoading: false, user: user, username: "", password: ""));
               navigator.goToHome();
+              emit(state.copyWith(
+                isLoading: false,
+                user: user,
+                username: "",
+                password: "",
+              ));
             },
           ),
         );

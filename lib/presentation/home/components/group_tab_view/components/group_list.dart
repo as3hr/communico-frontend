@@ -134,15 +134,11 @@ class _GroupListState extends State<GroupList> {
                                   ? group.messages.last
                                   : null;
                               return IconButton(
+                                style: ButtonStyle(
+                                    shape: WidgetStateProperty.all(
+                                        const StadiumBorder())),
                                 onPressed: () {
-                                  cubit.updateCurrentGroup(group).then((_) {
-                                    if (context.mounted) {
-                                      if (context.isMobile ||
-                                          context.isTablet) {
-                                        cubit.openChatRoom(group);
-                                      }
-                                    }
-                                  });
+                                  cubit.updateCurrentGroup(group);
                                 },
                                 icon: Container(
                                   padding: const EdgeInsets.all(12),

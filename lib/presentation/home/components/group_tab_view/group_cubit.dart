@@ -15,8 +15,6 @@ import '../../../../domain/repositories/message_repository.dart';
 import '../../../../domain/stores/user_store.dart';
 import '../../../../helpers/constants.dart';
 import '../../../../helpers/deboouncer.dart';
-import '../chat_rom/chat_room_query_params.dart';
-import '../message/message_actions_params.dart';
 
 class GroupCubit extends Cubit<GroupState> {
   final MessageRepository messageRepository;
@@ -87,26 +85,6 @@ class GroupCubit extends Cubit<GroupState> {
       state.currentReplyTo = null;
     }
     emit(state.copyWith(currentReplyTo: entity));
-  }
-
-  openChatRoom(GroupEntity group) {
-    final params = ChatRoomQueryParams(
-      onSendMessage: () {
-        sendMessage();
-      },
-      isGroup: true,
-      scrollController: group.messagePagination.scrollController,
-      scrollAndCall: () {
-        scrollAndCallMessages(group);
-      },
-      textController: state.groupMessageController,
-      roomTitle: group.name,
-      messages: group.messagePagination.data,
-    );
-
-    final messageActionsParams = MessageActionsParams(onDelete: (messageId) {});
-
-    navigator.goToChatRoom(params, messageActionsParams);
   }
 
   appendMessageToGroup(MessageEntity message) {

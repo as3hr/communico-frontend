@@ -137,15 +137,11 @@ class _ChatsListState extends State<ChatsList> {
                                   (participant) =>
                                       participant.userId != cubit.user!.id);
                               return IconButton(
+                                style: ButtonStyle(
+                                    shape: WidgetStateProperty.all(
+                                        const StadiumBorder())),
                                 onPressed: () {
-                                  cubit.updateCurrentChat(chat).then((_) {
-                                    if (context.mounted) {
-                                      if (context.isMobile ||
-                                          context.isTablet) {
-                                        cubit.openChatRoom(chat);
-                                      }
-                                    }
-                                  });
+                                  cubit.updateCurrentChat(chat);
                                 },
                                 icon: Container(
                                   padding: const EdgeInsets.all(12),

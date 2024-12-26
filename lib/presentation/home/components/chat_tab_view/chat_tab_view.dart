@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
@@ -59,62 +58,55 @@ class ChatTabView extends StatelessWidget {
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (context.isWeb) ...[
-                      const Expanded(flex: 2, child: ChatsList()),
-                      5.horizontalSpace,
-                      Expanded(
-                          flex: 5,
-                          child: ChatRoom(
-                            replyTo: replyTo,
-                            onReply: (entity, show) {
-                              cubit.triggerReplyTo(entity, show);
+                    const Expanded(flex: 2, child: ChatsList()),
+                    5.horizontalSpace,
+                    Expanded(
+                        flex: 5,
+                        child: ChatRoom(
+                          replyTo: replyTo,
+                          onReply: (entity, show) {
+                            cubit.triggerReplyTo(entity, show);
+                          },
+                          messageActionsParams: MessageActionsParams(
+                            onDelete: (entity) async {
+                              if (await showConfirmationDialog(
+                                  "Are you sure you want to delete this message permanantly?")) {
+                                cubit.deleteMessage(entity);
+                              }
                             },
-                            messageActionsParams: MessageActionsParams(
-                              onDelete: (entity) async {
-                                if (await showConfirmationDialog(
-                                    "Are you sure you want to delete this message permanantly?")) {
-                                  cubit.deleteMessage(entity);
-                                }
-                              },
-                              onUpdate: (entity) {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 8, sigmaY: 8),
-                                      child: AnimatedBanner(
-                                        content: MessageUpdationBanner(
-                                          message: entity,
-                                          onTap: (message) {
-                                            cubit.updateMessage(
-                                                entity, context);
-                                          },
-                                        ),
+                            onUpdate: (entity) {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return BackdropFilter(
+                                    filter:
+                                        ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                                    child: AnimatedBanner(
+                                      content: MessageUpdationBanner(
+                                        message: entity,
+                                        onTap: (message) {
+                                          cubit.updateMessage(entity, context);
+                                        },
                                       ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            params: ChatRoomQueryParams(
-                              onSendMessage: () {
-                                cubit.sendMessage();
-                                replyTo.value = false;
-                              },
-                              scrollController: state.currentChat
-                                  .messagePagination.scrollController,
-                              scrollAndCall: () {
-                                cubit.scrollAndCallMessages(state.currentChat);
-                              },
-                              textController: state.messageController,
-                              roomTitle: chatUser?.username ?? "",
-                              messages: currentChat.messagePagination.data,
-                            ),
-                          )),
-                    ],
-                    if (context.isMobile || context.isTablet)
-                      const Expanded(child: ChatsList()),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          params: ChatRoomQueryParams(
+                            onSendMessage: () {
+                              cubit.sendMessage();
+                              replyTo.value = false;
+                            },
+                            scrollAndCall: () {
+                              cubit.scrollAndCallMessages(state.currentChat);
+                            },
+                            textController: state.messageController,
+                            roomTitle: chatUser?.username ?? "",
+                            messages: currentChat.messagePagination.data,
+                          ),
+                        )),
                   ],
                 );
         });

@@ -1,6 +1,5 @@
 import 'package:communico_frontend/helpers/widgets/app_button.dart';
 import 'package:communico_frontend/helpers/widgets/input_field.dart';
-import 'package:communico_frontend/helpers/widgets/loader.dart';
 import 'package:communico_frontend/presentation/auth/auth_cubit.dart';
 import 'package:communico_frontend/presentation/auth/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -55,30 +54,31 @@ class AuthPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 50),
                         InputField(
-                            hintText: "Enter your username",
-                            onChanged: (val) {
-                              state.username = val;
-                            },
-                            validator: (val) {
-                              final regex = RegExp(r'^[a-z0-9_.]{4,10}$');
-                              if (val == null || val.isEmpty) {
-                                return "Username cannot be empty";
-                              } else if (val.length < 4) {
-                                return "Username must be at least 4 characters long";
-                              } else if (val.length > 10) {
-                                return "Wow, planning a novel? Keep it short, champ!";
-                              } else if (!regex.hasMatch(val)) {
-                                return "Only lowercase letters, numbers, underscores, '.' allowed.";
-                              }
-                              return null;
-                            },
-                            onSubmitted: (val) {
-                              if (state.username.isNotEmpty &&
-                                  _formKey.currentState!.validate()) {
-                                cubit.getIn();
-                              }
-                            },
-                            prefixIcon: Icons.person),
+                          hintText: "Enter your username",
+                          onChanged: (val) {
+                            state.username = val;
+                          },
+                          validator: (val) {
+                            final regex = RegExp(r'^[a-z0-9_.]{4,10}$');
+                            if (val == null || val.isEmpty) {
+                              return "Username cannot be empty";
+                            } else if (val.length < 4) {
+                              return "Username must be at least 4 characters long";
+                            } else if (val.length > 10) {
+                              return "Wow, planning a novel? Keep it short, champ!";
+                            } else if (!regex.hasMatch(val)) {
+                              return "Only lowercase letters, numbers, underscores, '.' allowed.";
+                            }
+                            return null;
+                          },
+                          onSubmitted: (val) {
+                            if (state.username.isNotEmpty &&
+                                _formKey.currentState!.validate()) {
+                              cubit.getIn();
+                            }
+                          },
+                          prefixIcon: Icons.person,
+                        ),
                         const SizedBox(height: 20),
                         if (state.passwordProtected) ...[
                           InputField(
@@ -96,7 +96,6 @@ class AuthPage extends StatelessWidget {
                           const SizedBox(height: 20),
                         ],
                         AppButton(
-                            content: state.isLoading ? const Loader() : null,
                             title: "GET IN",
                             onTap: () {
                               if (state.username.isNotEmpty &&

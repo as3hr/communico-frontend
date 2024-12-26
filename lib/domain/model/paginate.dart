@@ -10,8 +10,8 @@ class Paginate<T> {
   ScrollController scrollController;
 
   Paginate({
-    bool? next,
     this.skip = 0,
+    bool? next,
     ScrollController? scrollController,
     List<T>? data,
   })  : data = data ?? List<T>.empty(growable: true),

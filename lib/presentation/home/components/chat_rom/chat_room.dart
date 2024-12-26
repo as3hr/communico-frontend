@@ -11,6 +11,7 @@ import 'package:communico_frontend/presentation/home/components/message/other_me
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../di/service_locator.dart';
 import '../../home_cubit.dart';
@@ -37,26 +38,29 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
   late MessageEntity currentReplyToMessage;
   final cubit = getIt<HomeCubit>();
+  final Map<int, int> indexIdMap = {};
+  final itemScrollController = ItemScrollController();
+  final scrollOffsetListener = ScrollOffsetListener.create();
+
   @override
   void initState() {
     super.initState();
-    widget.params.scrollController.addListener(() {
-      if (widget.params.scrollController.hasClients) {
-        final threshold =
-            widget.params.scrollController.position.maxScrollExtent * 0.2;
-        if (widget.params.scrollController.position.pixels >= threshold) {
-          widget.params.scrollAndCall();
-        }
+    scrollOffsetListener.changes.listen((offset) {
+      if (offset >= 0.8) {
+        widget.params.scrollAndCall();
       }
     });
   }
 
   void animateToTargetMessage(int id) {
-    widget.params.scrollController.animateTo(
-      id.toDouble(),
-      duration: const Duration(milliseconds: 800),
-      curve: Curves.easeIn,
-    );
+    final index = indexIdMap[id];
+    if (index != null) {
+      itemScrollController.scrollTo(
+        index: index,
+        duration: const Duration(seconds: 2),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   @override
@@ -113,16 +117,20 @@ class _ChatRoomState extends State<ChatRoom> {
                                 children: [
                                   ChatRoomHeader(params: widget.params),
                                   Expanded(
-                                    child: ListView.builder(
+                                    child: ScrollablePositionedList.builder(
                                       reverse: true,
-                                      controller:
-                                          widget.params.scrollController,
+                                      itemScrollController:
+                                          itemScrollController,
+                                      scrollOffsetListener:
+                                          scrollOffsetListener,
                                       itemCount: widget.params.messages.length,
                                       itemBuilder: (context, index) {
                                         final message =
                                             widget.params.messages[index];
                                         final isMyMessage =
                                             cubit.isMyMessage(message);
+                                        indexIdMap.putIfAbsent(
+                                            message.id, () => index);
                                         return isMyMessage
                                             ? MyMessage(
                                                 messageActionsParams:
@@ -138,8 +146,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                                   animateToTargetMessage(
                                                       message.replyTo!.id);
                                                 },
-                                                key: ValueKey(
-                                                    message.id.toString()))
+                                              )
                                             : OtherMessage(
                                                 messageActionsParams:
                                                     widget.messageActionsParams,
@@ -149,14 +156,13 @@ class _ChatRoomState extends State<ChatRoom> {
                                                       message;
                                                   widget.onReply(message, true);
                                                 },
+                                                message: message,
                                                 onReplyTap: () {
                                                   animateToTargetMessage(
-                                                      message.replyTo!.id);
+                                                    message.replyTo!.id,
+                                                  );
                                                 },
-                                                message: message,
-                                                key: ValueKey(
-                                                  message.id.toString(),
-                                                ));
+                                              );
                                       },
                                     ),
                                   ),

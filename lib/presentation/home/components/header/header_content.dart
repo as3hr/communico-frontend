@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/presentation/home/components/header/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -241,8 +242,11 @@ class _HeaderContentState extends State<HeaderContent> {
             ),
             const AppVerticalDivider(),
             IconButton(
-              onPressed: () {
-                widget.logOut.call();
+              onPressed: () async {
+                if (await showConfirmationDialog(
+                    "Are you sure you want to logout?")) {
+                  widget.logOut.call();
+                }
               },
               icon: const Icon(
                 Icons.power_settings_new_outlined,
