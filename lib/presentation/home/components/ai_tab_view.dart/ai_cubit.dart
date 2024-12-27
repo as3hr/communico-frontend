@@ -40,17 +40,21 @@ class AiCubit extends Cubit<AiState> {
     socket.on("streamEnded", (data) {
       if (data == true) {
         state.controller.close();
-        final message = MessageEntity(text: aiResponse, userId: 0, isAi: true);
-        removeAiStreamMessage();
-        appendMessageToAiChat(message);
+        endStream(aiResponse);
         aiResponse = "";
-        emit(state.copyWith(
-          isLoading: false,
-          prompt: "",
-          aiMessageInitialized: false,
-        ));
       }
     });
+  }
+
+  endStream(String aiResponse) {
+    final message = MessageEntity(text: aiResponse, userId: 0, isAi: true);
+    appendMessageToAiChat(message);
+    removeAiStreamMessage();
+    emit(state.copyWith(
+      isLoading: false,
+      prompt: "",
+      aiMessageInitialized: false,
+    ));
   }
 
   handleResponse(String response) {

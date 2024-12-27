@@ -39,6 +39,7 @@ class _ChatRoomState extends State<ChatRoom> {
   late MessageEntity currentReplyToMessage;
   final cubit = getIt<HomeCubit>();
   final Map<int, int> indexIdMap = {};
+  final showFab = ValueNotifier<bool>(false);
   final itemScrollController = ItemScrollController();
   final scrollOffsetListener = ScrollOffsetListener.create();
 
@@ -49,6 +50,9 @@ class _ChatRoomState extends State<ChatRoom> {
       if (offset >= 0.8) {
         widget.params.scrollAndCall();
       }
+      final isAtBottom = offset <= 0.05;
+      final isScrolledUp = offset >= 0.8;
+      showFab.value = !isAtBottom && isScrolledUp;
     });
   }
 
@@ -72,6 +76,30 @@ class _ChatRoomState extends State<ChatRoom> {
       onEndDrawerChanged: (isOpened) {
         widget.params.onEndDrawerChanged?.call();
       },
+      floatingActionButton: ValueListenableBuilder<bool>(
+          valueListenable: showFab,
+          builder: (context, value, _) {
+            return value
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        final messages = widget.params.messages;
+                        final index = messages.indexOf(messages.first);
+                        itemScrollController.scrollTo(
+                          index: index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.fastOutSlowIn,
+                        );
+                      },
+                      shape: const CircleBorder(),
+                      backgroundColor: AppColor.styleColor,
+                      mini: true,
+                      child: const Icon(Icons.arrow_downward),
+                    ),
+                  )
+                : const SizedBox();
+          }),
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           bloc: cubit,
@@ -288,7 +316,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         onSendMessage: () {
                           widget.params.onSendMessage.call();
                           final messages = widget.params.messages;
-                          final index = messages.lastIndexOf(messages.first);
+                          final index = messages.indexOf(messages.first);
                           itemScrollController.jumpTo(index: index);
                         },
                       ),
