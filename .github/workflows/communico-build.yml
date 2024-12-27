@@ -24,7 +24,7 @@ jobs:
       run: flutter pub get
   
     - name: Build Web
-      run: flutter build web --release
+      run: flutter build web --web-renderer canvaskit --release
  
     - name: Deploy to VM
       uses: appleboy/ssh-action@v1.0.3
