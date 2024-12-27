@@ -52,7 +52,10 @@ class ChatCubit extends Cubit<ChatState> {
     socket.on('newMessage', (data) {
       log("NEW MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
-      if (message.userId != user!.id) {
+      final messageExists = state.currentChat.messagePagination.data.any(
+        (currentMessage) => currentMessage.id == message.id,
+      );
+      if (!messageExists && message.userId != user!.id) {
         appendMessageToChat(message);
       }
     });

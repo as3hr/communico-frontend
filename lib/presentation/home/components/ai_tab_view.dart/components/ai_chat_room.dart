@@ -68,6 +68,9 @@ class AiChatRoom extends StatelessWidget {
                           : ListView.builder(
                               reverse: true,
                               itemCount: state.messages.length,
+                              physics: state.aiMessageInitialized
+                                  ? const NeverScrollableScrollPhysics()
+                                  : const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 final message = state.messages[index];
                                 return message.aiStream

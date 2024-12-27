@@ -13,7 +13,8 @@ class AiCubit extends Cubit<AiState> {
   AiCubit(this.messageRepository) : super(AiState.empty());
 
   void sendMessage() {
-    if (state.currentAiMessageController.text.isNotEmpty) {
+    if (state.currentAiMessageController.text.isNotEmpty &&
+        !state.aiMessageInitialized) {
       final message = MessageEntity(
         text: state.currentAiMessageController.text,
         userId: user!.id,

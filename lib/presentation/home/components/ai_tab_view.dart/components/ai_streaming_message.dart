@@ -38,9 +38,11 @@ class StreamingMessageWidget extends StatelessWidget {
           stream: state.controller.stream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Text("WAITING....");
+              log("IN WAITING STATE");
+              return const SizedBox();
             } else if (snapshot.hasError) {
-              return Text("Unable To generate response: ${snapshot.error}");
+              log("IN ERROR STATE");
+              return const SizedBox();
             } else if (snapshot.hasData) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -71,7 +73,6 @@ class StreamingMessageWidget extends StatelessWidget {
                         ),
                         child: StreamTypewriterAnimatedText(
                           onFinished: () {
-                            log("FINISHED");
                             cubit.endStream();
                           },
                           text: snapshot.data!,
@@ -90,7 +91,8 @@ class StreamingMessageWidget extends StatelessWidget {
                 ),
               );
             } else {
-              return const Text('No response');
+              log("IN NO RESPONSE STATE");
+              return const SizedBox();
             }
           },
         );
