@@ -20,36 +20,30 @@ class AiCubit extends Cubit<AiState> {
       );
       state.currentAiMessageController.clear();
       appendMessageToAiChat(message);
+      emit(state.copyWith(isLoading: true));
       final aiStreamMessage =
           MessageEntity(aiStream: true, text: "", userId: 0);
       appendMessageToAiChat(aiStreamMessage);
-      emit(state.copyWith(isLoading: true));
       socket.emit("aiPrompt", {"prompt": message.text});
     }
   }
 
+  String aiResponse = "";
   listenToAiResponse() {
-    String aiResponse = "";
-
     socket.on("aiResponse", (data) {
       final chunk = data.toString();
       aiResponse += chunk;
+      state.controller.add(aiResponse);
       handleResponse(aiResponse);
-    });
-
-    socket.on("streamEnded", (data) {
-      if (data == true) {
-        state.controller.close();
-        endStream(aiResponse);
-        aiResponse = "";
-      }
     });
   }
 
-  endStream(String aiResponse) {
+  endStream() {
     final message = MessageEntity(text: aiResponse, userId: 0, isAi: true);
     appendMessageToAiChat(message);
     removeAiStreamMessage();
+    state.controller.stream.drain();
+    aiResponse = "";
     emit(state.copyWith(
       isLoading: false,
       prompt: "",
@@ -58,7 +52,6 @@ class AiCubit extends Cubit<AiState> {
   }
 
   handleResponse(String response) {
-    state.controller.add(response);
     if (!state.aiMessageInitialized) {
       emit(state.copyWith(aiMessageInitialized: true, isLoading: false));
     }

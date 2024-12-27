@@ -3,6 +3,7 @@ import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/empty_ai.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_message.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_footer.dart';
+import 'package:communico_frontend/presentation/home/components/loading_message.dart';
 import 'package:communico_frontend/presentation/home/home_cubit.dart';
 import 'package:communico_frontend/presentation/home/home_state.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,9 @@ class AiChatRoom extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final message = state.messages[index];
                                 return message.aiStream
-                                    ? const AiStreamingMessage()
+                                    ? state.isLoading
+                                        ? const LoadingMessage()
+                                        : const AiStreamingMessage()
                                     : message.isAi
                                         ? AiMessage(
                                             message: message,

@@ -46,7 +46,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     super.initState();
-    scrollOffsetListener.changes.listen((offset) {
+    scrollOffsetListener.changes.asBroadcastStream().listen((offset) {
       if (offset >= 0.8) {
         widget.params.scrollAndCall();
       }
@@ -67,6 +67,16 @@ class _ChatRoomState extends State<ChatRoom> {
     }
   }
 
+  jumpToBottom() {
+    final messages = widget.params.messages;
+    final index = messages.indexOf(messages.first);
+    itemScrollController.scrollTo(
+      index: index,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,30 +86,6 @@ class _ChatRoomState extends State<ChatRoom> {
       onEndDrawerChanged: (isOpened) {
         widget.params.onEndDrawerChanged?.call();
       },
-      floatingActionButton: ValueListenableBuilder<bool>(
-          valueListenable: showFab,
-          builder: (context, value, _) {
-            return value
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        final messages = widget.params.messages;
-                        final index = messages.indexOf(messages.first);
-                        itemScrollController.scrollTo(
-                          index: index,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.fastOutSlowIn,
-                        );
-                      },
-                      shape: const CircleBorder(),
-                      backgroundColor: AppColor.styleColor,
-                      mini: true,
-                      child: const Icon(Icons.arrow_downward),
-                    ),
-                  )
-                : const SizedBox();
-          }),
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           bloc: cubit,
@@ -315,9 +301,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         textController: widget.params.textController,
                         onSendMessage: () {
                           widget.params.onSendMessage.call();
-                          final messages = widget.params.messages;
-                          final index = messages.indexOf(messages.first);
-                          itemScrollController.jumpTo(index: index);
+                          jumpToBottom();
                         },
                       ),
                     ],
