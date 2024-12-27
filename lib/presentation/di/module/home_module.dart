@@ -18,7 +18,7 @@ class HomeModule {
     getIt.registerLazySingleton<AiCubit>(
       () => AiCubit(
         getIt(),
-      )..listenToAiResponse(),
+      ),
     );
     getIt.registerLazySingleton<ChatCubit>(
       () => ChatCubit(getIt(), getIt(), getIt()),

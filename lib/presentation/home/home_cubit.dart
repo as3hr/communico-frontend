@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:communico_frontend/helpers/constants.dart';
 import 'package:communico_frontend/presentation/auth/auth_cubit.dart';
+import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/radio/station.dart';
@@ -38,6 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
     });
     getIt<ChatCubit>().listenToDirectMessage();
     getIt<GroupCubit>().listenToGroupMessage();
+    getIt<AiCubit>().listenToAiResponse();
     socket.onDisconnect((_) {
       log('Disconnected from the Socket Server');
     });
@@ -65,6 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
     getIt<ChatCubit>().empty();
     getIt<GroupCubit>().empty();
     getIt<AuthCubit>().empty();
+    getIt<AiCubit>().empty();
   }
 
   UserEntity? get user => getIt<UserStore>().getUser();

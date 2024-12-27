@@ -177,7 +177,7 @@ class _HeaderContentState extends State<HeaderContent> {
                         ),
                       );
                     }).toList()),
-                if (state.currentBackground != null)
+                if (state.currentBackground?.image.isNotEmpty ?? false)
                   IconButton(
                     onPressed: () {
                       cubit.removeBg();
@@ -220,7 +220,9 @@ class _HeaderContentState extends State<HeaderContent> {
                   },
                   icon: const Icon(
                     Icons.radio,
+                    color: Color(0xFFb07154),
                   ),
+                  tooltip: "Radio",
                 ),
                 RadioPlayer(
                   controller: controller,

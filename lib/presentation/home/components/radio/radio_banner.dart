@@ -104,12 +104,6 @@ class RadioBanner extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: [
-                                    const Icon(
-                                      Icons.radio,
-                                      size: 30,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(width: 12.w),
                                     Expanded(
                                       child: Text(
                                         station.title,

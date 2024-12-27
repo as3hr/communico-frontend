@@ -18,6 +18,7 @@ class MessageEntity {
   int? groupId;
   int? replyToId;
   bool isAi; // for identifying ai completed messages in room
+  ValueNotifier<bool> isCopiedNotifier; // for identifying copied messages
   bool aiStream;
   ValueNotifier<bool> isHovered; // for identifying hoverState in chatRoom
 
@@ -36,8 +37,10 @@ class MessageEntity {
     this.sender,
     this.replyTo,
     this.replyToId,
+    ValueNotifier<bool>? isCopiedNotifier,
   })  : timeStamp = timeStamp ?? DateTime.now(),
-        isHovered = isHovered ?? ValueNotifier<bool>(false);
+        isHovered = isHovered ?? ValueNotifier<bool>(false),
+        isCopiedNotifier = isCopiedNotifier ?? ValueNotifier<bool>(false);
 
   MessageEntity copyWith({
     int? id,
@@ -54,6 +57,7 @@ class MessageEntity {
     bool? isAi,
     ValueNotifier<bool>? isHovered,
     bool? aiStream,
+    ValueNotifier<bool>? isCopiedNotifier,
   }) {
     return MessageEntity(
       id: id ?? this.id,
@@ -70,6 +74,7 @@ class MessageEntity {
       replyTo: replyTo ?? this.replyTo,
       replyToId: replyToId ?? this.replyToId,
       aiStream: aiStream ?? this.aiStream,
+      isCopiedNotifier: isCopiedNotifier ?? this.isCopiedNotifier,
     );
   }
 

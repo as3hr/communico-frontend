@@ -20,6 +20,7 @@ class AiChatRoom extends StatelessWidget {
     super.key,
   });
   static final cubit = getIt<AiCubit>();
+  static final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +68,10 @@ class AiChatRoom extends StatelessWidget {
                           ? const EmptyAi()
                           : ListView.builder(
                               reverse: true,
+                              controller: scrollController,
                               itemCount: state.messages.length,
-                              physics: state.aiMessageInitialized
+                              physics: (state.aiMessageInitialized ||
+                                      state.isLoading)
                                   ? const NeverScrollableScrollPhysics()
                                   : const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
@@ -100,6 +103,13 @@ class AiChatRoom extends StatelessWidget {
               ChatRoomFooter(
                 onSendMessage: () {
                   cubit.sendMessage();
+                  if (scrollController.hasClients) {
+                    scrollController.animateTo(
+                      0.0,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.fastOutSlowIn,
+                    );
+                  }
                 },
                 onChanged: (val) {
                   state.prompt = val;

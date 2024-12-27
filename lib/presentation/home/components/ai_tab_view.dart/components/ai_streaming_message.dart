@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,18 +13,6 @@ import '../ai_state.dart';
 class AiStreamingMessage extends StatelessWidget {
   const AiStreamingMessage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Align(
-      alignment: Alignment.bottomLeft,
-      child: StreamingMessageWidget(),
-    );
-  }
-}
-
-class StreamingMessageWidget extends StatelessWidget {
-  const StreamingMessageWidget({super.key});
-
   static final cubit = getIt<AiCubit>();
 
   @override
@@ -34,16 +20,9 @@ class StreamingMessageWidget extends StatelessWidget {
     return BlocBuilder<AiCubit, AiState>(
       bloc: cubit,
       builder: (context, state) {
-        return StreamBuilder<String>(
-          stream: state.controller.stream,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              log("IN WAITING STATE");
-              return const SizedBox();
-            } else if (snapshot.hasError) {
-              log("IN ERROR STATE");
-              return const SizedBox();
-            } else if (snapshot.hasData) {
+        return ValueListenableBuilder<String>(
+            valueListenable: state.aiResponse,
+            builder: (context, value, _) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -75,7 +54,7 @@ class StreamingMessageWidget extends StatelessWidget {
                           onFinished: () {
                             cubit.endStream();
                           },
-                          text: snapshot.data!,
+                          text: value,
                           speed: const Duration(milliseconds: 5),
                           cursor: "",
                           style: Styles.mediumStyle(
@@ -90,12 +69,7 @@ class StreamingMessageWidget extends StatelessWidget {
                   ],
                 ),
               );
-            } else {
-              log("IN NO RESPONSE STATE");
-              return const SizedBox();
-            }
-          },
-        );
+            });
       },
     );
   }

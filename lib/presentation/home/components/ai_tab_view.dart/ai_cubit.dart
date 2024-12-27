@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:communico_frontend/domain/repositories/message_repository.dart';
 import 'package:communico_frontend/helpers/constants.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/ai_state.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../di/service_locator.dart';
 import '../../../../domain/entities/message_entity.dart';
@@ -29,30 +30,28 @@ class AiCubit extends Cubit<AiState> {
     }
   }
 
-  String aiResponse = "";
   listenToAiResponse() {
     socket.on("aiResponse", (data) {
       final chunk = data.toString();
-      aiResponse += chunk;
-      state.controller.add(aiResponse);
-      handleResponse(aiResponse);
+      state.aiResponse.value += chunk;
+      handleResponse();
     });
   }
 
   endStream() {
-    final message = MessageEntity(text: aiResponse, userId: 0, isAi: true);
+    final message =
+        MessageEntity(text: state.aiResponse.value, userId: 0, isAi: true);
     appendMessageToAiChat(message);
     removeAiStreamMessage();
-    state.controller.stream.drain();
-    aiResponse = "";
     emit(state.copyWith(
       isLoading: false,
       prompt: "",
       aiMessageInitialized: false,
+      aiResponse: ValueNotifier<String>(""),
     ));
   }
 
-  handleResponse(String response) {
+  handleResponse() {
     if (!state.aiMessageInitialized) {
       emit(state.copyWith(aiMessageInitialized: true, isLoading: false));
     }
@@ -69,4 +68,6 @@ class AiCubit extends Cubit<AiState> {
   }
 
   UserEntity? get user => getIt<UserStore>().getUser();
+
+  empty() => emit(AiState.empty());
 }
