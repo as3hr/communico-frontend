@@ -177,7 +177,7 @@ class _ChatsListState extends State<ChatsList> {
                                           2.horizontalSpace,
                                           Text(
                                             formatDate(message?.timeStamp ??
-                                                DateTime.now().toUtc()),
+                                                DateTime.now().toLocal()),
                                             style: Styles.mediumStyle(
                                               fontSize: 13,
                                               color:

@@ -175,7 +175,7 @@ class _GroupListState extends State<GroupList> {
                                           2.horizontalSpace,
                                           Text(
                                             formatDate(message?.timeStamp ??
-                                                DateTime.now()),
+                                                DateTime.now().toLocal()),
                                             style: Styles.mediumStyle(
                                               fontSize: 13,
                                               color:

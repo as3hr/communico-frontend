@@ -38,7 +38,7 @@ class MessageEntity {
     this.replyTo,
     this.replyToId,
     ValueNotifier<bool>? isCopiedNotifier,
-  })  : timeStamp = timeStamp ?? DateTime.now().toUtc(),
+  })  : timeStamp = timeStamp ?? DateTime.now().toLocal(),
         isHovered = isHovered ?? ValueNotifier<bool>(false),
         isCopiedNotifier = isCopiedNotifier ?? ValueNotifier<bool>(false);
 

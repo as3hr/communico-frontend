@@ -130,7 +130,7 @@ class _HeaderContentState extends State<HeaderContent> {
                   textScaleFactor: 0.75,
                   padding: const EdgeInsets.all(5),
                   digitalClockTextColor: context.colorScheme.onPrimary,
-                  datetime: DateTime.now().toUtc(),
+                  datetime: DateTime.now().toLocal(),
                 ),
               ],
             ),
