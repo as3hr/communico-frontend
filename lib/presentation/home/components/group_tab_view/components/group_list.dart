@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../di/service_locator.dart';
+import '../../../../../domain/entities/message_entity.dart';
 import '../../../../../helpers/styles/app_colors.dart';
 import '../../../../../helpers/styles/styles.dart';
 import '../../../../../helpers/widgets/animated_banner.dart';
@@ -132,9 +133,17 @@ class _GroupListState extends State<GroupList> {
                             },
                             itemBuilder: (context, index) {
                               final group = groups[index];
-                              final message = group.messages.isNotEmpty
-                                  ? group.messages.last
-                                  : null;
+                              List<MessageEntity> messages = state
+                                  .groupPagination.data
+                                  .firstWhere(
+                                      (element) => element.id == group.id)
+                                  .messagePagination
+                                  .data;
+                              messages =
+                                  messages.isEmpty ? group.messages : messages;
+                              final message =
+                                  messages.isNotEmpty ? messages.first : null;
+
                               return IconButton(
                                 style: ButtonStyle(
                                     shape: WidgetStateProperty.all(

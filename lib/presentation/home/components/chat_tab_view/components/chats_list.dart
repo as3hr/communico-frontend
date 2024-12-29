@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
@@ -133,7 +134,16 @@ class _ChatsListState extends State<ChatsList> {
                             },
                             itemBuilder: (context, index) {
                               final chat = chats[index];
-                              final message = chat.messages.last;
+                              List<MessageEntity> messages = state
+                                  .chatPagination.data
+                                  .firstWhere(
+                                      (element) => element.id == chat.id)
+                                  .messagePagination
+                                  .data;
+                              messages =
+                                  messages.isEmpty ? chat.messages : messages;
+                              final message =
+                                  messages.isNotEmpty ? messages.first : null;
                               final participant = chat.participants.firstWhere(
                                   (participant) =>
                                       participant.userId != cubit.user!.id);
@@ -166,7 +176,8 @@ class _ChatsListState extends State<ChatsList> {
                                           const Spacer(),
                                           2.horizontalSpace,
                                           Text(
-                                            formatDate(message.timeStamp),
+                                            formatDate(message?.timeStamp ??
+                                                DateTime.now().toUtc()),
                                             style: Styles.mediumStyle(
                                               fontSize: 13,
                                               color:
@@ -178,7 +189,7 @@ class _ChatsListState extends State<ChatsList> {
                                       ),
                                       1.verticalSpace,
                                       Text(
-                                        message.text,
+                                        message?.text ?? "",
                                         style: TextStyle(
                                           overflow: TextOverflow.ellipsis,
                                           fontSize: 15,

@@ -9,9 +9,9 @@ class Background {
   Background({required this.image, required this.title});
 
   static final backgrounds = [
-    Background(image: AppImages.snowFallGif, title: "SnowFall"),
-    Background(image: AppImages.bus, title: "Bus"),
+    Background(image: AppImages.scenery, title: "Scenery"),
     Background(image: AppImages.rain, title: "Rain"),
+    Background(image: AppImages.sunset, title: "Sunset"),
     Background(image: AppImages.autumn, title: "Autumn"),
     Background(image: AppImages.night, title: "Night"),
   ];
