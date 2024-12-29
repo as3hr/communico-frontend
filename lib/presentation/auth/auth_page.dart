@@ -1,4 +1,3 @@
-import 'package:communico_frontend/helpers/styles/app_images.dart';
 import 'package:communico_frontend/helpers/widgets/app_button.dart';
 import 'package:communico_frontend/helpers/widgets/background.dart';
 import 'package:communico_frontend/helpers/widgets/input_field.dart';
@@ -18,7 +17,6 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppImages.preCacheImages(context);
     return Scaffold(
       body: BlocBuilder<AuthCubit, AuthState>(
         bloc: cubit,

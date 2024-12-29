@@ -56,7 +56,7 @@ class AiChatRoom extends StatelessWidget {
                             if (homeState.currentBackground?.image.isNotEmpty ??
                                 false) {
                               return Positioned.fill(
-                                child: Image.asset(
+                                child: Image.network(
                                   homeState.currentBackground!.image,
                                   fit: BoxFit.cover,
                                 ),
