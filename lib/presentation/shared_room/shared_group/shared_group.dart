@@ -54,6 +54,7 @@ class _SharedGroupState extends State<SharedGroup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const MembersCard(),
       body: BlocBuilder<SharedGroupCubit, SharedGroupState>(
         bloc: cubit..loadGroup(widget.encryptedId),
         builder: (context, state) {
@@ -108,8 +109,8 @@ class _SharedGroupState extends State<SharedGroup> {
                                   ],
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    const Spacer(),
                                     Text(
                                       title,
                                       style: Styles.boldStyle(
@@ -118,6 +119,16 @@ class _SharedGroupState extends State<SharedGroup> {
                                         family: FontFamily.kanit,
                                       ),
                                     ),
+                                    const Spacer(),
+                                    IconButton(
+                                        onPressed: () {
+                                          Scaffold.of(context).openEndDrawer();
+                                        },
+                                        icon: const Icon(
+                                          Icons.menu,
+                                          color: AppColor.white,
+                                        )),
+                                    2.horizontalSpace,
                                   ],
                                 ),
                               ),
@@ -228,6 +239,94 @@ class _SharedGroupState extends State<SharedGroup> {
           );
         },
       ),
+    );
+  }
+}
+
+class MembersCard extends StatelessWidget {
+  const MembersCard({super.key});
+  static final cubit = sl<SharedGroupCubit>();
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SharedGroupCubit, SharedGroupState>(
+      bloc: cubit,
+      builder: (context, state) {
+        final members = state.group.members;
+        return Column(
+          children: [
+            Expanded(
+              child: Container(
+                width: 0.3.sw,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: context.colorScheme.primary,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                height: 0.9.sh,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        "Members:",
+                        style: Styles.boldStyle(
+                          fontSize: 12,
+                          color: AppColor.white,
+                          family: FontFamily.kanit,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Expanded(
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => const Divider(
+                            thickness: 0.5,
+                          ),
+                          itemCount: members.length,
+                          itemBuilder: (context, index) {
+                            final member = members[index];
+                            return ListTile(
+                              leading: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: context.colorScheme.secondary,
+                                child: Text(
+                                  (member.user?.username ?? "?")
+                                      .substring(0, 1),
+                                  style: Styles.mediumStyle(
+                                    fontSize: 12,
+                                    color: AppColor.white,
+                                    family: FontFamily.montserrat,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                member.user?.username ?? "Unknown",
+                                style: Styles.mediumStyle(
+                                  fontSize: 12,
+                                  color: AppColor.white,
+                                  family: FontFamily.montserrat,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
