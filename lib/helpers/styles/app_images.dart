@@ -1,10 +1,10 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:communico_frontend/config.dart';
 
 class AppImages {
-  static final _baseDir = dotenv.env['STORAGE_PATH']!.toString();
-  static final autumn = "$_baseDir/autumn.gif";
-  static final scenery = "$_baseDir/scenery.gif";
-  static final rain = "$_baseDir/rain.gif";
-  static final night = "$_baseDir/night.gif";
-  static final sunset = "$_baseDir/sunset.gif";
+  static const _baseDir = Config.storagePath;
+  static const autumn = "$_baseDir/autumn.gif";
+  static const scenery = "$_baseDir/scenery.gif";
+  static const rain = "$_baseDir/rain.gif";
+  static const night = "$_baseDir/night.gif";
+  static const sunset = "$_baseDir/sunset.gif";
 }
