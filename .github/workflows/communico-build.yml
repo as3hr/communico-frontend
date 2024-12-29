@@ -24,9 +24,13 @@ jobs:
       run: flutter pub get
 
     - name: Build Web
-      run: flutter build web --web-renderer canvaskit --release \
-        --dart-define=BASE_URL=${{ secrets.BASE_URL }} \
-        --dart-define=STORAGE_PATH=${{ secrets.STORAGE_PATH }}
+      env:
+        BASE_URL: ${{ secrets.BASE_URL }}
+        STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
+      run: |
+        flutter build web --web-renderer canvaskit --release \
+          --dart-define=BASE_URL=$BASE_URL \
+          --dart-define=STORAGE_PATH=$STORAGE_PATH
  
     - name: Deploy to VM
       uses: appleboy/ssh-action@v1.0.3
