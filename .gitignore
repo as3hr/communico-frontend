@@ -1,6 +1,6 @@
 # Miscellaneous
 *.class
-.env
+dotenv
 *.log
 *.pyc
 *.swp

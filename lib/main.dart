@@ -6,7 +6,7 @@ import 'presentation/communico.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  await dotenv.load(fileName: "dotenv");
   await ServiceLocator.configureServiceLocator();
   runApp(const Communico());
 }
