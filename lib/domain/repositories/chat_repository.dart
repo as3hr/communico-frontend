@@ -8,4 +8,6 @@ abstract class ChatRepository {
   Future<Either<ChatFailure, Paginate<ChatEntity>>> getMyChats(
       Paginate<ChatEntity> previousChats);
   Future<Either<ChatFailure, ChatEntity>> createChat(ChatEntity chatEntity);
+  Future<Either<ChatFailure, String>> encryptChatLink(int chatId);
+  Future<Either<ChatFailure, ChatEntity>> decryptChatId(String encryptedChatId);
 }

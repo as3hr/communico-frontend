@@ -55,6 +55,7 @@ dependencies:
   stream_typewriter_text: ^1.0.8
   flutter_dotenv: ^5.2.1
   collection: ^1.18.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

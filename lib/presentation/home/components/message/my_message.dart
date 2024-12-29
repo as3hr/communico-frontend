@@ -18,12 +18,14 @@ class MyMessage extends StatelessWidget {
     this.messageActionsParams,
     this.onReplySelection,
     this.onReplyTap,
+    this.hideUsername = true,
   });
   final MessageEntity message;
   final MessageActionsParams? messageActionsParams;
   final bool showActions;
   final void Function()? onReplyTap;
   final void Function()? onReplySelection;
+  final bool hideUsername;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +90,17 @@ class MyMessage extends StatelessWidget {
                             },
                             color:
                                 context.colorScheme.primary.withOpacity(0.5)),
+                      if (!hideUsername) ...[
+                        Text(
+                          message.sender?.username ?? "",
+                          style: Styles.mediumStyle(
+                            fontSize: 15,
+                            color: context.colorScheme.onPrimary,
+                            family: FontFamily.kanit,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                      ],
                       Text(
                         message.text,
                         style: Styles.mediumStyle(

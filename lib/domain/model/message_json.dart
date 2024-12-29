@@ -42,7 +42,8 @@ class MessageJson implements BaseModel<MessageEntity> {
             ? MessageJson.fromJson(json["replyTo"]).toDomain()
             : null,
         replyToId: json["replyToId"],
-        timeStamp: DateTime.tryParse(json["timestamp"] ?? "") ?? DateTime.now(),
+        timeStamp: DateTime.tryParse(json["timestamp"] ?? "") ??
+            DateTime.now().toUtc(),
         userId: json["userId"],
         chatId: json["chatId"],
         sender: json["sender"] != null

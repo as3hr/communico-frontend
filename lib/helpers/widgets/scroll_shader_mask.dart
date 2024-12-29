@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class ScrollShaderMask extends StatelessWidget {
   final Widget? child;
-  const ScrollShaderMask({required this.child, super.key});
+  final bool isHorizontal;
+  const ScrollShaderMask(
+      {required this.child, super.key, this.isHorizontal = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class ScrollShaderMask extends StatelessWidget {
       },
       blendMode: BlendMode.dstOut,
       child: SingleChildScrollView(
+        scrollDirection: isHorizontal ? Axis.horizontal : Axis.vertical,
         padding: const EdgeInsets.only(top: 15),
         child: child,
       ),

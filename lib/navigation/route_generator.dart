@@ -1,9 +1,9 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:communico_frontend/presentation/auth/auth_page.dart';
-import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room.dart';
+import 'package:communico_frontend/presentation/shared_room/shared_chat/shared_chat.dart';
+import 'package:communico_frontend/presentation/shared_room/shared_group/shared_group.dart';
 import 'package:flutter/material.dart';
 import 'package:communico_frontend/navigation/route_name.dart';
+import 'package:universal_html/html.dart';
 
 import '../presentation/home/home_screen.dart';
 
@@ -13,25 +13,32 @@ enum TransitionType {
 }
 
 Route<dynamic> generateRoute(RouteSettings settings) {
-  final args =
-      (settings.arguments ?? <String, dynamic>{}) as Map<String, dynamic>;
+  if (settings.name != null && settings.name!.startsWith('chats/')) {
+    final encryptedId = settings.name!.substring(6);
+    return getRoute(
+      SharedChat(
+        encryptedId: encryptedId,
+      ),
+      TransitionType.slide,
+    );
+  }
+
+  if (settings.name != null && settings.name!.startsWith('groups/')) {
+    final encryptedId = settings.name!.substring(7);
+    return getRoute(
+      SharedGroup(
+        encryptedId: encryptedId,
+      ),
+      TransitionType.slide,
+    );
+  }
 
   switch (settings.name) {
     case RouteName.home:
-      return getRoute(const HomeScreen(), TransitionType.slide);
+      return getMainPage();
 
     case RouteName.getIn:
-      return getRoute(const AuthPage(), TransitionType.fade);
-
-    case RouteName.chatRoom:
-      return getRoute(
-          ChatRoom(
-            replyTo: ValueNotifier(false),
-            onReply: (message, show) {},
-            messageActionsParams: args["messageActionsParams"],
-            params: args["params"],
-          ),
-          TransitionType.slide);
+      return getMainPage();
 
     default:
       return MaterialPageRoute(
@@ -40,6 +47,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
       );
   }
+}
+
+PageRouteBuilder getMainPage() {
+  final token = window.localStorage['authToken'] ?? "";
+  return (token.isNotEmpty)
+      ? getRoute(const HomeScreen(), TransitionType.slide)
+      : getRoute(const AuthPage(), TransitionType.fade);
 }
 
 PageRouteBuilder getRoute(Widget page, TransitionType transitionType) {

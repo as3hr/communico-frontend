@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final cubit = getIt<HomeCubit>();
+  final cubit = sl<HomeCubit>();
 
   @override
   void initState() {

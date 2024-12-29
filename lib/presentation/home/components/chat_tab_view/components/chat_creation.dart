@@ -15,7 +15,7 @@ import '../../../../../helpers/widgets/jumping_dots.dart';
 class ChatCreationForm extends StatelessWidget {
   const ChatCreationForm({super.key});
 
-  static final cubit = getIt<ChatCreationCubit>();
+  static final cubit = sl<ChatCreationCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ChatCreationForm extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           width: 0.5.sw,
-          height: 0.4.sh,
+          height: 0.5.sh,
           child: PopScope(
             onPopInvokedWithResult: (_, __) {
               cubit.closeDialog();
@@ -64,7 +64,7 @@ class ChatCreationForm extends StatelessWidget {
 class ChatCreationMemberSelection extends StatelessWidget {
   const ChatCreationMemberSelection({super.key});
 
-  static final cubit = getIt<ChatCreationCubit>();
+  static final cubit = sl<ChatCreationCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCreationCubit, ChatCreationState>(
@@ -134,7 +134,7 @@ class ChatCreationMemberSelection extends StatelessWidget {
 class MessageCreation extends StatelessWidget {
   const MessageCreation({super.key});
 
-  static final cubit = getIt<ChatCreationCubit>();
+  static final cubit = sl<ChatCreationCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCreationCubit, ChatCreationState>(

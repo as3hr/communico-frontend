@@ -20,7 +20,7 @@ class AppNavigation {
 
   exitApp() async {
     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-    await getIt.reset();
+    await sl.reset();
   }
 
   pushReplacement(String routeName, {arguments}) {
@@ -32,7 +32,7 @@ class AppNavigation {
   }
 
   popAll(String routeName) {
-    getIt.reset().then((_) {
+    sl.reset().then((_) {
       ServiceLocator.configureServiceLocator();
     }).then((_) {
       if (context.mounted) {

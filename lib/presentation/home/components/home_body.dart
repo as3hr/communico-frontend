@@ -15,7 +15,7 @@ import '../home_state.dart';
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = sl<HomeCubit>();
 
   @override
   Widget build(BuildContext context) {

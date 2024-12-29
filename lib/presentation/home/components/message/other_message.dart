@@ -14,14 +14,14 @@ class OtherMessage extends StatelessWidget {
   const OtherMessage({
     super.key,
     required this.message,
-    required this.messageActionsParams,
+    this.messageActionsParams,
     required this.onReplyTap,
-    required this.onReplySelection,
+    this.onReplySelection,
   });
   final MessageEntity message;
-  final MessageActionsParams messageActionsParams;
+  final MessageActionsParams? messageActionsParams;
   final void Function() onReplyTap;
-  final void Function() onReplySelection;
+  final void Function()? onReplySelection;
 
   @override
   Widget build(BuildContext context) {
@@ -92,19 +92,22 @@ class OtherMessage extends StatelessWidget {
                     ],
                   ),
                 ),
-                ValueListenableBuilder(
-                    valueListenable: message.isHovered,
-                    builder: (context, value, _) {
-                      if (value) {
-                        return MessageActions(
-                          params: messageActionsParams,
-                          message: message,
-                          onReplyTap: onReplySelection,
-                          isOtherMessage: true,
-                        );
-                      }
-                      return const SizedBox();
-                    }),
+                if (messageActionsParams != null)
+                  ValueListenableBuilder(
+                      valueListenable: message.isHovered,
+                      builder: (context, value, _) {
+                        if (value) {
+                          return MessageActions(
+                            params: messageActionsParams!,
+                            message: message,
+                            onReplyTap: () {
+                              onReplySelection?.call();
+                            },
+                            isOtherMessage: true,
+                          );
+                        }
+                        return const SizedBox();
+                      }),
               ],
             ),
           ),

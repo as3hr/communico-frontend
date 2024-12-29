@@ -5,9 +5,9 @@ import '../../auth/auth_cubit.dart';
 
 class AuthModule {
   static Future<void> configureAuthModuleInjection() async {
-    getIt.registerSingleton<AuthNavigator>(AuthNavigator(getIt()));
-    getIt.registerLazySingleton<AuthCubit>(
-      () => AuthCubit(getIt(), getIt()),
+    sl.registerSingleton<AuthNavigator>(AuthNavigator(sl()));
+    sl.registerLazySingleton<AuthCubit>(
+      () => AuthCubit(sl(), sl()),
     );
   }
 }

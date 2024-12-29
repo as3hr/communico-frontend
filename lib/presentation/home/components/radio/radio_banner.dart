@@ -16,7 +16,7 @@ class RadioBanner extends StatelessWidget {
   const RadioBanner({super.key, required this.controller});
   final YoutubePlayerController controller;
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = sl<HomeCubit>();
 
   @override
   Widget build(BuildContext context) {

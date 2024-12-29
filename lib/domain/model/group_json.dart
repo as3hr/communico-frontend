@@ -9,6 +9,7 @@ import 'base_model.dart';
 
 class GroupJson implements BaseModel<GroupEntity> {
   int id;
+  String? link;
   String name;
   List<GroupMemberEntity> members;
   List<MessageEntity> messages;
@@ -17,11 +18,13 @@ class GroupJson implements BaseModel<GroupEntity> {
     required this.id,
     required this.members,
     required this.name,
+    this.link,
     List<MessageEntity>? messages,
   }) : messages = messages ?? [];
 
   factory GroupJson.copyWith(GroupEntity entity) => GroupJson(
         id: entity.id,
+        link: entity.link,
         name: entity.name,
         members: entity.members,
         messages: entity.messages,
@@ -30,6 +33,7 @@ class GroupJson implements BaseModel<GroupEntity> {
   factory GroupJson.fromJson(Map<String, dynamic> json) => GroupJson(
         id: json["id"],
         name: json["name"],
+        link: json["link"],
         members: parseList(json["members"], GroupMemberJson.fromJson)
             .map((member) => member.toDomain())
             .toList(),
@@ -42,6 +46,7 @@ class GroupJson implements BaseModel<GroupEntity> {
   GroupEntity toDomain() => GroupEntity(
         id: id,
         name: name,
+        link: link,
         members: members,
         messages: messages,
       );

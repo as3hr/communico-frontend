@@ -176,7 +176,9 @@ class GroupCubit extends Cubit<GroupState> {
     socket.on("groupMessageDeletion", (data) {
       final message = MessageJson.fromJson(data).toDomain();
       if (message.userId != user!.id) {
-        deleteMessage(message);
+        state.currentGroup.messagePagination.data
+            .removeWhere((currentMessage) => currentMessage.id == message.id);
+        emit(state.copyWith(currentGroup: state.currentGroup));
       }
     });
 
@@ -218,12 +220,25 @@ class GroupCubit extends Cubit<GroupState> {
       "groupId": state.currentGroup.id,
     });
     await getGroupMessages(group);
+    await getEncryptedGroupLink(group);
     socket.emit("groupJoin", {
       "groupId": state.currentGroup.id,
     });
   }
 
-  UserEntity? get user => getIt<UserStore>().getUser();
+  getEncryptedGroupLink(GroupEntity group) async {
+    await groupRepository.encryptGroupLink(group.id).then(
+          (response) => response.fold(
+            (error) {},
+            (link) {
+              state.currentGroup.link = link;
+              emit(state.copyWith(currentGroup: state.currentGroup));
+            },
+          ),
+        );
+  }
+
+  UserEntity? get user => sl<UserStore>().getUser();
 
   List<UserEntity> get previousUsers => state.currentGroup.members
           .where((member) => member.user!.id != user!.id)

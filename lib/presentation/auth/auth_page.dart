@@ -13,8 +13,7 @@ import '../../helpers/styles/styles.dart';
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
 
-  static final cubit = getIt<AuthCubit>();
-  static final _formKey = GlobalKey<FormState>();
+  static final cubit = sl<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +23,12 @@ class AuthPage extends StatelessWidget {
         builder: (context, state) {
           return Background(
             child: SafeArea(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 400),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Form(
-                      key: _formKey,
+              child: SelectionArea(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 400),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -60,22 +58,8 @@ class AuthPage extends StatelessWidget {
                             onChanged: (val) {
                               state.username = val;
                             },
-                            validator: (val) {
-                              final regex = RegExp(r'^[a-z0-9_.]{4,10}$');
-                              if (val == null || val.isEmpty) {
-                                return "Username cannot be empty";
-                              } else if (val.length < 4) {
-                                return "Username must be at least 4 characters long";
-                              } else if (val.length > 10) {
-                                return "Wow, planning a novel? Keep it short, champ!";
-                              } else if (!regex.hasMatch(val)) {
-                                return "Only lowercase letters, numbers, underscores, '.' allowed.";
-                              }
-                              return null;
-                            },
                             onSubmitted: (val) {
-                              if (state.username.isNotEmpty &&
-                                  _formKey.currentState!.validate()) {
+                              if (state.username.isNotEmpty) {
                                 cubit.getIn();
                               }
                             },
@@ -100,8 +84,7 @@ class AuthPage extends StatelessWidget {
                           AppButton(
                               title: "GET IN",
                               onTap: () {
-                                if (state.username.isNotEmpty &&
-                                    _formKey.currentState!.validate()) {
+                                if (state.username.isNotEmpty) {
                                   cubit.getIn();
                                 }
                               }),

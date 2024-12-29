@@ -67,7 +67,7 @@ class AiCubit extends Cubit<AiState> {
     emit(state.copyWith(messages: state.messages));
   }
 
-  UserEntity? get user => getIt<UserStore>().getUser();
+  UserEntity? get user => sl<UserStore>().getUser();
 
   empty() => emit(AiState.empty());
 }

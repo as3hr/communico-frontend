@@ -66,7 +66,7 @@ class GroupCreationCubit extends Cubit<GroupCreationState> {
           .toList(),
       name: state.name,
     );
-    await getIt<GroupCubit>().createGroup(group);
+    await sl<GroupCubit>().createGroup(group);
     emit(state.copyWith(isLoading: false));
   }
 }

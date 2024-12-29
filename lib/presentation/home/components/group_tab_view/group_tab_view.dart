@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../di/service_locator.dart';
 import '../../../../helpers/utils.dart';
 import '../../../../helpers/widgets/animated_banner.dart';
+import '../../../../helpers/widgets/link_banner.dart';
 import '../chat_rom/chat_room.dart';
 import '../chat_rom/chat_room_query_params.dart';
 import '../message/message_actions_params.dart';
@@ -21,7 +22,7 @@ import 'group_cubit.dart';
 class GroupTabView extends StatelessWidget {
   const GroupTabView({super.key});
 
-  static final cubit = getIt<GroupCubit>();
+  static final cubit = sl<GroupCubit>();
   static final replyTo = ValueNotifier<bool>(false);
 
   @override
@@ -34,7 +35,7 @@ class GroupTabView extends StatelessWidget {
               ? EmptyChat(
                   text: "Create your First Group",
                   onTap: () {
-                    getIt<GroupCreationCubit>().fetchUsers();
+                    sl<GroupCreationCubit>().fetchUsers();
                     showDialog(
                       context: context,
                       builder: (_) {
@@ -92,6 +93,23 @@ class GroupTabView extends StatelessWidget {
                             onSendMessage: () {
                               cubit.sendMessage();
                               replyTo.value = false;
+                            },
+                            onShareChat: () {
+                              if (state.currentGroup.link != null) {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 8, sigmaY: 8),
+                                      child: AnimatedBanner(
+                                        content: LinkBanner(
+                                            link: state.currentGroup.link!),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                             },
                             onEndDrawerChanged: () {
                               cubit.toggleGroupField(groupFieldEnabled: false);

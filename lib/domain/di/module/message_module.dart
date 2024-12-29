@@ -4,8 +4,8 @@ import '../../repositories/message_repository.dart';
 
 class MessageModule {
   static Future<void> configureMessageModuleInjection() async {
-    getIt.registerSingleton<MessageRepository>(
-      ApiMessageRepository(getIt()),
+    sl.registerSingleton<MessageRepository>(
+      ApiMessageRepository(sl()),
     );
   }
 }

@@ -40,4 +40,26 @@ class ApiChatRepository implements ChatRepository {
 
     return right(pagination);
   }
+
+  @override
+  Future<Either<ChatFailure, String>> encryptChatLink(int chatId) async {
+    final response = await networkRepository.get(url: "/chats/link/$chatId");
+    if (response.failed) {
+      return left(ChatFailure(error: response.message));
+    }
+    return right(response.data['data']);
+  }
+
+  @override
+  Future<Either<ChatFailure, ChatEntity>> decryptChatId(
+      String encryptedChatId) async {
+    final response =
+        await networkRepository.get(url: "/chats/dcrypt", extraQuery: {
+      "encryptedData": encryptedChatId,
+    });
+    if (response.failed) {
+      return left(ChatFailure(error: response.message));
+    }
+    return right(ChatJson.fromJson(response.data["data"]).toDomain());
+  }
 }

@@ -4,9 +4,9 @@ import '../../repositories/user_repository.dart';
 
 class UserModule {
   static Future<void> configureUserModuleInjection() async {
-    getIt.registerSingleton<UserRepository>(
+    sl.registerSingleton<UserRepository>(
       ApiUserRepository(
-        getIt(),
+        sl(),
       ),
     );
   }

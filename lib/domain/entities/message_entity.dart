@@ -38,7 +38,7 @@ class MessageEntity {
     this.replyTo,
     this.replyToId,
     ValueNotifier<bool>? isCopiedNotifier,
-  })  : timeStamp = timeStamp ?? DateTime.now(),
+  })  : timeStamp = timeStamp ?? DateTime.now().toUtc(),
         isHovered = isHovered ?? ValueNotifier<bool>(false),
         isCopiedNotifier = isCopiedNotifier ?? ValueNotifier<bool>(false);
 
@@ -82,4 +82,6 @@ class MessageEntity {
 
   Map<String, dynamic> toGroupJson() =>
       MessageJson.copyWith(this).toGroupJson();
+
+  factory MessageEntity.empty() => MessageEntity(text: "", userId: 0);
 }

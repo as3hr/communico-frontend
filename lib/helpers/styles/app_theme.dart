@@ -2,18 +2,6 @@ import 'app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // static const colortheme = ColorScheme(
-  //   brightness: Brightness.dark,
-  //   primary: AppColor.darkPrimary,
-  //   onPrimary: AppColor.white,
-  //   secondary: AppColor.darkSecondary,
-  //   onSecondary: AppColor.grey,
-  //   error: AppColor.red,
-  //   onError: AppColor.white,
-  //   surface: AppColor.darkBackground,
-  //   onSurface: AppColor.grey,
-  // );
-
   static const colortheme = ColorScheme(
     brightness: Brightness.dark,
     primary: AppColor.primaryColor,
@@ -33,7 +21,7 @@ class AppTheme {
       colorScheme: colortheme,
       fontFamily: "Montserrat",
       textSelectionTheme: const TextSelectionThemeData(
-        selectionColor: AppColor.darkBackground,
+        selectionColor: AppColor.electricBlue,
         cursorColor: AppColor.white,
         selectionHandleColor: AppColor.brightMagenta,
       ),

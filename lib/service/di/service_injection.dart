@@ -4,6 +4,6 @@ import '../../di/service_locator.dart';
 
 class ServiceInjection {
   static Future<void> configureServiceLayerInjction() async {
-    getIt.registerSingleton<NetworkMonitor>(NetworkMonitor());
+    sl.registerSingleton<NetworkMonitor>(NetworkMonitor());
   }
 }

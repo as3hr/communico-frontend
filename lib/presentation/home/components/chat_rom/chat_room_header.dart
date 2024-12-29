@@ -25,17 +25,6 @@ class ChatRoomHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          if (context.isMobile || context.isTablet) ...[
-            2.horizontalSpace,
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-              ),
-            ),
-          ],
           2.horizontalSpace,
           Text(
             params.roomTitle,
@@ -46,6 +35,16 @@ class ChatRoomHeader extends StatelessWidget {
             ),
           ),
           const Spacer(),
+          IconButton(
+            onPressed: () {
+              params.onShareChat?.call();
+            },
+            icon: const Icon(
+              Icons.arrow_outward_rounded,
+            ),
+            tooltip: "Share Conversation",
+          ),
+          2.horizontalSpace,
           if (params.isGroup) ...[
             IconButton(
               onPressed: () {

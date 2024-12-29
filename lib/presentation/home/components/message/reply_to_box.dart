@@ -69,5 +69,5 @@ class ReplyToBox extends StatelessWidget {
     );
   }
 
-  String get username => getIt<UserStore>().getUser()?.username ?? "";
+  String get username => sl<UserStore>().getUser()?.username ?? "";
 }

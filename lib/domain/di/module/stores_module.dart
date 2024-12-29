@@ -4,7 +4,7 @@ import '../../../di/service_locator.dart';
 
 class StoreModule {
   static Future<void> configureStoreModuleInjection() async {
-    getIt.registerSingleton<UserStore>(
+    sl.registerSingleton<UserStore>(
       UserStore(),
     );
   }

@@ -1,10 +1,8 @@
 import 'package:communico_frontend/navigation/app_navigation.dart';
 import 'package:communico_frontend/navigation/route_generator.dart';
-import 'package:communico_frontend/navigation/route_name.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:universal_html/html.dart';
 
 import '../helpers/styles/app_theme.dart';
 
@@ -30,14 +28,11 @@ class Communico extends StatelessWidget {
               useInheritedMediaQuery: true,
               designSize: const Size(300, 200),
               builder: (context, _) {
-                final token = window.localStorage['authToken'] ?? "";
                 return MaterialApp(
                   theme: AppTheme.theme(),
                   debugShowCheckedModeBanner: false,
                   navigatorKey: AppNavigation.navigatorKey,
                   onGenerateRoute: generateRoute,
-                  initialRoute:
-                      (token.isNotEmpty) ? RouteName.home : RouteName.getIn,
                 );
               });
         });

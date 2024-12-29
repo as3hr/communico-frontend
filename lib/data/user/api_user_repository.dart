@@ -25,7 +25,7 @@ class ApiUserRepository implements UserRepository {
       return left(UserFailure(error: response.message));
     }
     final user = UserJson.fromJson(response.data["data"]).toDomain();
-    getIt<UserStore>().setUser(user);
+    sl<UserStore>().setUser(user);
     return right(user);
   }
 
@@ -39,7 +39,7 @@ class ApiUserRepository implements UserRepository {
       return left(UserFailure(error: response.message));
     }
     final user = UserJson.fromJson(response.data["data"]).toDomain();
-    getIt<UserStore>().setUser(user);
+    sl<UserStore>().setUser(user);
     return right(user);
   }
 

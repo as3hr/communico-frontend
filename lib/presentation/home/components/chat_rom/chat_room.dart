@@ -36,10 +36,9 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
-  late MessageEntity currentReplyToMessage;
-  final cubit = getIt<HomeCubit>();
+  MessageEntity currentReplyToMessage = MessageEntity.empty();
+  final cubit = sl<HomeCubit>();
   final Map<int, int> indexIdMap = {};
-  final showFab = ValueNotifier<bool>(false);
   final itemScrollController = ItemScrollController();
   final scrollOffsetListener = ScrollOffsetListener.create();
 
@@ -50,9 +49,6 @@ class _ChatRoomState extends State<ChatRoom> {
       if (offset >= 0.8) {
         widget.params.scrollAndCall();
       }
-      final isAtBottom = offset <= 0.05;
-      final isScrolledUp = offset >= 0.8;
-      showFab.value = !isAtBottom && isScrolledUp;
     });
   }
 
@@ -67,14 +63,22 @@ class _ChatRoomState extends State<ChatRoom> {
     }
   }
 
+  @override
+  void dispose() {
+    widget.replyTo.value = false;
+    super.dispose();
+  }
+
   jumpToBottom() {
     final messages = widget.params.messages;
-    final index = messages.indexOf(messages.first);
-    itemScrollController.scrollTo(
-      index: index,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
+    if (messages.length > 1) {
+      final index = messages.indexOf(messages.first);
+      itemScrollController.scrollTo(
+        index: index,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   @override
@@ -187,6 +191,10 @@ class _ChatRoomState extends State<ChatRoom> {
                               ValueListenableBuilder(
                                 valueListenable: widget.replyTo,
                                 builder: (context, value, _) {
+                                  final replyToMessage =
+                                      currentReplyToMessage.text.isEmpty
+                                          ? null
+                                          : currentReplyToMessage;
                                   return Positioned(
                                     bottom: 0,
                                     child: AnimatedSlide(
@@ -224,7 +232,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        'Replying to ${currentReplyToMessage.sender!.username}',
+                                                        'Replying to ${replyToMessage?.sender?.username}',
                                                         style: Styles.boldStyle(
                                                             fontSize: 12,
                                                             color:
@@ -267,8 +275,9 @@ class _ChatRoomState extends State<ChatRoom> {
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            currentReplyToMessage
-                                                                .text,
+                                                            replyToMessage
+                                                                    ?.text ??
+                                                                "",
                                                             maxLines: 2,
                                                             overflow:
                                                                 TextOverflow
@@ -296,14 +305,16 @@ class _ChatRoomState extends State<ChatRoom> {
                           ),
                         ),
                       ),
-                      2.verticalSpace,
-                      ChatRoomFooter(
-                        textController: widget.params.textController,
-                        onSendMessage: () {
-                          widget.params.onSendMessage.call();
-                          jumpToBottom();
-                        },
-                      ),
+                      if (widget.params.textController != null) ...[
+                        2.verticalSpace,
+                        ChatRoomFooter(
+                          textController: widget.params.textController!,
+                          onSendMessage: () {
+                            widget.params.onSendMessage?.call();
+                            jumpToBottom();
+                          },
+                        ),
+                      ]
                     ],
                   ),
                 ),

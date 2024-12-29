@@ -15,7 +15,7 @@ import 'group_creation_state.dart';
 class GroupCreationForm extends StatelessWidget {
   const GroupCreationForm({super.key});
 
-  static final cubit = getIt<GroupCreationCubit>();
+  static final cubit = sl<GroupCreationCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class GroupCreationForm extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           width: 0.5.sw,
-          height: 0.4.sh,
+          height: 0.6.sh,
           child: PopScope(
             onPopInvokedWithResult: (_, __) {
               cubit.closeDialog();
@@ -58,7 +58,7 @@ class GroupCreationForm extends StatelessWidget {
 class GroupCreationMemberSelection extends StatelessWidget {
   const GroupCreationMemberSelection({super.key});
 
-  static final cubit = getIt<GroupCreationCubit>();
+  static final cubit = sl<GroupCreationCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCreationCubit, GroupCreationState>(
@@ -159,7 +159,7 @@ class GroupCreationMemberSelection extends StatelessWidget {
 class GroupCreationNaming extends StatelessWidget {
   const GroupCreationNaming({super.key});
 
-  static final cubit = getIt<GroupCreationCubit>();
+  static final cubit = sl<GroupCreationCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCreationCubit, GroupCreationState>(

@@ -24,7 +24,7 @@ class GroupList extends StatefulWidget {
 }
 
 class _GroupListState extends State<GroupList> {
-  final cubit = getIt<GroupCubit>();
+  final cubit = sl<GroupCubit>();
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _GroupListState extends State<GroupList> {
             child: FloatingActionButton(
               shape: const CircleBorder(),
               onPressed: () {
-                getIt<GroupCreationCubit>().fetchUsers();
+                sl<GroupCreationCubit>().fetchUsers();
                 showDialog(
                   context: context,
                   builder: (_) {
@@ -99,7 +99,7 @@ class _GroupListState extends State<GroupList> {
                     showBorder: false,
                   ),
                 ),
-                1.verticalSpace,
+                3.verticalSpace,
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(

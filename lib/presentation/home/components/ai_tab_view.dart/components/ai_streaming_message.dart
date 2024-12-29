@@ -13,7 +13,7 @@ import '../ai_state.dart';
 class AiStreamingMessage extends StatelessWidget {
   const AiStreamingMessage({super.key});
 
-  static final cubit = getIt<AiCubit>();
+  static final cubit = sl<AiCubit>();
 
   @override
   Widget build(BuildContext context) {

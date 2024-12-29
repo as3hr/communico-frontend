@@ -6,12 +6,14 @@ import 'user_entity.dart';
 
 class ChatEntity {
   int id;
+  String? link;
   List<ChatParticipantsEntity> participants;
   List<MessageEntity> messages;
   Paginate<MessageEntity> messagePagination;
 
   ChatEntity({
     this.id = 0,
+    this.link,
     required this.participants,
     required this.messages,
     Paginate<MessageEntity>? messagePagination,
@@ -19,12 +21,14 @@ class ChatEntity {
 
   ChatEntity copyWith({
     int? id,
+    String? link,
     List<ChatParticipantsEntity>? participants,
     List<MessageEntity>? messages,
     Paginate<MessageEntity>? messagePagination,
   }) {
     return ChatEntity(
       id: id ?? this.id,
+      link: link ?? this.link,
       participants: participants ?? this.participants,
       messages: messages ?? this.messages,
       messagePagination: messagePagination ?? this.messagePagination,

@@ -12,12 +12,14 @@ class InputField extends StatefulWidget {
     this.prefixIcon,
     this.prefilledValue,
     this.validator,
+    this.enabled = true,
   });
   final void Function(String) onChanged;
   final void Function(String) onSubmitted;
   final String hintText;
   final String? prefilledValue;
   final IconData? prefixIcon;
+  final bool enabled;
   final String? Function(String?)? validator;
 
   @override
@@ -38,6 +40,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: widget.enabled,
       controller: controller,
       onChanged: (val) {
         widget.onChanged.call(val);

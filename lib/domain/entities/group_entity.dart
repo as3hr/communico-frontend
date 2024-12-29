@@ -7,6 +7,7 @@ import '../model/paginate.dart';
 class GroupEntity {
   int id;
   String name;
+  String? link;
   List<GroupMemberEntity> members;
   List<MessageEntity> messages;
   Paginate<MessageEntity> messagePagination;
@@ -15,6 +16,7 @@ class GroupEntity {
     this.id = 0,
     required this.members,
     required this.name,
+    this.link,
     Paginate<MessageEntity>? messagePagination,
     List<MessageEntity>? messages,
   })  : messages = messages ?? [],
@@ -29,12 +31,14 @@ class GroupEntity {
   GroupEntity copyWith({
     int? id,
     String? name,
+    String? link,
     List<GroupMemberEntity>? members,
     List<MessageEntity>? messages,
     Paginate<MessageEntity>? messagePagination,
   }) {
     return GroupEntity(
       id: id ?? this.id,
+      link: link ?? this.link,
       name: name ?? this.name,
       members: members ?? this.members,
       messages: messages ?? this.messages,

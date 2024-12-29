@@ -20,7 +20,7 @@ import '../group_cubit.dart';
 class GroupRoomDetail extends StatelessWidget {
   const GroupRoomDetail({super.key});
 
-  static final cubit = getIt<GroupCubit>();
+  static final cubit = sl<GroupCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCubit, GroupState>(
@@ -184,7 +184,7 @@ class GroupUpdationMemberSelection extends StatelessWidget {
   const GroupUpdationMemberSelection({super.key, required this.previousUsers});
   final List<UserEntity> previousUsers;
 
-  static final cubit = getIt<GroupCubit>();
+  static final cubit = sl<GroupCubit>();
   @override
   Widget build(BuildContext context) {
     return PopScope(

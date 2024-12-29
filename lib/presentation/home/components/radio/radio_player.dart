@@ -9,7 +9,7 @@ class RadioPlayer extends StatelessWidget {
   const RadioPlayer({super.key, required this.controller});
   final YoutubePlayerController controller;
 
-  static final cubit = getIt<HomeCubit>();
+  static final cubit = sl<HomeCubit>();
   static final isMuted = ValueNotifier<bool>(false);
 
   @override

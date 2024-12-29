@@ -8,17 +8,20 @@ import 'package:communico_frontend/helpers/utils.dart';
 
 class ChatJson implements BaseModel<ChatEntity> {
   int id;
+  String? link;
   List<ChatParticipantsEntity> participants;
   List<MessageEntity> messages;
 
   ChatJson({
     required this.id,
+    this.link,
     required this.participants,
     List<MessageEntity>? messages,
   }) : messages = messages ?? [];
 
   factory ChatJson.fromJson(Map<String, dynamic> json) => ChatJson(
         id: json["id"],
+        link: json["link"],
         participants:
             parseList(json["participants"], ChatParticipantsJson.fromJson)
                 .map((particiapnt) => particiapnt.toDomain())
@@ -32,6 +35,7 @@ class ChatJson implements BaseModel<ChatEntity> {
 
   factory ChatJson.copyWith(ChatEntity entity) => ChatJson(
         id: entity.id,
+        link: entity.link,
         participants: entity.participants,
         messages: entity.messages,
       );
@@ -39,6 +43,7 @@ class ChatJson implements BaseModel<ChatEntity> {
   @override
   ChatEntity toDomain() => ChatEntity(
         id: id,
+        link: link,
         participants: participants,
         messages: messages,
       );

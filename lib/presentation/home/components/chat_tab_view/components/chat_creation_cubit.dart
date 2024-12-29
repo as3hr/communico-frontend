@@ -70,7 +70,7 @@ class ChatCreationCubit extends Cubit<ChatCreationState> {
     ], messages: [
       MessageEntity(text: state.message, userId: user!.id),
     ]);
-    await getIt<ChatCubit>().createChat(chat);
+    await sl<ChatCubit>().createChat(chat);
     emit(state.copyWith(isLoading: false));
   }
 
@@ -78,7 +78,7 @@ class ChatCreationCubit extends Cubit<ChatCreationState> {
     emit(state.copyWith(selectedUser: null, filteredUsers: []));
   }
 
-  UserEntity? get user => getIt<UserStore>().getUser();
+  UserEntity? get user => sl<UserStore>().getUser();
 
   void onMessageChanged(String val) {
     emit(state.copyWith(message: val));

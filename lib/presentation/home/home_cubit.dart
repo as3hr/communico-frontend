@@ -25,23 +25,36 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(isLoading: true));
     socketInit();
     await Future.wait([
-      getIt<ChatCubit>().getChats(),
-      getIt<GroupCubit>().getGroups(),
+      sl<ChatCubit>().getChats(),
+      sl<GroupCubit>().getGroups(),
     ]).then((_) {
       emit(state.copyWith(isLoading: false));
     });
   }
 
-  socketInit() {
+  socketInit({int retryCount = 0}) {
+    if (retryCount > 5) {
+      log('Max reconnection attempts reached.');
+      return;
+    }
+
     socket.connect();
     socket.onConnect((_) {
       log('Connected to the Socket Server');
+      sl<ChatCubit>().listenToDirectMessage();
+      sl<GroupCubit>().listenToGroupMessage();
+      sl<AiCubit>().listenToAiResponse();
     });
-    getIt<ChatCubit>().listenToDirectMessage();
-    getIt<GroupCubit>().listenToGroupMessage();
-    getIt<AiCubit>().listenToAiResponse();
-    socket.onDisconnect((_) {
+
+    socket.onDisconnect((_) async {
       log('Disconnected from the Socket Server');
+      await Future.delayed(const Duration(seconds: 2));
+      log('Attempting to reconnect... (${retryCount + 1}/5)');
+      socketInit(retryCount: retryCount + 1);
+    });
+
+    socket.onError((error) {
+      log('Socket Error: $error');
     });
   }
 
@@ -64,13 +77,13 @@ class HomeCubit extends Cubit<HomeState> {
 
   void closeStates() {
     emit(HomeState.empty());
-    getIt<ChatCubit>().empty();
-    getIt<GroupCubit>().empty();
-    getIt<AuthCubit>().empty();
-    getIt<AiCubit>().empty();
+    sl<ChatCubit>().empty();
+    sl<GroupCubit>().empty();
+    sl<AuthCubit>().empty();
+    sl<AiCubit>().empty();
   }
 
-  UserEntity? get user => getIt<UserStore>().getUser();
+  UserEntity? get user => sl<UserStore>().getUser();
 
   void startStation(BuildContext context) {
     if (state.currentStation == null) {

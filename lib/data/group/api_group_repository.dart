@@ -72,4 +72,26 @@ class ApiGroupRepository implements GroupRepository {
         .toList();
     return right(users);
   }
+
+  @override
+  Future<Either<GroupFailure, String>> encryptGroupLink(int groupId) async {
+    final response = await networkRepository.get(url: "/groups/link/$groupId");
+    if (response.failed) {
+      return left(GroupFailure(error: response.message));
+    }
+    return right(response.data['data']);
+  }
+
+  @override
+  Future<Either<GroupFailure, GroupEntity>> decryptGroupId(
+      String encryptedGroupId) async {
+    final response =
+        await networkRepository.get(url: "/groups/dcrypt", extraQuery: {
+      "encryptedData": encryptedGroupId,
+    });
+    if (response.failed) {
+      return left(GroupFailure(error: response.message));
+    }
+    return right(GroupJson.fromJson(response.data["data"]).toDomain());
+  }
 }

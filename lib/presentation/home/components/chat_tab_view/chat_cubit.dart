@@ -45,6 +45,18 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  getEncryptedChatLink(ChatEntity chat) async {
+    await chatRepository.encryptChatLink(chat.id).then(
+          (response) => response.fold(
+            (error) {},
+            (link) {
+              state.currentChat.link = link;
+              emit(state.copyWith(currentChat: state.currentChat));
+            },
+          ),
+        );
+  }
+
   empty() => emit(ChatState.empty());
 
 // only append the incoming message if it is from someone else
@@ -209,6 +221,7 @@ class ChatCubit extends Cubit<ChatState> {
       "chatId": state.currentChat.id,
     });
     await getChatMessages(chat);
+    await getEncryptedChatLink(chat);
     socket.emit("roomJoin", {
       "chatId": state.currentChat.id,
     });
@@ -224,5 +237,5 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
-  UserEntity? get user => getIt<UserStore>().getUser();
+  UserEntity? get user => sl<UserStore>().getUser();
 }

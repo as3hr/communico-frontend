@@ -5,6 +5,7 @@ import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/presentation/home/components/header/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:one_clock/one_clock.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -36,7 +37,7 @@ class HeaderContent extends StatefulWidget {
 }
 
 class _HeaderContentState extends State<HeaderContent> {
-  final cubit = getIt<HomeCubit>();
+  final cubit = sl<HomeCubit>();
   late YoutubePlayerController controller;
 
   @override
@@ -99,7 +100,9 @@ class _HeaderContentState extends State<HeaderContent> {
                 Text("Ask AI"),
               ],
             ),
+            3.horizontalSpace,
             const AppVerticalDivider(),
+            3.horizontalSpace,
             Text(
               "Quote: ${widget.currentQuote}",
               style: Styles.mediumStyle(
@@ -108,11 +111,13 @@ class _HeaderContentState extends State<HeaderContent> {
                 family: FontFamily.montserrat,
               ),
             ),
+            3.horizontalSpace,
             const AppVerticalDivider(),
+            3.horizontalSpace,
             Row(
               children: [
                 Text(
-                  "Local Time: ",
+                  "Standard Time: ",
                   style: Styles.mediumStyle(
                     fontSize: 15,
                     color: context.colorScheme.onPrimary.withOpacity(0.8),
@@ -125,11 +130,13 @@ class _HeaderContentState extends State<HeaderContent> {
                   textScaleFactor: 0.75,
                   padding: const EdgeInsets.all(5),
                   digitalClockTextColor: context.colorScheme.onPrimary,
-                  datetime: DateTime.now(),
+                  datetime: DateTime.now().toUtc(),
                 ),
               ],
             ),
+            3.horizontalSpace,
             const AppVerticalDivider(),
+            3.horizontalSpace,
             Row(
               children: [
                 Text(
@@ -191,7 +198,9 @@ class _HeaderContentState extends State<HeaderContent> {
                   ),
               ],
             ),
+            3.horizontalSpace,
             const AppVerticalDivider(),
+            3.horizontalSpace,
             Row(
               children: [
                 Text(
@@ -229,7 +238,9 @@ class _HeaderContentState extends State<HeaderContent> {
                 ),
               ],
             ),
+            3.horizontalSpace,
             const AppVerticalDivider(),
+            3.horizontalSpace,
             IconButton(
               onPressed: () {
                 widget.updatePassword.call();
@@ -239,9 +250,11 @@ class _HeaderContentState extends State<HeaderContent> {
                 color: Colors.blue,
                 size: 24,
               ),
-              tooltip: 'Update Password',
+              tooltip: 'Add/Update Password',
             ),
+            3.horizontalSpace,
             const AppVerticalDivider(),
+            3.horizontalSpace,
             IconButton(
               onPressed: () async {
                 if (await showConfirmationDialog(
@@ -256,6 +269,7 @@ class _HeaderContentState extends State<HeaderContent> {
               ),
               tooltip: 'Logout',
             ),
+            3.horizontalSpace,
           ],
         );
       },

@@ -24,7 +24,7 @@ class ChatsList extends StatefulWidget {
 }
 
 class _ChatsListState extends State<ChatsList> {
-  final cubit = getIt<ChatCubit>();
+  final cubit = sl<ChatCubit>();
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _ChatsListState extends State<ChatsList> {
             child: FloatingActionButton(
               shape: const CircleBorder(),
               onPressed: () {
-                getIt<ChatCreationCubit>().fetchUsers();
+                sl<ChatCreationCubit>().fetchUsers();
                 showDialog(
                   context: context,
                   builder: (_) {
@@ -100,7 +100,7 @@ class _ChatsListState extends State<ChatsList> {
                     showBorder: false,
                   ),
                 ),
-                1.verticalSpace,
+                3.verticalSpace,
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(

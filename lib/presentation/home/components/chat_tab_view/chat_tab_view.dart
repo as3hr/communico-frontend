@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
+import 'package:communico_frontend/helpers/widgets/link_banner.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
@@ -21,7 +22,7 @@ import 'components/chats_list.dart';
 class ChatTabView extends StatelessWidget {
   const ChatTabView({super.key});
 
-  static final cubit = getIt<ChatCubit>();
+  static final cubit = sl<ChatCubit>();
   static final replyTo = ValueNotifier<bool>(false);
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class ChatTabView extends StatelessWidget {
           return state.chatPagination.data.isEmpty && !state.isSearching
               ? EmptyChat(
                   onTap: () {
-                    final chatCubit = getIt<ChatCreationCubit>();
+                    final chatCubit = sl<ChatCreationCubit>();
                     chatCubit.fetchUsers();
                     showDialog(
                       context: context,
@@ -98,6 +99,23 @@ class ChatTabView extends StatelessWidget {
                             onSendMessage: () {
                               cubit.sendMessage();
                               replyTo.value = false;
+                            },
+                            onShareChat: () {
+                              if (state.currentChat.link != null) {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 8, sigmaY: 8),
+                                      child: AnimatedBanner(
+                                        content: LinkBanner(
+                                            link: state.currentChat.link!),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                             },
                             scrollAndCall: () {
                               cubit.scrollAndCallMessages(state.currentChat);

@@ -6,7 +6,7 @@ import '../data/di/data_layer_injection.dart';
 import '../network/di/network_layer_injection.dart';
 import '../service/di/service_injection.dart';
 
-final getIt = GetIt.instance;
+final sl = GetIt.instance;
 
 class ServiceLocator {
   static Future<void> configureServiceLocator() async {

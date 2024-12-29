@@ -4,13 +4,13 @@ import '../../dio/interceptors/network_interceptor.dart';
 
 class DioModule {
   static Future<void> configureDioModuleInjection() async {
-    getIt.registerSingleton<NetworkInterceptor>(
+    sl.registerSingleton<NetworkInterceptor>(
       NetworkInterceptor(),
     );
-    getIt.registerSingleton<DioClient>(
+    sl.registerSingleton<DioClient>(
       DioClient(
         interceptors: [
-          getIt<NetworkInterceptor>(),
+          sl<NetworkInterceptor>(),
         ],
       ),
     );

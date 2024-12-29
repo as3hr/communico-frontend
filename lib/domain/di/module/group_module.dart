@@ -4,9 +4,9 @@ import '../../repositories/group_repository.dart';
 
 class GroupModule {
   static Future<void> configureGroupModuleInjection() async {
-    getIt.registerSingleton<GroupRepository>(
+    sl.registerSingleton<GroupRepository>(
       ApiGroupRepository(
-        getIt(),
+        sl(),
       ),
     );
   }

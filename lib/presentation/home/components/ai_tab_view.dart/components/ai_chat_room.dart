@@ -19,7 +19,7 @@ class AiChatRoom extends StatelessWidget {
   const AiChatRoom({
     super.key,
   });
-  static final cubit = getIt<AiCubit>();
+  static final cubit = sl<AiCubit>();
   static final scrollController = ScrollController();
 
   @override
@@ -51,7 +51,7 @@ class AiChatRoom extends StatelessWidget {
                   child: Stack(
                     children: [
                       BlocBuilder<HomeCubit, HomeState>(
-                          bloc: getIt<HomeCubit>(),
+                          bloc: sl<HomeCubit>(),
                           builder: (context, homeState) {
                             if (homeState.currentBackground?.image.isNotEmpty ??
                                 false) {

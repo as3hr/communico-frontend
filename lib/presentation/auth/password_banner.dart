@@ -13,13 +13,14 @@ import '../../helpers/widgets/loader.dart';
 class PasswordBanner extends StatelessWidget {
   const PasswordBanner({super.key});
 
-  static final cubit = getIt<AuthCubit>();
+  static final cubit = sl<AuthCubit>();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       bloc: cubit,
       builder: (context, state) {
         return Container(
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -32,36 +33,31 @@ class PasswordBanner extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             width: 0.2.sw,
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  2.verticalSpace,
-                  InputField(
-                    hintText: "Enter password",
-                    onChanged: (val) {
-                      state.password = val;
-                    },
-                    onSubmitted: (val) {
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InputField(
+                  hintText: "Enter password",
+                  onChanged: (val) {
+                    state.password = val;
+                  },
+                  onSubmitted: (val) {
+                    if (state.password?.isNotEmpty ?? false) {
+                      cubit.updatePassword(context);
+                    }
+                  },
+                  prefixIcon: Icons.lock_outline_rounded,
+                ),
+                const SizedBox(height: 20),
+                AppButton(
+                    content: state.isLoading ? const Loader() : null,
+                    title: "Update",
+                    onTap: () {
                       if (state.password?.isNotEmpty ?? false) {
                         cubit.updatePassword(context);
                       }
-                    },
-                    prefixIcon: Icons.lock_outline_rounded,
-                  ),
-                  const SizedBox(height: 20),
-                  AppButton(
-                      content: state.isLoading ? const Loader() : null,
-                      title: "Update",
-                      onTap: () {
-                        if (state.password?.isNotEmpty ?? false) {
-                          cubit.updatePassword(context);
-                        }
-                      }),
-                ],
-              ),
+                    }),
+              ],
             ));
       },
     );

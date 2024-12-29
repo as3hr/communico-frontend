@@ -10,4 +10,7 @@ abstract class GroupRepository {
   Future<Either<GroupFailure, GroupEntity>> createGroup(GroupEntity entity);
   Future<Either<GroupFailure, GroupEntity>> updateGroup(GroupEntity entity);
   Future<Either<GroupFailure, List<UserEntity>>> getMembers(int groupId);
+  Future<Either<GroupFailure, String>> encryptGroupLink(int groupId);
+  Future<Either<GroupFailure, GroupEntity>> decryptGroupId(
+      String encryptedGroupId);
 }

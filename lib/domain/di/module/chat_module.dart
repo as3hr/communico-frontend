@@ -4,9 +4,9 @@ import '../../repositories/chat_repository.dart';
 
 class ChatModule {
   static Future<void> configureChatModuleInjection() async {
-    getIt.registerSingleton<ChatRepository>(
+    sl.registerSingleton<ChatRepository>(
       ApiChatRepository(
-        getIt(),
+        sl(),
       ),
     );
   }
