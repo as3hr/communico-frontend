@@ -117,7 +117,7 @@ class _HeaderContentState extends State<HeaderContent> {
             Row(
               children: [
                 Text(
-                  "Standard Time: ",
+                  "Local Time: ",
                   style: Styles.mediumStyle(
                     fontSize: 15,
                     color: context.colorScheme.onPrimary.withOpacity(0.8),
