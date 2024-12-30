@@ -40,7 +40,9 @@ class HomeModule {
       ),
     );
     sl.registerLazySingleton<HomeCubit>(
-      () => HomeCubit(),
+      () => HomeCubit(
+        sl(),
+      ),
     );
   }
 }

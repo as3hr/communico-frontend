@@ -43,9 +43,9 @@ class Header extends StatelessWidget {
                       child: HeaderContent(
                         currentQuote: state.currentQuote,
                         logOut: () {
-                          Navigator.pop(context);
                           cubit.closeStates();
                           window.localStorage['authToken'] = "";
+                          cubit.goToAuthPage();
                         },
                         userName: cubit.user!.username,
                         updatePassword: () {

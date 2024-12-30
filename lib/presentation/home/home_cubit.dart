@@ -7,6 +7,7 @@ import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/radio/station.dart';
+import 'package:communico_frontend/presentation/home/home_navigator.dart';
 import 'package:communico_frontend/presentation/home/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -19,7 +20,8 @@ import '../../domain/stores/user_store.dart';
 import 'components/header/background.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeState.empty());
+  final HomeNavigator navigator;
+  HomeCubit(this.navigator) : super(HomeState.empty());
 
   Future<void> fetchData() async {
     emit(state.copyWith(isLoading: true));
@@ -118,4 +120,6 @@ class HomeCubit extends Cubit<HomeState> {
   void removeBg() {
     emit(state.copyWith(currentBackground: Background.empty()));
   }
+
+  void goToAuthPage() => navigator.goToAuth();
 }

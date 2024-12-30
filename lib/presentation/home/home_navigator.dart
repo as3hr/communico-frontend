@@ -5,10 +5,12 @@ import '../../navigation/app_navigation.dart';
 class HomeNavigator {
   final AppNavigation navigation;
   HomeNavigator(this.navigation);
+
+  void goToAuth() => navigation.pushReplacement(RouteName.getIn);
 }
 
 mixin HomeRoute {
   AppNavigation get navigation;
 
-  goToHome() => navigation.push(RouteName.home);
+  goToHome() => navigation.pushReplacement(RouteName.home);
 }
