@@ -43,6 +43,9 @@ class HomeCubit extends Cubit<HomeState> {
     socket.connect();
     socket.onConnect((_) {
       log('Connected to the Socket Server');
+      socket.emit("joinApp", {
+        "userId": user!.id,
+      });
       sl<ChatCubit>().listenToChatEvents();
       sl<GroupCubit>().listenToGroupEvents();
       sl<AiCubit>().listenToAiResponse();
@@ -50,6 +53,9 @@ class HomeCubit extends Cubit<HomeState> {
 
     socket.onDisconnect((_) async {
       log('Disconnected from the Socket Server');
+      socket.emit("leaveApp", {
+        "userId": user!.id,
+      });
       await Future.delayed(const Duration(seconds: 2));
       log('Attempting to reconnect... (${retryCount + 1}/5)');
       socketInit(retryCount: retryCount + 1);

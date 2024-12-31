@@ -46,7 +46,14 @@ class GroupCubit extends Cubit<GroupState> {
     }
   }
 
-  empty() => emit(GroupState.empty());
+  empty() {
+    state.groupPagination.data.map((group) {
+      socket.emit("leaveGroup", {
+        "groupId": group.id,
+      });
+    });
+    emit(GroupState.empty());
+  }
 
   toggleGroupField({required bool groupFieldEnabled}) {
     emit(state.copyWith(groupFieldEnabled: groupFieldEnabled));
@@ -180,6 +187,9 @@ class GroupCubit extends Cubit<GroupState> {
         state.groupPagination.data.insert(0, group);
         await getGroupMessages(group);
         await getEncryptedGroupLink(group);
+        socket.emit("groupJoin", {
+          "groupId": group.id,
+        });
         emit(state.copyWith(groupPagination: state.groupPagination));
       }
     });
@@ -208,8 +218,10 @@ class GroupCubit extends Cubit<GroupState> {
     final response = await groupRepository.createGroup(group);
     response.fold((error) {}, (group) async {
       state.groupPagination.data.insert(0, group);
-      socket
-          .emit("groupCreation", {"userId": user!.id, "group": group.toJson()});
+      socket.emit("groupCreation", {"userId": user!.id, "groupId": group.id});
+      socket.emit("groupJoin", {
+        "groupId": group.id,
+      });
       await getGroupMessages(group);
       await getEncryptedGroupLink(group);
       emit(state.copyWith(
@@ -229,9 +241,6 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
   Future<void> updateCurrentGroup(GroupEntity group) async {
-    socket.emit("leaveGroup", {
-      "groupId": state.currentGroup.id,
-    });
     await getGroupMessages(group);
     await getEncryptedGroupLink(group);
     socket.emit("groupJoin", {

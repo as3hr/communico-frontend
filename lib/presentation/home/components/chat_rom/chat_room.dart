@@ -127,7 +127,7 @@ class _ChatRoomState extends State<ChatRoom> {
                               if (state.currentBackground?.image.isNotEmpty ??
                                   false)
                                 Positioned.fill(
-                                  child: Image.network(
+                                  child: Image.asset(
                                     state.currentBackground!.image,
                                     fit: BoxFit.cover,
                                   ),

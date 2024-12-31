@@ -58,7 +58,14 @@ class ChatCubit extends Cubit<ChatState> {
         );
   }
 
-  empty() => emit(ChatState.empty());
+  empty() {
+    state.chatPagination.data.map((chat) {
+      socket.emit("leaveRoom", {
+        "chatId": chat.id,
+      });
+    });
+    emit(ChatState.empty());
+  }
 
 // only append the incoming message if it is from someone else
   listenToChatEvents() {
@@ -79,6 +86,9 @@ class ChatCubit extends Cubit<ChatState> {
         state.chatPagination.data.insert(0, chat);
         await getChatMessages(chat);
         await getEncryptedChatLink(chat);
+        socket.emit("roomJoin", {
+          "chatId": chat.id,
+        });
         emit(state.copyWith(chatPagination: state.chatPagination));
       }
     });
@@ -227,9 +237,6 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> updateCurrentChat(ChatEntity chat) async {
-    socket.emit("leaveRoom", {
-      "chatId": state.currentChat.id,
-    });
     await getChatMessages(chat);
     await getEncryptedChatLink(chat);
     socket.emit("roomJoin", {
@@ -241,9 +248,12 @@ class ChatCubit extends Cubit<ChatState> {
     final response = await chatRepository.createChat(chat);
     response.fold((error) {}, (chat) async {
       state.chatPagination.data.insert(0, chat);
-      socket.emit("chatCreation", {"userId": user!.id, "chat": chat.toJson()});
+      socket.emit("chatCreation", {"userId": user!.id, "chatId": chat.id});
       await getChatMessages(chat);
       await getEncryptedChatLink(chat);
+      socket.emit("roomJoin", {
+        "chatId": chat.id,
+      });
       emit(state.copyWith(
           chatPagination: state.chatPagination, currentChat: chat));
     });
