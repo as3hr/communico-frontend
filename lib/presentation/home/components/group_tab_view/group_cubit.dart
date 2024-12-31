@@ -198,6 +198,7 @@ class GroupCubit extends Cubit<GroupState> {
     response.fold((error) {}, (group) async {
       state.groupPagination.data.insert(0, group);
       await getGroupMessages(group);
+      await getEncryptedGroupLink(group);
       emit(state.copyWith(
           groupPagination: state.groupPagination, currentGroup: group));
     });
@@ -212,7 +213,7 @@ class GroupCubit extends Cubit<GroupState> {
                 group.messagePagination = messagePagination;
               }));
     }
-    emit(state.copyWith(currentGroup: group));
+    emit(state.copyWith(currentGroup: group.copyWith(seen: true)));
   }
 
   Future<void> updateCurrentGroup(GroupEntity group) async {

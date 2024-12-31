@@ -232,6 +232,7 @@ class ChatCubit extends Cubit<ChatState> {
     response.fold((error) {}, (chat) async {
       state.chatPagination.data.insert(0, chat);
       await getChatMessages(chat);
+      await getEncryptedChatLink(chat);
       emit(state.copyWith(
           chatPagination: state.chatPagination, currentChat: chat));
     });

@@ -26,11 +26,9 @@ jobs:
     - name: Build Web
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
-        STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
       run: |
         flutter build web --web-renderer canvaskit --release \
-          --dart-define=BASE_URL=$BASE_URL \
-          --dart-define=STORAGE_PATH=$STORAGE_PATH
+          --dart-define=BASE_URL=$BASE_URL
  
     - name: Deploy to VM
       uses: appleboy/ssh-action@v1.0.3

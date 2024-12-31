@@ -32,6 +32,7 @@ class GroupEntity {
     int? id,
     String? name,
     String? link,
+    bool? seen,
     List<GroupMemberEntity>? members,
     List<MessageEntity>? messages,
     Paginate<MessageEntity>? messagePagination,

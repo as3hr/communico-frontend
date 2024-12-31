@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
-import 'package:communico_frontend/presentation/home/components/loading_home.dart';
 import 'package:communico_frontend/presentation/shared_room/shared_chat/shared_chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +76,7 @@ class _SharedChatState extends State<SharedChat> {
                   ),
                 ),
                 state.isLoading
-                    ? const LoadingHome()
+                    ? const SizedBox()
                     : state.chat.id == 0
                         ? Center(
                             child: Text(

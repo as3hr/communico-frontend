@@ -10,7 +10,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../di/service_locator.dart';
 import '../../../helpers/styles/app_colors.dart';
 import '../../../helpers/styles/styles.dart';
-import '../../home/components/loading_home.dart';
 import '../../home/components/message/my_message.dart';
 import '../../home/components/message/other_message.dart';
 import 'shared_group_cubit.dart';
@@ -77,7 +76,7 @@ class _SharedGroupState extends State<SharedGroup> {
                   ),
                 ),
                 state.isLoading
-                    ? const LoadingHome()
+                    ? const SizedBox()
                     : state.group.id == 0
                         ? Center(
                             child: Text(
