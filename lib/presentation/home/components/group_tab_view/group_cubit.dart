@@ -9,6 +9,7 @@ import '../../../../di/service_locator.dart';
 import '../../../../domain/entities/group_entity.dart';
 import '../../../../domain/entities/message_entity.dart';
 import '../../../../domain/entities/user_entity.dart';
+import '../../../../domain/model/group_json.dart';
 import '../../../../domain/model/message_json.dart';
 import '../../../../domain/repositories/group_repository.dart';
 import '../../../../domain/repositories/message_repository.dart';
@@ -161,7 +162,7 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
 // only append the incoming message if it is from someone else
-  listenToGroupMessage() {
+  listenToGroupEvents() {
     socket.on('newGroupMessage', (data) {
       log("NEW GROUP MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
@@ -170,6 +171,16 @@ class GroupCubit extends Cubit<GroupState> {
       );
       if (!messageExists && message.userId != user!.id) {
         appendMessageToGroup(message);
+      }
+    });
+
+    socket.on("newGroup", (data) async {
+      final group = GroupJson.fromJson(data['group']).toDomain();
+      if (data['userId'] != user!.id) {
+        state.groupPagination.data.insert(0, group);
+        await getGroupMessages(group);
+        await getEncryptedGroupLink(group);
+        emit(state.copyWith(groupPagination: state.groupPagination));
       }
     });
 
@@ -197,6 +208,8 @@ class GroupCubit extends Cubit<GroupState> {
     final response = await groupRepository.createGroup(group);
     response.fold((error) {}, (group) async {
       state.groupPagination.data.insert(0, group);
+      socket
+          .emit("groupCreation", {"userId": user!.id, "group": group.toJson()});
       await getGroupMessages(group);
       await getEncryptedGroupLink(group);
       emit(state.copyWith(
@@ -207,9 +220,8 @@ class GroupCubit extends Cubit<GroupState> {
   Future<void> getGroupMessages(GroupEntity group) async {
     if (group.messagePagination.next || group.messagePagination.data.isEmpty) {
       await messageRepository
-          .getMessages(group.messagePagination, "/messages/groups", {
-        "groupId": group.id,
-      }).then((response) => response.fold((error) {}, (messagePagination) {
+          .getMessages(group.messagePagination, "/messages/groups/${group.id}")
+          .then((response) => response.fold((error) {}, (messagePagination) {
                 group.messagePagination = messagePagination;
               }));
     }

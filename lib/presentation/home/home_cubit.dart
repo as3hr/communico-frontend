@@ -43,8 +43,8 @@ class HomeCubit extends Cubit<HomeState> {
     socket.connect();
     socket.onConnect((_) {
       log('Connected to the Socket Server');
-      sl<ChatCubit>().listenToDirectMessage();
-      sl<GroupCubit>().listenToGroupMessage();
+      sl<ChatCubit>().listenToChatEvents();
+      sl<GroupCubit>().listenToGroupEvents();
       sl<AiCubit>().listenToAiResponse();
     });
 

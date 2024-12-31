@@ -12,7 +12,7 @@ class SharedGroupCubit extends Cubit<SharedGroupState> {
       : super(SharedGroupState.empty());
 
   void loadGroup(String encryptedData) {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true, encryptedData: encryptedData));
     groupRepository
         .decryptGroupId(encryptedData)
         .then((response) => response.fold(
@@ -27,9 +27,9 @@ class SharedGroupCubit extends Cubit<SharedGroupState> {
   getGroupMessages(GroupEntity group) {
     messageRepository.getMessages(
       state.group.messagePagination,
-      "/messages/groups",
-      {
-        "groupId": group.id,
+      "/messages/groups/dcrypt/${group.id}",
+      extraQuery: {
+        "encryptedData": state.encryptedData,
       },
     ).then((response) => response.fold(
           (failure) => emit(state.copyWith(isLoading: false)),

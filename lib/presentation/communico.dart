@@ -29,6 +29,7 @@ class Communico extends StatelessWidget {
               designSize: const Size(300, 200),
               builder: (context, _) {
                 return MaterialApp(
+                  title: 'Communico',
                   theme: AppTheme.theme(),
                   debugShowCheckedModeBanner: false,
                   navigatorKey: AppNavigation.navigatorKey,

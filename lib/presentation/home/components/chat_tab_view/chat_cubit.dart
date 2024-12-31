@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:communico_frontend/domain/model/chat_json.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
 import 'package:communico_frontend/presentation/home/home_navigator.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +61,7 @@ class ChatCubit extends Cubit<ChatState> {
   empty() => emit(ChatState.empty());
 
 // only append the incoming message if it is from someone else
-  listenToDirectMessage() {
+  listenToChatEvents() {
     socket.on('newMessage', (data) {
       log("NEW MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
@@ -69,6 +70,16 @@ class ChatCubit extends Cubit<ChatState> {
       );
       if (!messageExists && message.userId != user!.id) {
         appendMessageToChat(message);
+      }
+    });
+
+    socket.on("newChat", (data) async {
+      final chat = ChatJson.fromJson(data['chat']).toDomain();
+      if (data['userId'] != user!.id) {
+        state.chatPagination.data.insert(0, chat);
+        await getChatMessages(chat);
+        await getEncryptedChatLink(chat);
+        emit(state.copyWith(chatPagination: state.chatPagination));
       }
     });
 
@@ -181,16 +192,15 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> getChatMessages(ChatEntity chat) async {
     if (chat.messagePagination.next || chat.messagePagination.data.isEmpty) {
       await messageRepository
-          .getMessages(chat.messagePagination, "/messages/chats", {
-        "chatId": chat.id,
-      }).then(
-        (response) => response.fold(
-          (error) {},
-          (messagePagination) {
-            chat.messagePagination = messagePagination;
-          },
-        ),
-      );
+          .getMessages(chat.messagePagination, "/messages/chats/${chat.id}")
+          .then(
+            (response) => response.fold(
+              (error) {},
+              (messagePagination) {
+                chat.messagePagination = messagePagination;
+              },
+            ),
+          );
     }
     emit(state.copyWith(currentChat: chat));
   }
@@ -231,6 +241,7 @@ class ChatCubit extends Cubit<ChatState> {
     final response = await chatRepository.createChat(chat);
     response.fold((error) {}, (chat) async {
       state.chatPagination.data.insert(0, chat);
+      socket.emit("chatCreation", {"userId": user!.id, "chat": chat.toJson()});
       await getChatMessages(chat);
       await getEncryptedChatLink(chat);
       emit(state.copyWith(

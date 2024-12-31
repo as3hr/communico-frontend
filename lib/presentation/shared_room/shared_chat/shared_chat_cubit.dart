@@ -12,7 +12,7 @@ class SharedChatCubit extends Cubit<SharedChatState> {
       : super(SharedChatState.empty());
 
   void loadChat(String encryptedData) {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true, encryptedData: encryptedData));
     chatRepository
         .decryptChatId(encryptedData)
         .then((response) => response.fold(
@@ -27,9 +27,9 @@ class SharedChatCubit extends Cubit<SharedChatState> {
   getChatMessages(ChatEntity chat) {
     messageRepository.getMessages(
       state.chat.messagePagination,
-      "/messages/chats",
-      {
-        "chatId": chat.id,
+      "/messages/chats/dcrypt/${chat.id}",
+      extraQuery: {
+        "encryptedData": state.encryptedData,
       },
     ).then((response) => response.fold(
           (failure) => emit(state.copyWith(isLoading: false)),

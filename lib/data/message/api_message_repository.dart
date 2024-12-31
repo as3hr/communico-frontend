@@ -16,9 +16,10 @@ class ApiMessageRepository implements MessageRepository {
 
   @override
   Future<Either<MessageFailure, Paginate<MessageEntity>>> getMessages(
-      Paginate<MessageEntity> previousMessages,
-      String url,
-      Map<String, dynamic>? extraQuery) async {
+    Paginate<MessageEntity> previousMessages,
+    String url, {
+    Map<String, dynamic>? extraQuery,
+  }) async {
     final response = await networkRepository.get(
       url: url,
       extraQuery: {...?extraQuery, "skip": previousMessages.skip},
@@ -34,49 +35,5 @@ class ApiMessageRepository implements MessageRepository {
     );
 
     return right(pagination);
-  }
-
-  @override
-  Stream<Either<MessageFailure, String>> getAiResponse(String prompt) async* {
-    // final stream = Gemini.instance
-    //     .promptStream(parts: [Part.text(prompt)], model: "gemini-1.5-flash-8b");
-    // await for (var data in stream) {
-    //   dynamic output = data?.content?.parts?.first;
-    //   if (output != null) {
-    //     yield right(output.text.toString());
-    //   }
-    // }
-    // final dio = Dio(
-    //   BaseOptions(
-    //     baseUrl: baseApiUrl,
-    //     connectTimeout: const Duration(seconds: 10),
-    //     receiveTimeout: const Duration(seconds: 20),
-    //   ),
-    // );
-
-    // try {
-    //   String? token = window.localStorage['authToken'];
-    //   final response = await dio.post(
-    //     "/ai",
-    //     data: {
-    //       "prompt": prompt,
-    //     },
-    //     options: Options(
-    //       responseType: ResponseType.stream,
-    //       headers: {"Authorization": "Bearer $token"},
-    //     ),
-    //   );
-
-    //   await for (List<int> chunk in (response.data as ResponseBody).stream) {
-    //     final stringChunk = utf8.decode(chunk);
-    //     if (stringChunk.isNotEmpty) {
-    //       yield right(stringChunk);
-    //     }
-    //   }
-    // } on DioException catch (e) {
-    //   yield left(MessageFailure(error: e.message ?? ""));
-    // } catch (e) {
-    //   yield left(MessageFailure(error: e.toString()));
-    // }
   }
 }
