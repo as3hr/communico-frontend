@@ -2,6 +2,7 @@ import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
+import 'package:communico_frontend/helpers/widgets/background_image.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_footer.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_header.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
@@ -127,10 +128,8 @@ class _ChatRoomState extends State<ChatRoom> {
                               if (state.currentBackground?.image.isNotEmpty ??
                                   false)
                                 Positioned.fill(
-                                  child: Image.asset(
-                                    state.currentBackground!.image,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: BackgroundImage(
+                                      image: state.currentBackground!.image),
                                 ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,

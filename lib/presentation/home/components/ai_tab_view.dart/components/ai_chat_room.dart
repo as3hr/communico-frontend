@@ -1,4 +1,5 @@
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/widgets/background_image.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_streaming_message.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/empty_ai.dart';
 import 'package:communico_frontend/presentation/home/components/ai_tab_view.dart/components/ai_message.dart';
@@ -56,9 +57,8 @@ class AiChatRoom extends StatelessWidget {
                             if (homeState.currentBackground?.image.isNotEmpty ??
                                 false) {
                               return Positioned.fill(
-                                child: Image.asset(
-                                  homeState.currentBackground!.image,
-                                  fit: BoxFit.cover,
+                                child: BackgroundImage(
+                                  image: homeState.currentBackground!.image,
                                 ),
                               );
                             }

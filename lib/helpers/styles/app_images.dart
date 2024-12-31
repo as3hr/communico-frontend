@@ -1,5 +1,5 @@
 class AppImages {
-  static const _baseDir = "assets/";
+  static const _baseDir = "assets";
   static const autumn = "$_baseDir/autumn.gif";
   static const scenery = "$_baseDir/scenery.gif";
   static const rain = "$_baseDir/rain.gif";

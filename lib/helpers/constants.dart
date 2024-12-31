@@ -1,5 +1,6 @@
-import 'package:communico_frontend/config.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+
+import '../config.dart';
 
 const localUrl = "http://localhost:5000";
 const baseUrl = Config.baseUrl;
