@@ -166,7 +166,12 @@ class MessageCreation extends StatelessWidget {
                       onChanged: (val) {
                         cubit.onMessageChanged(val);
                       },
-                      onSubmitted: (val) {},
+                      onSubmitted: (val) {
+                        if (state.message.isNotEmpty) {
+                          cubit.createChat();
+                          Navigator.pop(context);
+                        }
+                      },
                       prefixIcon: Icons.public,
                     ),
                   ),

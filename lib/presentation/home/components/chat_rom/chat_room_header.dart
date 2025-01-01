@@ -40,7 +40,7 @@ class ChatRoomHeader extends StatelessWidget {
               params.onShareChat?.call();
             },
             icon: const Icon(
-              Icons.arrow_outward_rounded,
+              Icons.share,
             ),
             tooltip: "Share Conversation",
           ),
