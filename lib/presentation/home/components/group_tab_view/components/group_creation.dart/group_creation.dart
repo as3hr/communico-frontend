@@ -79,8 +79,14 @@ class GroupCreationMemberSelection extends StatelessWidget {
               ),
               if (state.filteredUsers.isNotEmpty)
                 Container(
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.secondary,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                    ),
+                  ),
                   constraints: BoxConstraints(maxHeight: 0.2.sh),
-                  color: context.colorScheme.secondary,
                   child: SingleChildScrollView(
                     child: Column(
                       children: state.filteredUsers.map((user) {
@@ -89,7 +95,14 @@ class GroupCreationMemberSelection extends StatelessWidget {
                             cubit.selectGroupUser(user);
                           },
                           child: ListTile(
-                            leading: Text(user.username),
+                            leading: Text(
+                              user.username,
+                              style: Styles.mediumStyle(
+                                fontSize: 14,
+                                color: const Color(0xffE3E9EC),
+                                family: FontFamily.montserrat,
+                              ),
+                            ),
                             trailing: CupertinoCheckbox(
                                 value: user.isSelected,
                                 onChanged: (val) {
@@ -210,8 +223,8 @@ class GroupCreationNaming extends StatelessWidget {
                 const SizedBox(height: 10),
                 const Divider(color: Colors.white54, thickness: 0.5),
                 const SizedBox(height: 10),
-                Container(
-                  constraints: BoxConstraints(maxHeight: 0.1.sh),
+                SizedBox(
+                  height: 0.2.sh,
                   child: SingleChildScrollView(
                     child: Column(
                       children: state.selectedUsers.map((user) {

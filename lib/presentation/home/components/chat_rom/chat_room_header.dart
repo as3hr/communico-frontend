@@ -22,6 +22,10 @@ class ChatRoomHeader extends StatelessWidget {
             offset: const Offset(0, 4),
           ),
         ],
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
       ),
       child: Row(
         children: [

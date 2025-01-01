@@ -34,12 +34,7 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  socketInit({int retryCount = 0}) {
-    if (retryCount > 5) {
-      log('Max reconnection attempts reached.');
-      return;
-    }
-
+  socketInit() {
     socket.connect();
     socket.onConnect((_) {
       log('Connected to the Socket Server');
@@ -56,9 +51,6 @@ class HomeCubit extends Cubit<HomeState> {
       socket.emit("leaveApp", {
         "userId": user!.id,
       });
-      await Future.delayed(const Duration(seconds: 2));
-      log('Attempting to reconnect... (${retryCount + 1}/5)');
-      socketInit(retryCount: retryCount + 1);
     });
 
     socket.onError((error) {

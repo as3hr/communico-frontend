@@ -1,5 +1,6 @@
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
+import 'package:communico_frontend/helpers/styles/styles.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation_cubit.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/components/chat_creation_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -86,7 +87,13 @@ class ChatCreationMemberSelection extends StatelessWidget {
               if (state.filteredUsers.isNotEmpty)
                 Container(
                   constraints: BoxConstraints(maxHeight: 0.2.sh),
-                  color: context.colorScheme.secondary,
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.secondary,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                    ),
+                  ),
                   child: SingleChildScrollView(
                     child: Column(
                       children: state.filteredUsers.map((user) {
@@ -95,7 +102,14 @@ class ChatCreationMemberSelection extends StatelessWidget {
                             cubit.selectChatUser(user);
                           },
                           child: ListTile(
-                            leading: Text(user.username),
+                            leading: Text(
+                              user.username,
+                              style: Styles.mediumStyle(
+                                fontSize: 14,
+                                color: const Color(0xffE3E9EC),
+                                family: FontFamily.montserrat,
+                              ),
+                            ),
                             trailing: CupertinoCheckbox(
                                 value: user.isSelected,
                                 onChanged: (val) {

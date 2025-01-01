@@ -38,31 +38,28 @@ class Header extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: HeaderContent(
-                        currentQuote: state.currentQuote,
-                        logOut: () {
-                          cubit.closeStates();
-                          window.localStorage['authToken'] = "";
-                          cubit.goToAuthPage();
-                        },
-                        userName: cubit.user!.username,
-                        updatePassword: () {
-                          showDialog(
-                            context: context,
-                            builder: (_) {
-                              return BackdropFilter(
-                                filter:
-                                    ui.ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                                child: const AnimatedBanner(
-                                  content: PasswordBanner(),
-                                ),
-                              );
-                            },
+                  child: HeaderContent(
+                    currentQuote: state.currentQuote,
+                    logOut: () {
+                      cubit.closeStates();
+                      window.localStorage['authToken'] = "";
+                      cubit.goToAuthPage();
+                    },
+                    userName: cubit.user!.username,
+                    updatePassword: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return BackdropFilter(
+                            filter: ui.ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                            child: const AnimatedBanner(
+                              content: PasswordBanner(),
+                            ),
                           );
                         },
-                      ))),
+                      );
+                    },
+                  )),
             ),
           ],
         );

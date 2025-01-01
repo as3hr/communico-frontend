@@ -12,12 +12,14 @@ class AppColor {
   static const darkSecondary = Color(0xFF343546);
 
   // Dark Theme Colors
-  static const primaryColor = Color(0xff2D3250);
-  static const secondaryColor = Color(0xff424769);
-  static const styleColor = Color(0xFF7077A1);
+  static const primaryColor = Color(0xff29333F);
+  //  Color(0xff2D3250);
+  static const secondaryColor = Color(0xff6A737E);
+  // Color(0xff424769);
+  static const styleColor = Color(0xFF13ADEF);
 
   // Primary and Accent Colors
-  static const electricBlue = Color(0xFF4A90E2);
+  static const electricBlue = Color(0xFF13ADEF);
   static const brightMagenta = Color(0xFFE94560);
 
   // Error, Alerts and others
