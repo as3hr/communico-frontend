@@ -80,7 +80,9 @@ class ChatCubit extends Cubit<ChatState> {
     /// the encrypted link also of the current chat.
     socket.on("newChat", (data) async {
       final chat = ChatJson.fromJson(data['chat']).toDomain();
-      if (data['userId'] != user!.id) {
+      final exists = state.chatPagination.data
+          .any((currentChat) => currentChat.id == chat.id);
+      if (!exists && data['userId'] != user!.id) {
         state.chatPagination.data.insert(0, chat);
         await getChatMessages(chat);
         await getEncryptedChatLink(chat);

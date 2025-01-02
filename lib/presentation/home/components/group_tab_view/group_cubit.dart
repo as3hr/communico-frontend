@@ -180,7 +180,9 @@ class GroupCubit extends Cubit<GroupState> {
 
     socket.on("newGroup", (data) async {
       final group = GroupJson.fromJson(data['group']).toDomain();
-      if (data['userId'] != user!.id) {
+      final exists = state.groupPagination.data
+          .any((currentGroup) => currentGroup.id == group.id);
+      if (!exists && data['userId'] != user!.id) {
         state.groupPagination.data.insert(0, group);
         await getGroupMessages(group);
         await getEncryptedGroupLink(group);
