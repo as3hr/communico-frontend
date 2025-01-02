@@ -170,7 +170,12 @@ class GroupCubit extends Cubit<GroupState> {
     socket.on('newGroupMessage', (data) {
       log("NEW GROUP MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
-      appendMessageToGroup(message);
+      final messageExists = state.currentGroup.messagePagination.data.any(
+        (currentMessage) => currentMessage.id == message.id,
+      );
+      if (!messageExists) {
+        appendMessageToGroup(message);
+      }
     });
 
     socket.on("newGroup", (data) async {

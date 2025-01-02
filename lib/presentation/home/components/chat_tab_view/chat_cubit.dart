@@ -67,7 +67,12 @@ class ChatCubit extends Cubit<ChatState> {
     socket.on('newMessage', (data) {
       log("NEW MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
-      appendMessageToChat(message);
+      final messageExists = state.currentChat.messagePagination.data.any(
+        (currentMessage) => currentMessage.id == message.id,
+      );
+      if (!messageExists) {
+        appendMessageToChat(message);
+      }
     });
 
     /// when user will create a new chat, this will be triggered, when new chat is created, the user will join the room, and
