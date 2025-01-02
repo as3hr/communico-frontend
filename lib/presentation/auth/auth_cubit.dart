@@ -1,35 +1,47 @@
 import 'package:bloc/bloc.dart';
-import 'package:communico_frontend/presentation/auth/auth_navigator.dart';
+import 'package:communico_frontend/domain/repositories/auth_repository.dart';
 import 'package:communico_frontend/presentation/auth/auth_state.dart';
 import 'package:flutter/material.dart';
-
+import 'package:universal_html/html.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../../helpers/utils.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final UserRepository userRepository;
-  final AuthNavigator navigator;
-  AuthCubit(this.userRepository, this.navigator) : super(AuthState.empty());
+  final AuthRepository authRepository;
+  AuthCubit(this.userRepository, this.authRepository)
+      : super(AuthState.empty());
+
+  void verifyToken() {
+    emit(state.copyWith(isLoading: true));
+    authRepository.verifyToken().then((response) => response.fold((error) {
+          emit(state.copyWith(isAuthenticated: false, isLoading: false));
+        }, (value) {
+          emit(state.copyWith(isAuthenticated: value, isLoading: false));
+        }));
+  }
+
+  void logOut() {
+    window.localStorage['authToken'] = "";
+    emit(state.copyWith(isAuthenticated: false));
+  }
 
   void getIn() {
-    emit(state.copyWith(isLoading: true));
     userRepository
         .getIn(username: state.username, password: state.password)
         .then(
           (response) => response.fold(
             (error) {
               if (error.error.trim() == "Password Protected!") {
-                emit(state.copyWith(isLoading: false, passwordProtected: true));
+                emit(state.copyWith(passwordProtected: true));
                 showToast("This account is Password Protected!");
               } else {
-                emit(state.copyWith(isLoading: false));
                 showToast(error.error);
               }
             },
             (user) async {
-              navigator.goToHome();
               emit(state.copyWith(
-                isLoading: false,
+                isAuthenticated: true,
                 user: user,
                 username: "",
                 password: "",

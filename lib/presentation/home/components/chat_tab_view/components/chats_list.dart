@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:communico_frontend/domain/entities/message_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
@@ -12,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../di/service_locator.dart';
 import '../../../../../helpers/styles/app_colors.dart';
 import '../../../../../helpers/styles/styles.dart';
-import '../../../../../helpers/widgets/animated_banner.dart';
 import '../../../../../helpers/widgets/input_form_field.dart';
 import 'chat_creation.dart';
 import 'chat_creation_cubit.dart';
@@ -58,17 +55,7 @@ class _ChatsListState extends State<ChatsList> {
               shape: const CircleBorder(),
               onPressed: () {
                 sl<ChatCreationCubit>().fetchUsers();
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                      child: const AnimatedBanner(
-                        content: ChatCreationForm(),
-                      ),
-                    );
-                  },
-                );
+                showAppDialog(context, const ChatCreationForm());
               },
               backgroundColor: AppColor.styleColor,
               child: const Icon(

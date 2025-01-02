@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 
 import '../domain/model/paginate.dart';
 import 'styles/styles.dart';
+import 'widgets/animated_banner.dart';
 
 List<T> parseList<T>(
   data,
@@ -108,6 +110,20 @@ Future<void> showToast(String message, {Color? backgroundColor}) async {
       },
     );
   }
+}
+
+showAppDialog(BuildContext context, Widget content) {
+  showDialog(
+    context: context,
+    builder: (_) {
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: AnimatedBanner(
+          content: content,
+        ),
+      );
+    },
+  );
 }
 
 String formatDate(DateTime date) {

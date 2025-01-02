@@ -1,8 +1,6 @@
-import 'dart:ui';
-
-import 'package:communico_frontend/domain/entities/group_entity.dart';
 import 'package:communico_frontend/domain/entities/user_entity.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/helpers/widgets/app_button.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../di/service_locator.dart';
 import '../../../../../helpers/styles/app_colors.dart';
 import '../../../../../helpers/styles/styles.dart';
-import '../../../../../helpers/widgets/animated_banner.dart';
 import '../../../../../helpers/widgets/input_field.dart';
 import '../group_cubit.dart';
 
@@ -69,10 +66,8 @@ class GroupRoomDetail extends StatelessWidget {
                         },
                         onSubmitted: (val) {
                           if (state.groupNameField.isNotEmpty) {
-                            final group = GroupEntity(
-                                members: currentGroup.members,
-                                name: state.groupNameField);
-                            cubit.updateGroup(group);
+                            cubit.updateGroup(state.currentGroup
+                                .copyWith(name: state.groupNameField));
                           }
                         },
                       ),
@@ -91,10 +86,8 @@ class GroupRoomDetail extends StatelessWidget {
                             icon: const Icon(Icons.check),
                             onPressed: () {
                               if (state.groupNameField.isNotEmpty) {
-                                final group = GroupEntity(
-                                    members: currentGroup.members,
-                                    name: state.groupNameField);
-                                cubit.updateGroup(group);
+                                cubit.updateGroup(state.currentGroup
+                                    .copyWith(name: state.groupNameField));
                               }
                             },
                           ),
@@ -156,18 +149,11 @@ class GroupRoomDetail extends StatelessWidget {
                   onTap: () {
                     Scaffold.of(context).closeEndDrawer();
                     cubit.fetchMembers();
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                          child: AnimatedBanner(
-                            content: GroupUpdationMemberSelection(
-                              previousUsers: cubit.previousUsers,
-                            ),
-                          ),
-                        );
-                      },
+                    showAppDialog(
+                      context,
+                      GroupUpdationMemberSelection(
+                        previousUsers: cubit.previousUsers,
+                      ),
                     );
                   },
                 ),
@@ -227,7 +213,13 @@ class GroupUpdationMemberSelection extends StatelessWidget {
                   if (state.filteredUsers.isNotEmpty)
                     Container(
                       constraints: BoxConstraints(maxHeight: 0.3.sh),
-                      color: context.colorScheme.secondary,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.secondary,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16),
+                        ),
+                      ),
                       child: SingleChildScrollView(
                         child: Column(
                           children: state.filteredUsers.map((user) {

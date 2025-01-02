@@ -75,10 +75,12 @@ class _ChatRoomFooterState extends State<ChatRoomFooter> {
                 ),
                 child: const Center(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
                     child: Icon(
                       color: AppColor.white,
                       Icons.send,
+                      size: 20,
                     ),
                   ),
                 )),

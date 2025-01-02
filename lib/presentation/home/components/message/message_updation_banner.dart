@@ -1,4 +1,5 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
+import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,18 @@ class _MessageUpdationBannerState extends State<MessageUpdationBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              context.colorScheme.primary,
+              context.colorScheme.secondary
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
         width: 0.2.sw,
         child: Padding(
           padding: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
@@ -40,6 +52,7 @@ class _MessageUpdationBannerState extends State<MessageUpdationBanner> {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    2.verticalSpace,
                     InputField(
                       prefilledValue: widget.message.text,
                       hintText: "write a message",

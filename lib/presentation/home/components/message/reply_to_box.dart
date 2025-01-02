@@ -20,7 +20,11 @@ class ReplyToBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () {
+        if (message.replyTo != null) {
+          onTap();
+        }
+      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
@@ -41,19 +45,23 @@ class ReplyToBox extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                (message.sender?.username ?? "") == username
-                    ? 'Replying to You'
-                    : 'Replying to ${message.sender?.username}',
-                style: Styles.boldStyle(
-                  fontSize: 10,
-                  color: AppColor.white,
-                  family: FontFamily.montserrat,
+              if (message.replyTo != null) ...[
+                Text(
+                  (message.replyToSender ?? "") == username
+                      ? 'Replying to You'
+                      : 'Replying to ${message.replyToSender ?? ""}',
+                  style: Styles.boldStyle(
+                    fontSize: 10,
+                    color: AppColor.white,
+                    family: FontFamily.montserrat,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
+                const SizedBox(height: 2),
+              ],
               Text(
-                message.text,
+                message.replyTo != null
+                    ? message.replyToText ?? ""
+                    : "Original message was deleted",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Styles.boldStyle(

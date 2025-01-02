@@ -20,6 +20,8 @@ class MessageJson implements BaseModel<MessageEntity> {
   int? chatId;
   int? groupId;
   int? replyToId;
+  String? replyToText;
+  String? replyToSender;
 
   MessageJson({
     required this.id,
@@ -27,6 +29,8 @@ class MessageJson implements BaseModel<MessageEntity> {
     required this.timeStamp,
     required this.userId,
     this.chat,
+    this.replyToSender,
+    this.replyToText,
     this.replyTo,
     this.group,
     this.groupId,
@@ -41,6 +45,8 @@ class MessageJson implements BaseModel<MessageEntity> {
         replyTo: json["replyTo"] != null
             ? MessageJson.fromJson(json["replyTo"]).toDomain()
             : null,
+        replyToText: json["replyToText"],
+        replyToSender: json["replyToSender"],
         replyToId: json["replyToId"],
         timeStamp: DateTime.tryParse(json["timestamp"] ?? "")?.toLocal() ??
             DateTime.now().toLocal(),
@@ -70,6 +76,8 @@ class MessageJson implements BaseModel<MessageEntity> {
         groupId: entity.groupId,
         replyTo: entity.replyTo,
         replyToId: entity.replyToId,
+        replyToSender: entity.replyToSender,
+        replyToText: entity.replyToText,
       );
 
   @override
@@ -85,6 +93,8 @@ class MessageJson implements BaseModel<MessageEntity> {
         groupId: groupId,
         replyTo: replyTo,
         replyToId: replyToId,
+        replyToSender: replyToSender,
+        replyToText: replyToText,
       );
 
   Map<String, dynamic> toChatJson() => {

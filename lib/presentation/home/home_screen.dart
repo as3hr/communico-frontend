@@ -30,8 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder<HomeCubit, HomeState>(
           bloc: cubit,
           builder: (context, state) {
-            return Scaffold(
-                body: state.isLoading ? const SizedBox() : const HomeBody());
+            return const Scaffold(body: HomeBody());
           }),
     );
   }

@@ -17,6 +17,8 @@ class MessageEntity {
   int? chatId;
   int? groupId;
   int? replyToId;
+  String? replyToText;
+  String? replyToSender;
   bool isAi; // for identifying ai completed messages in room
   ValueNotifier<bool> isCopiedNotifier; // for identifying copied messages
   bool aiStream;
@@ -30,6 +32,8 @@ class MessageEntity {
     this.isAi = false,
     DateTime? timeStamp,
     required this.userId,
+    this.replyToSender,
+    this.replyToText,
     this.chat,
     this.group,
     this.groupId,
@@ -53,6 +57,8 @@ class MessageEntity {
     int? chatId,
     int? groupId,
     int? replyToId,
+    String? replyToSender,
+    String? replyToText,
     MessageEntity? replyTo,
     bool? isAi,
     ValueNotifier<bool>? isHovered,
@@ -73,6 +79,8 @@ class MessageEntity {
       isHovered: isHovered ?? this.isHovered,
       replyTo: replyTo ?? this.replyTo,
       replyToId: replyToId ?? this.replyToId,
+      replyToSender: replyToSender ?? this.replyToSender,
+      replyToText: replyToText ?? this.replyToText,
       aiStream: aiStream ?? this.aiStream,
       isCopiedNotifier: isCopiedNotifier ?? this.isCopiedNotifier,
     );

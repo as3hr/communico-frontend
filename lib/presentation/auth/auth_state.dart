@@ -4,12 +4,14 @@ class AuthState {
   String username;
   String? password;
   bool isLoading;
+  bool isAuthenticated;
   bool passwordProtected;
   UserEntity user;
 
   AuthState({
     required this.user,
     this.password,
+    this.isAuthenticated = false,
     required this.username,
     this.isLoading = false,
     this.passwordProtected = false,
@@ -23,6 +25,7 @@ class AuthState {
   copyWith({
     String? username,
     bool? isLoading,
+    bool? isAuthenticated,
     UserEntity? user,
     String? password,
     bool? passwordProtected,
@@ -32,6 +35,7 @@ class AuthState {
         isLoading: isLoading ?? this.isLoading,
         user: user ?? this.user,
         password: password ?? this.password,
+        isAuthenticated: isAuthenticated ?? this.isAuthenticated,
         passwordProtected: passwordProtected ?? this.passwordProtected,
       );
 }

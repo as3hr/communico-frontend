@@ -82,9 +82,9 @@ class MyMessage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (message.replyTo != null)
+                      if (message.replyToText != null)
                         ReplyToBox(
-                            message: message.replyTo!,
+                            message: message,
                             onTap: () {
                               onReplyTap?.call();
                             },

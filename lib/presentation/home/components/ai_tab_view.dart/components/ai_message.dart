@@ -51,7 +51,7 @@ class AiMessage extends StatelessWidget {
                     style: Styles.mediumStyle(
                       fontSize: 14,
                       color: AppColor.white,
-                      family: FontFamily.montserrat,
+                      family: FontFamily.kanit,
                     ),
                   ),
                 ),

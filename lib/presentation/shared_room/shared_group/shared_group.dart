@@ -10,7 +10,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../di/service_locator.dart';
 import '../../../helpers/styles/app_colors.dart';
 import '../../../helpers/styles/styles.dart';
-import '../../home/components/message/my_message.dart';
 import '../../home/components/message/other_message.dart';
 import 'shared_group_cubit.dart';
 import 'shared_group_state.dart';
@@ -149,23 +148,14 @@ class _SharedGroupState extends State<SharedGroup> {
                                       return Padding(
                                         padding:
                                             EdgeInsets.symmetric(vertical: 8.h),
-                                        child: index.isEven
-                                            ? MyMessage(
-                                                message: message,
-                                                hideUsername: false,
-                                                onReplyTap: () {
-                                                  animateToTargetMessage(
-                                                      message.replyTo!.id);
-                                                },
-                                              )
-                                            : OtherMessage(
-                                                message: message,
-                                                onReplyTap: () {
-                                                  animateToTargetMessage(
-                                                    message.replyTo!.id,
-                                                  );
-                                                },
-                                              ),
+                                        child: OtherMessage(
+                                          message: message,
+                                          onReplyTap: () {
+                                            animateToTargetMessage(
+                                              message.replyTo!.id,
+                                            );
+                                          },
+                                        ),
                                       );
                                     },
                                   ),

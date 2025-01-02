@@ -1,13 +1,11 @@
-import 'dart:ui' as ui;
-
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/utils.dart';
+import 'package:communico_frontend/presentation/auth/auth_cubit.dart';
 import 'package:communico_frontend/presentation/auth/password_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universal_html/html.dart';
 
 import '../../../../di/service_locator.dart';
-import '../../../../helpers/widgets/animated_banner.dart';
 import '../../home_cubit.dart';
 import '../../home_state.dart';
 import 'header_content.dart';
@@ -42,22 +40,11 @@ class Header extends StatelessWidget {
                     currentQuote: state.currentQuote,
                     logOut: () {
                       cubit.closeStates();
-                      window.localStorage['authToken'] = "";
-                      cubit.goToAuthPage();
+                      sl<AuthCubit>().logOut();
                     },
                     userName: cubit.user!.username,
                     updatePassword: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) {
-                          return BackdropFilter(
-                            filter: ui.ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                            child: const AnimatedBanner(
-                              content: PasswordBanner(),
-                            ),
-                          );
-                        },
-                      );
+                      showAppDialog(context, const PasswordBanner());
                     },
                   )),
             ),

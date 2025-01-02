@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:communico_frontend/domain/model/chat_json.dart';
 import 'package:communico_frontend/presentation/home/components/chat_tab_view/chat_state.dart';
-import 'package:communico_frontend/presentation/home/home_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,12 +20,12 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatRepository chatRepository;
   final MessageRepository messageRepository;
   final Debouncer _debouncer;
-  final HomeNavigator navigator;
 
-  ChatCubit(this.chatRepository, this.messageRepository, this.navigator)
+  ChatCubit(this.chatRepository, this.messageRepository)
       : _debouncer = Debouncer(delay: const Duration(milliseconds: 800)),
         super(ChatState.empty());
 
+  // This function is used to get the chats of the user
   Future<void> getChats() async {
     if (state.chatPagination.next || state.chatPagination.data.isEmpty) {
       chatRepository.getMyChats(state.chatPagination).then(
@@ -46,6 +45,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  // This function is used to get the encrypted chat link that a user can share around with each other
   getEncryptedChatLink(ChatEntity chat) async {
     await chatRepository.encryptChatLink(chat.id).then(
           (response) => response.fold(
@@ -58,28 +58,21 @@ class ChatCubit extends Cubit<ChatState> {
         );
   }
 
-  empty() {
-    state.chatPagination.data.map((chat) {
-      socket.emit("leaveRoom", {
-        "chatId": chat.id,
-      });
-    });
-    emit(ChatState.empty());
-  }
+  // This is called when logging out of the app
+  empty() => emit(ChatState.empty());
 
-// only append the incoming message if it is from someone else
+  // chat messages listener
   listenToChatEvents() {
+    // if the message is not already in the chat and the user of the message is not the current user, then only append it
     socket.on('newMessage', (data) {
       log("NEW MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
-      final messageExists = state.currentChat.messagePagination.data.any(
-        (currentMessage) => currentMessage.id == message.id,
-      );
-      if (!messageExists && message.userId != user!.id) {
-        appendMessageToChat(message);
-      }
+      appendMessageToChat(message);
     });
 
+    /// when user will create a new chat, this will be triggered, when new chat is created, the user will join the room, and
+    /// the chat will be added to the chat list only if the user is not the creator of the chat. we will get chat messages, and
+    /// the encrypted link also of the current chat.
     socket.on("newChat", (data) async {
       final chat = ChatJson.fromJson(data['chat']).toDomain();
       if (data['userId'] != user!.id) {
@@ -93,6 +86,8 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
+    // when a user will delete a message from the chat, this will be triggered
+    // if the user is not the creator of the message, then the message will be deleted from the chat
     socket.on("messageDeletion", (data) {
       final message = MessageJson.fromJson(data).toDomain();
       if (message.userId != user!.id) {
@@ -102,6 +97,8 @@ class ChatCubit extends Cubit<ChatState> {
       }
     });
 
+    // when a user will update a message from the chat, this will be triggered,
+    // if the user is not the creator of the message, then the message will be updated in the chat
     socket.on("messageUpdation", (data) {
       final message = MessageJson.fromJson(data).toDomain();
       if (message.userId != user!.id) {
@@ -113,11 +110,27 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
+  // This function is used to delete the message in the chat, the message is deleted by the current user, and the message is sent to the server
+  Future<void> deleteMessage(MessageEntity entity) async {
+    log("DELETED MESSAGE: ${entity.id}, ${entity.text}");
+    state.currentChat.messagePagination.data
+        .removeWhere((message) => message.id == entity.id);
+    emit(state.copyWith(currentChat: state.currentChat));
+    socket.emit(
+      "messageDeleted",
+      entity.toChatJson(),
+    );
+  }
+
+  // This function is used to append the message to the chat
   appendMessageToChat(MessageEntity message) {
     state.currentChat.messagePagination.data.insert(0, message);
     emit(state.copyWith(chatPagination: state.chatPagination));
   }
 
+  // This function is used to search the chats in the chat list, the search is happening by comparing
+  // current field value by the username of the participants of the chat, state.isSearching is used to
+  // check if the user is currently searching or not, this also controls the UI display in chat_tab_view.dart
   searchInChatsList(String val) {
     if (val.isNotEmpty) {
       _debouncer.call(() {
@@ -142,6 +155,11 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  // This function is used to create a new message in the current chat,
+  // the message creation is done by the current user, the message is sent to the server
+  // and the server will broadcast the message to all the users in the chat
+  // the message replyTo is managed by currentReplyTo field in the state
+  // if the currentReplyTo is not null, then the message will be a reply to the currentReplyTo message
   sendMessage() {
     if (state.messageController.text.isNotEmpty) {
       MessageEntity message = MessageEntity(
@@ -154,23 +172,14 @@ class ChatCubit extends Cubit<ChatState> {
         message.replyTo = state.currentReplyTo;
         message.replyToId = state.currentReplyTo!.id;
       }
-      appendMessageToChat(message);
       emitMessage(message);
       state.messageController.text = "";
       emit(state.copyWith(currentReplyTo: null));
     }
   }
 
-  Future<void> deleteMessage(MessageEntity entity) async {
-    state.currentChat.messagePagination.data
-        .removeWhere((message) => message.id == entity.id);
-    emit(state.copyWith(currentChat: state.currentChat));
-    socket.emit(
-      "messageDeleted",
-      entity.toChatJson(),
-    );
-  }
-
+  // This function is used to update the message in the chat, the message is updated by the current user, and the message is sent to the server
+  // the server will broadcast the message to all the users in the chat
   void updateMessage(MessageEntity entity, BuildContext context) {
     state.currentChat.messagePagination.data
         .firstWhere((message) => message.id == entity.id)
@@ -183,6 +192,7 @@ class ChatCubit extends Cubit<ChatState> {
     Navigator.pop(context);
   }
 
+  // This function is used to trigger the reply to message, the reply to animated container message is shown in the chat via this function
   void triggerReplyTo(MessageEntity? entity, bool show) {
     if (show) {
       state.currentReplyTo = entity;
@@ -192,6 +202,7 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(currentReplyTo: entity));
   }
 
+  // this is called when current user sends a new message in the chat
   emitMessage(MessageEntity message) {
     socket.emit(
       'message',
@@ -199,6 +210,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
+  // This function is used to get the chat messages of the chat, the chat messages are paginated, and the next field is used to check if there are more messages
   Future<void> getChatMessages(ChatEntity chat) async {
     if (chat.messagePagination.next || chat.messagePagination.data.isEmpty) {
       await messageRepository
@@ -215,6 +227,7 @@ class ChatCubit extends Cubit<ChatState> {
     emit(state.copyWith(currentChat: chat));
   }
 
+  // This function is used to scroll and call the chat, if the chat is not loading and the next field is true, then the chat is fetched
   scrollAndCallChat() {
     if (!state.chatLoading) {
       if (state.chatPagination.next || state.chatPagination.data.isEmpty) {
@@ -226,6 +239,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  // This function is used to scroll and call the messages of the chat, if the messages are not loading and the next field is true, then the messages are fetched
   Future<void> scrollAndCallMessages(ChatEntity chat) async {
     if (!state.messageLoading) {
       emit(state.copyWith(messageLoading: true));
@@ -236,6 +250,8 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  // This function is used to update the current chat, the chat messages and the encrypted chat link are fetched,
+  // this function is called when the user clicks on the chat in the chat list
   Future<void> updateCurrentChat(ChatEntity chat) async {
     await getChatMessages(chat);
     await getEncryptedChatLink(chat);
@@ -244,6 +260,8 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
+  // This function is used to create a new chat, the chat is created by the current user, the chat is sent to the server
+  // the server will broadcast the chat to all the users in the chat, the chat messages and the encrypted chat link are fetched
   Future<void> createChat(ChatEntity chat) async {
     final response = await chatRepository.createChat(chat);
     response.fold((error) {}, (chat) async {
@@ -259,5 +277,6 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
+  // The current user of the app
   UserEntity? get user => sl<UserStore>().getUser();
 }

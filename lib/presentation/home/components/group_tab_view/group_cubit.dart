@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
-import 'package:communico_frontend/presentation/home/home_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,9 +20,8 @@ class GroupCubit extends Cubit<GroupState> {
   final MessageRepository messageRepository;
   final GroupRepository groupRepository;
   final Debouncer _debouncer;
-  final HomeNavigator navigator;
 
-  GroupCubit(this.messageRepository, this.groupRepository, this.navigator)
+  GroupCubit(this.messageRepository, this.groupRepository)
       : _debouncer = Debouncer(delay: const Duration(milliseconds: 800)),
         super(GroupState.empty());
 
@@ -112,7 +110,6 @@ class GroupCubit extends Cubit<GroupState> {
         message.replyTo = state.currentReplyTo;
         message.replyToId = state.currentReplyTo!.id;
       }
-      appendMessageToGroup(message);
       emitMessage(message);
       state.groupMessageController.text = "";
       emit(state.copyWith(currentReplyTo: null));
@@ -173,12 +170,7 @@ class GroupCubit extends Cubit<GroupState> {
     socket.on('newGroupMessage', (data) {
       log("NEW GROUP MESSAGE ARRIVED: $data");
       final message = MessageJson.fromJson(data).toDomain();
-      final messageExists = state.currentGroup.messagePagination.data.any(
-        (currentMessage) => currentMessage.id == message.id,
-      );
-      if (!messageExists && message.userId != user!.id) {
-        appendMessageToGroup(message);
-      }
+      appendMessageToGroup(message);
     });
 
     socket.on("newGroup", (data) async {
@@ -214,8 +206,8 @@ class GroupCubit extends Cubit<GroupState> {
     });
   }
 
-  Future<void> createGroup(GroupEntity group) async {
-    final response = await groupRepository.createGroup(group);
+  Future<void> createGroup(GroupEntity entity) async {
+    final response = await groupRepository.createGroup(entity);
     response.fold((error) {}, (group) async {
       state.groupPagination.data.insert(0, group);
       socket.emit("groupCreation", {"userId": user!.id, "groupId": group.id});
@@ -272,6 +264,9 @@ class GroupCubit extends Cubit<GroupState> {
 
   void updateGroup(GroupEntity currentGroup) {
     groupRepository.updateGroup(currentGroup);
+    state.groupPagination.data
+        .removeWhere((group) => group.id == currentGroup.id);
+    state.groupPagination.data.insert(0, currentGroup);
     emit(state.copyWith(currentGroup: currentGroup, groupFieldEnabled: false));
   }
 

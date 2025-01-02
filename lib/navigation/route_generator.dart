@@ -1,11 +1,8 @@
-import 'package:communico_frontend/presentation/auth/auth_page.dart';
+import 'package:communico_frontend/presentation/main_page.dart';
 import 'package:communico_frontend/presentation/shared_room/shared_chat/shared_chat.dart';
 import 'package:communico_frontend/presentation/shared_room/shared_group/shared_group.dart';
 import 'package:flutter/material.dart';
 import 'package:communico_frontend/navigation/route_name.dart';
-import 'package:universal_html/html.dart';
-
-import '../presentation/home/home_screen.dart';
 
 enum TransitionType {
   fade,
@@ -34,11 +31,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   }
 
   switch (settings.name) {
-    case RouteName.home:
-      return getMainPage();
-
     case RouteName.getIn:
-      return getMainPage();
+      return getRoute(const MainPage(), TransitionType.slide);
 
     default:
       return MaterialPageRoute(
@@ -47,13 +41,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
       );
   }
-}
-
-PageRouteBuilder getMainPage() {
-  final token = window.localStorage['authToken'] ?? "";
-  return (token.isNotEmpty)
-      ? getRoute(const HomeScreen(), TransitionType.slide)
-      : getRoute(const AuthPage(), TransitionType.fade);
 }
 
 PageRouteBuilder getRoute(Widget page, TransitionType transitionType) {

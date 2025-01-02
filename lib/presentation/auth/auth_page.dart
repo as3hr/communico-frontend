@@ -1,7 +1,6 @@
 import 'package:communico_frontend/helpers/widgets/app_button.dart';
 import 'package:communico_frontend/helpers/widgets/background.dart';
 import 'package:communico_frontend/helpers/widgets/input_field.dart';
-import 'package:communico_frontend/helpers/widgets/loader.dart';
 import 'package:communico_frontend/presentation/auth/auth_cubit.dart';
 import 'package:communico_frontend/presentation/auth/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +69,7 @@ class AuthPage extends StatelessWidget {
                           if (state.passwordProtected) ...[
                             InputField(
                               hintText: "Enter your password",
+                              passwordField: true,
                               onChanged: (val) {
                                 state.password = val;
                               },
@@ -83,7 +83,6 @@ class AuthPage extends StatelessWidget {
                             const SizedBox(height: 20),
                           ],
                           AppButton(
-                              content: state.isLoading ? const Loader() : null,
                               title: "GET IN",
                               onTap: () {
                                 if (state.username.isNotEmpty) {

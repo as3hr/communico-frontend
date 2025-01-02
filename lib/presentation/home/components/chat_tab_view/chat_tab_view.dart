@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:communico_frontend/helpers/widgets/empty_chat.dart';
 import 'package:communico_frontend/helpers/widgets/link_banner.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
@@ -14,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../di/service_locator.dart';
 import '../../../../helpers/utils.dart';
-import '../../../../helpers/widgets/animated_banner.dart';
 import '../chat_rom/chat_room.dart';
 import '../message/message_actions_params.dart';
 import 'components/chats_list.dart';
@@ -42,16 +39,9 @@ class ChatTabView extends StatelessWidget {
                   onTap: () {
                     final chatCubit = sl<ChatCreationCubit>();
                     chatCubit.fetchUsers();
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                          child: const AnimatedBanner(
-                            content: ChatCreationForm(),
-                          ),
-                        );
-                      },
+                    showAppDialog(
+                      context,
+                      const ChatCreationForm(),
                     );
                   },
                   text: "Start your First Chat!",
@@ -76,22 +66,14 @@ class ChatTabView extends StatelessWidget {
                               }
                             },
                             onUpdate: (entity) {
-                              showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return BackdropFilter(
-                                    filter:
-                                        ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                                    child: AnimatedBanner(
-                                      content: MessageUpdationBanner(
-                                        message: entity,
-                                        onTap: (message) {
-                                          cubit.updateMessage(entity, context);
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
+                              showAppDialog(
+                                context,
+                                MessageUpdationBanner(
+                                  message: entity,
+                                  onTap: (message) {
+                                    cubit.updateMessage(entity, context);
+                                  },
+                                ),
                               );
                             },
                           ),
@@ -102,18 +84,9 @@ class ChatTabView extends StatelessWidget {
                             },
                             onShareChat: () {
                               if (state.currentChat.link != null) {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 8, sigmaY: 8),
-                                      child: AnimatedBanner(
-                                        content: LinkBanner(
-                                            link: state.currentChat.link!),
-                                      ),
-                                    );
-                                  },
+                                showAppDialog(
+                                  context,
+                                  LinkBanner(link: state.currentChat.link!),
                                 );
                               }
                             },

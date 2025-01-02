@@ -11,7 +11,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../di/service_locator.dart';
 import '../../../helpers/styles/app_colors.dart';
-import '../../home/components/message/my_message.dart';
 import '../../home/components/message/other_message.dart';
 import 'shared_chat_state.dart';
 
@@ -139,23 +138,14 @@ class _SharedChatState extends State<SharedChat> {
                                       return Padding(
                                         padding:
                                             EdgeInsets.symmetric(vertical: 8.h),
-                                        child: index.isEven
-                                            ? MyMessage(
-                                                message: message,
-                                                hideUsername: false,
-                                                onReplyTap: () {
-                                                  animateToTargetMessage(
-                                                      message.replyTo!.id);
-                                                },
-                                              )
-                                            : OtherMessage(
-                                                message: message,
-                                                onReplyTap: () {
-                                                  animateToTargetMessage(
-                                                    message.replyTo!.id,
-                                                  );
-                                                },
-                                              ),
+                                        child: OtherMessage(
+                                          message: message,
+                                          onReplyTap: () {
+                                            animateToTargetMessage(
+                                              message.replyTo!.id,
+                                            );
+                                          },
+                                        ),
                                       );
                                     },
                                   ),

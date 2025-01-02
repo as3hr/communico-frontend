@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/presentation/home/components/group_tab_view/group_state.dart';
@@ -11,7 +9,6 @@ import '../../../../../di/service_locator.dart';
 import '../../../../../domain/entities/message_entity.dart';
 import '../../../../../helpers/styles/app_colors.dart';
 import '../../../../../helpers/styles/styles.dart';
-import '../../../../../helpers/widgets/animated_banner.dart';
 import '../../../../../helpers/widgets/input_form_field.dart';
 import '../group_cubit.dart';
 import 'group_creation.dart/group_creation.dart';
@@ -57,17 +54,7 @@ class _GroupListState extends State<GroupList> {
               shape: const CircleBorder(),
               onPressed: () {
                 sl<GroupCreationCubit>().fetchUsers();
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                      child: const AnimatedBanner(
-                        content: GroupCreationForm(),
-                      ),
-                    );
-                  },
-                );
+                showAppDialog(context, const GroupCreationForm());
               },
               backgroundColor: AppColor.styleColor,
               child: const Icon(
@@ -133,6 +120,10 @@ class _GroupListState extends State<GroupList> {
                             },
                             itemBuilder: (context, index) {
                               final group = groups[index];
+                              final groupName = state.groupPagination.data
+                                  .firstWhere(
+                                      (element) => element.id == group.id)
+                                  .name;
                               List<MessageEntity> messages = state
                                   .groupPagination.data
                                   .firstWhere(
@@ -163,7 +154,7 @@ class _GroupListState extends State<GroupList> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            group.name,
+                                            groupName,
                                             style: Styles.mediumStyle(
                                               fontSize: 15,
                                               color:

@@ -64,9 +64,9 @@ class OtherMessage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (message.replyTo != null)
+                      if (message.replyToText != null)
                         ReplyToBox(
-                          message: message.replyTo!,
+                          message: message,
                           onTap: () {
                             onReplyTap.call();
                           },
@@ -86,7 +86,7 @@ class OtherMessage extends StatelessWidget {
                         style: Styles.mediumStyle(
                           fontSize: 14,
                           color: AppColor.white,
-                          family: FontFamily.montserrat,
+                          family: FontFamily.kanit,
                         ),
                       ),
                     ],

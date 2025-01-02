@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/utils.dart';
@@ -13,7 +11,6 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../../di/service_locator.dart';
 import '../../../../helpers/styles/app_colors.dart';
 import '../../../../helpers/styles/styles.dart';
-import '../../../../helpers/widgets/animated_banner.dart';
 import '../../../../helpers/widgets/vertical_divider.dart';
 import '../../home_cubit.dart';
 import '../../home_state.dart';
@@ -245,19 +242,8 @@ class _HeaderContentState extends State<HeaderContent> {
                     ),
                     IconButton(
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) {
-                            return BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                              child: AnimatedBanner(
-                                content: RadioBanner(
-                                  controller: controller,
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                        showAppDialog(
+                            context, RadioBanner(controller: controller));
                       },
                       icon: const Icon(
                         Icons.radio,
