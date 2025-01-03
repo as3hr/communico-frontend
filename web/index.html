@@ -1,77 +1,9 @@
-
-<!-- <!DOCTYPE html>
-<html translate="no">
-<head>
-  <base href="$FLUTTER_BASE_HREF">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Communico Web App">
-
-  iOS meta tags & icons
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Communico">
-  <link rel="apple-touch-icon" href="icons/chat.png">
-
-  Favicon
-  <link rel="icon" type="image/png" href="icons/chat.png">
-
-  <title>Communico</title>
-  <link rel="manifest" href="manifest.json">
-
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(
-        to bottom right,
-        #29333F, 
-        #6A737E  
-      );
-      text-align: center;
-    }
-
-    .logo {
-      width: 150px;
-      height: 150px;
-      margin-bottom: 20px;
-    }
-
-    .title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin: 10px 0;
-    }
-
-  </style>
-</head>
-<body>
-  <img src="icons/chat.png" alt="Chat Logo" class="logo">
-  <div class="title">Communico</div>
-
-  <script src="flutter_bootstrap.js" async></script>
-  <script>
-    window.addEventListener('load', async () => {
-      document.title = "Communico";
-    });
-  </script>  
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html translate="no">
 <head>
-  <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Communico Web App">
+  <base href="$FLUTTER_BASE_HREF">
+  <script src="flutter.js"></script>
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -83,21 +15,74 @@
   <link rel="icon" type="image/png" href="icons/chat.png">
 
   <title>Communico</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
 
-  <style>
+  <style id="splash-screen-style">
+    html {
+      height: 100%
+    }
+
     body {
       margin: 0;
+      min-height: 100%;
+      background-color: #FFFFFF;
+      background-size: 100% 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
       font-family: 'Montserrat', sans-serif;
-      color: #F8F9FA;
       background: linear-gradient(
         to bottom right,
         #29333F, 
         #6A737E  
       );
+    }
+
+    .center {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+
+    .contain {
+      display:block;
+      width:100%; height:100%;
+      object-fit: contain;
+    }
+
+    .stretch {
+      display:block;
+      width:100%; height:100%;
+    }
+
+    .cover {
+      display:block;
+      width:100%; height:100%;
+      object-fit: cover;
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      -ms-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+    }
+
+    .bottomLeft {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .bottomRight {
+      position: absolute;
+      bottom: 0;
+      right: 0;
     }
 
     .logo {
@@ -110,24 +95,29 @@
       font-size: 2.5rem;
       font-weight: 700;
       margin: 10px 0;
+      color: #FFFFFF;
     }
 
     #container {
       text-align: center;
     }
   </style>
+  <script id="splash-screen-script">
+    function removeSplashFromWeb() {
+      document.getElementById("splash")?.remove();
+      document.getElementById("splash-branding")?.remove();
+      document.body.style.background = "transparent";
+    }
+  </script>
 </head>
 <body>
   <div id="container">
-    
-  <img src="icons/chat.png" alt="Chat Logo" class="logo">
-  <div class="title">Communico</div>
+    <img src="icons/chat.png" alt="Chat Logo" class="logo">
+    <div class="title">Communico</div>
   </div>
-  <script src="flutter_bootstrap.js" async></script>
   <script>
-    window.addEventListener('load', async () => {
-      document.title = "Communico";
-    });
+    {{flutter_build_config}}
+    _flutter.loader.load();
   </script>  
 </body>
 </html>
