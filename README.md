@@ -1,95 +1,92 @@
-# Communico
+# Communico Frontend
 
-### 🚀 A Modern Communication and Entertainment Platform
+A modern communication platform built with Flutter Web, featuring real-time messaging, group chats, AI chatbot integration, and entertainment features including radio stations.
 
-**Communico** is a feature-rich Flutter web application designed to streamline communication, foster collaboration, and provide entertainment. This side project showcases advanced technologies, clean architecture, and seamless deployment.
+## 🚀 Features
 
----
+- Real-time messaging with instant updates
+- Group chat functionality with member management
+- AI-powered chatbot for automated interactions
+- Interactive and animated user interface
+- Radio station integration for entertainment
+- Responsive design
+- Secure authentication and authorization
 
-## 🌟 Features
+## 🛠️ Technologies
 
-1. **Real-Time Messaging**  
-   - Instant individual and group chats powered by WebSockets for real-time interactions.
+- **Framework:** Flutter Web
+- **Architecture:** Clean Architecture
+  - Data Layer: API integrations and local storage
+  - Domain Layer: Business logic and entities
+  - Presentation Layer: UI components and screens
+  - Service Layer: Platform services and utilities
+- **State Management:** BLoC (Business Logic Component) and Cubit
+- **Real-time Communication:** Socket.IO
 
-2. **AI Chat Bot**  
-   - Engage with an intelligent chatbot for assistance, conversation, or fun.
+## 🏗️ Project Structure
 
-3. **Group Chat with Unique Links**  
-   - Share group and chat conversations using secure, unique links for easy access.
+```
+lib
+│   ├── data
+│   │   ├── auth/
+│   │   ├── chat/
+│   │   ├── di/
+│   │   ├── group/
+│   │   ├── message/
+│   │   └── user/
+│   ├── di/
+│   ├── domain/
+│   │   ├── di/
+│   │   ├── entities/
+│   │   ├── failures/
+│   │   ├── model/
+│   │   ├── repositories/
+│   │   └── stores/
+│   ├── helpers/
+│   │   ├── styles/
+│   │   └── widgets/
+│   ├── main.dart
+│   ├── navigation/
+│   │   ├── di/
+│   ├── network/
+│   │   ├── di/
+│   │   ├── dio/
+│   ├── presentation/
+│   │   ├── auth/
+│   │   ├── communico.dart
+│   │   ├── di/
+│   │   ├── home/
+│   │   ├── main_page.dart
+│   │   └── shared_room/
+│   └── service/
+│       ├── di/
+```
 
-4. **Radio Stations**  
-   - Enjoy chill music with integrated radio station support.
+## 🔌 API Integration
 
-5. **Real-Time Collaboration**  
-   - Reliable and low-latency communication for real-time group interactions.
+The frontend communicates with the backend through:
+- RESTful APIs for standard CRUD operations
+- Socket.IO for real-time messaging and updates
 
-6. **Seamless Deployment**  
-   - Fully automated CI/CD pipeline deploying the app to Azure Virtual Machines.
+## 🎨 UI/UX Components
 
----
+- Material Design widgets
+- Custom backgrounds
+- Responsive layouts
+- Error handling and loading states
 
-## 🛠️ Technical Overview
+## 🤝 Contributing
 
-1. **Frontend**  
-   - Developed using **Flutter Web** for a responsive and engaging user interface.  
-   - **BLoC/Cubit** for state management to ensure scalable and testable logic.  
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-2. **Backend**  
-   - Utilizes WebSocket-based backend for real-time communication.  
-   - Azure-hosted environment for robust and scalable infrastructure.  
+## 📄 License
 
-3. **Architecture**  
-   - Implements **Clean Architecture** with distinct layers:  
-     - `Data` for handling APIs and repositories.  
-     - `Domain` for business logic.  
-     - `Presentation` for UI and state management.  
-     - `Service` for external integrations like AI and radio APIs.  
+This project is licensed under the [MIT License](LICENSE)
 
-4. **DevOps**  
-   - CI/CD pipeline ensures continuous integration and automated deployments to VMs.
+## 👥 Authors
 
----
-
-## 💻 Project Setup
-
-### Prerequisites
-- Flutter SDK
-- Dart SDK
-- Azure account for deployment
-
-### Steps to Run Locally
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd communico
-   ```
-3. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-4. Run the application:
-   ```bash
-   flutter run -d web
-   ```
-
----
-
-## 🚀 Deployment
-The CI/CD pipeline automatically builds, tests, and deploys the app to a VM. To set up:
-1. Configure VM or GitHub Actions.
-2. Link the repository to your pipeline.
-3. Deploy the app using the pipeline.
-
----
-
-## 🤝 Contributions
-Feel free to contribute to **Communico** by submitting issues or pull requests. All contributions are welcome!
-
----
-
-### ✨ Author
-Muhammad Ashar  
-[GitHub Profile](https://github.com/as3hr)  
+- Muhammad Ashar - Software Engineer - [Github](https://github.com/as3hr)
