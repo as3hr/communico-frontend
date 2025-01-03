@@ -90,13 +90,34 @@
       height: 150px;
       margin-bottom: 20px;
     }
-
-    .title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin: 10px 0;
-      color: #FFFFFF;
+    
+    .loader {
+      width: 15px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      justify-self: center;
+      animation: l5 1s infinite linear alternate;
     }
+
+    @keyframes l5 {
+      0% {
+        box-shadow: 20px 0 #29333F, -20px 0 rgba(105, 115, 126, 0.2);
+        background: #29333F;
+      }
+      33% {
+        box-shadow: 20px 0 #29333F, -20px 0 rgba(105, 115, 126, 0.2);
+        background: rgba(105, 115, 126, 0.2);
+      }
+      66% {
+        box-shadow: 20px 0 rgba(105, 115, 126, 0.2), -20px 0 #29333F;
+        background: rgba(105, 115, 126, 0.2);
+      }
+      100% {
+        box-shadow: 20px 0 rgba(105, 115, 126, 0.2), -20px 0 #29333F;
+        background: #29333F;
+      }
+    }
+
 
     #container {
       text-align: center;
@@ -113,7 +134,7 @@
 <body>
   <div id="container">
     <img src="icons/chat.png" alt="Chat Logo" class="logo">
-    <div class="title">Communico</div>
+    <div class="loader"></div>
   </div>
   <script>
     {{flutter_build_config}}
