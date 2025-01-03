@@ -14,7 +14,7 @@ import '../../../../domain/repositories/chat_repository.dart';
 import '../../../../domain/repositories/message_repository.dart';
 import '../../../../domain/stores/user_store.dart';
 import '../../../../helpers/constants.dart';
-import '../../../../helpers/deboouncer.dart';
+import '../../../../helpers/debouncer.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final ChatRepository chatRepository;

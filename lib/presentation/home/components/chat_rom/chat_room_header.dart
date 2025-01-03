@@ -1,4 +1,5 @@
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/presentation/home/components/chat_rom/chat_room_query_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,6 +46,7 @@ class ChatRoomHeader extends StatelessWidget {
             },
             icon: const Icon(
               Icons.share,
+              color: AppColor.white,
             ),
             tooltip: "Share Conversation",
           ),
@@ -56,6 +58,7 @@ class ChatRoomHeader extends StatelessWidget {
               },
               icon: const Icon(
                 Icons.menu,
+                color: AppColor.white,
               ),
             ),
           ],

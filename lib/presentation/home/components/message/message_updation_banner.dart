@@ -68,7 +68,7 @@ class _MessageUpdationBannerState extends State<MessageUpdationBanner> {
                           onTap();
                         }
                       },
-                      prefixIcon: Icons.lock_outline_rounded,
+                      prefixIcon: Icons.edit,
                     ),
                     const SizedBox(height: 20),
                     AppButton(

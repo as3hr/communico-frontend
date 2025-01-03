@@ -14,7 +14,7 @@ import '../../../../domain/repositories/group_repository.dart';
 import '../../../../domain/repositories/message_repository.dart';
 import '../../../../domain/stores/user_store.dart';
 import '../../../../helpers/constants.dart';
-import '../../../../helpers/deboouncer.dart';
+import '../../../../helpers/debouncer.dart';
 
 class GroupCubit extends Cubit<GroupState> {
   final MessageRepository messageRepository;
