@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+<!-- <!DOCTYPE html>
 <html translate="no">
 <head>
   <base href="$FLUTTER_BASE_HREF">
@@ -7,13 +8,13 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Communico Web App">
 
-  <!-- iOS meta tags & icons -->
+  iOS meta tags & icons
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Communico">
   <link rel="apple-touch-icon" href="icons/chat.png">
 
-  <!-- Favicon -->
+  Favicon
   <link rel="icon" type="image/png" href="icons/chat.png">
 
   <title>Communico</title>
@@ -28,7 +29,6 @@
       justify-content: center;
       height: 100vh;
       font-family: 'Montserrat', sans-serif;
-      color: #F8F9FA;
       background: linear-gradient(
         to bottom right,
         #29333F, 
@@ -55,6 +55,74 @@
   <img src="icons/chat.png" alt="Chat Logo" class="logo">
   <div class="title">Communico</div>
 
+  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    window.addEventListener('load', async () => {
+      document.title = "Communico";
+    });
+  </script>  
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html translate="no">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Communico Web App">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Communico">
+  <link rel="apple-touch-icon" href="icons/chat.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="icons/chat.png">
+
+  <title>Communico</title>
+
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      color: #F8F9FA;
+      background: linear-gradient(
+        to bottom right,
+        #29333F, 
+        #6A737E  
+      );
+    }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    #container {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    
+  <img src="icons/chat.png" alt="Chat Logo" class="logo">
+  <div class="title">Communico</div>
+  </div>
   <script src="flutter_bootstrap.js" async></script>
   <script>
     window.addEventListener('load', async () => {
