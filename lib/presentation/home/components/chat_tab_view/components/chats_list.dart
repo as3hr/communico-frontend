@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../di/service_locator.dart';
 import '../../../../../helpers/styles/app_colors.dart';
 import '../../../../../helpers/styles/styles.dart';
-import '../../../../../helpers/widgets/input_form_field.dart';
+import '../../../../../helpers/widgets/input_field.dart';
 import 'chat_creation.dart';
 import 'chat_creation_cubit.dart';
 
@@ -80,12 +80,12 @@ class _ChatsListState extends State<ChatsList> {
                     ],
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: InputFormField(
+                  child: InputField(
                     hintText: "Search ...",
                     onChanged: (val) {
                       cubit.searchInChatsList(val);
                     },
-                    showBorder: false,
+                    onSubmitted: (val) {},
                   ),
                 ),
                 3.verticalSpace,

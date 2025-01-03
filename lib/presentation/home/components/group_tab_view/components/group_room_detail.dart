@@ -119,25 +119,27 @@ class GroupRoomDetail extends StatelessWidget {
                     itemCount: state.currentGroup.members.length,
                     itemBuilder: (context, index) {
                       final member = state.currentGroup.members[index];
-                      return ListTile(
-                        leading: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: context.colorScheme.secondary,
-                          child: Text(
-                            (member.user?.username ?? "?").substring(0, 1),
+                      return SelectionArea(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: context.colorScheme.secondary,
+                            child: Text(
+                              (member.user?.username ?? "?").substring(0, 1),
+                              style: Styles.mediumStyle(
+                                fontSize: 12,
+                                color: AppColor.white,
+                                family: FontFamily.montserrat,
+                              ),
+                            ),
+                          ),
+                          title: Text(
+                            member.user?.username ?? "Unknown",
                             style: Styles.mediumStyle(
                               fontSize: 12,
                               color: AppColor.white,
                               family: FontFamily.montserrat,
                             ),
-                          ),
-                        ),
-                        title: Text(
-                          member.user?.username ?? "Unknown",
-                          style: Styles.mediumStyle(
-                            fontSize: 12,
-                            color: AppColor.white,
-                            family: FontFamily.montserrat,
                           ),
                         ),
                       );

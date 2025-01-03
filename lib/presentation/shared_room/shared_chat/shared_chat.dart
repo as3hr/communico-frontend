@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/styles.dart';
 import 'package:communico_frontend/presentation/shared_room/shared_chat/shared_chat_cubit.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../di/service_locator.dart';
 import '../../../helpers/styles/app_colors.dart';
+import '../../../helpers/widgets/app_button.dart';
 import '../../home/components/message/other_message.dart';
 import 'shared_chat_state.dart';
 
@@ -151,66 +151,22 @@ class _SharedChatState extends State<SharedChat> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 0.12.sh,
-                                child: Center(
-                                  child: InkWell(
-                                    onTap: () async {
-                                      const url =
-                                          'https://communico.as3hr.dev/';
-                                      if (await canLaunchUrl(Uri.parse(url))) {
-                                        await launchUrl(
-                                          Uri.parse(url),
-                                          mode: LaunchMode.platformDefault,
-                                        );
-                                      } else {
-                                        log("An error occurred while launching the URL");
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 60,
-                                      width: 0.2.sw,
-                                      padding: const EdgeInsets.all(10),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            context.colorScheme.primary
-                                                .withOpacity(
-                                                    0.8), // Primary color
-                                            context.colorScheme.secondary
-                                                .withOpacity(
-                                                    0.9), // Secondary color
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                        borderRadius: BorderRadius.circular(30),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.4),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 5),
-                                          ),
-                                        ],
-                                      ),
-                                      child: const Center(
-                                        child: Text(
-                                          "Start your own space!",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                            letterSpacing: 1.2,
-                                            fontFamily:
-                                                'Kanit', // Use your desired font
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
+                              AppButton(
+                                  height: 60,
+                                  width: 0.2.sw,
+                                  title: "Start your own space",
+                                  onTap: () async {
+                                    const url = 'https://communico.as3hr.dev/';
+                                    if (await canLaunchUrl(Uri.parse(url))) {
+                                      await launchUrl(
+                                        Uri.parse(url),
+                                        mode: LaunchMode.platformDefault,
+                                      );
+                                    } else {
+                                      log("An error occurred while launching the URL");
+                                    }
+                                  }),
+                              10.verticalSpace,
                             ],
                           ),
               ],

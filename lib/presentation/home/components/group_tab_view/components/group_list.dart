@@ -9,7 +9,7 @@ import '../../../../../di/service_locator.dart';
 import '../../../../../domain/entities/message_entity.dart';
 import '../../../../../helpers/styles/app_colors.dart';
 import '../../../../../helpers/styles/styles.dart';
-import '../../../../../helpers/widgets/input_form_field.dart';
+import '../../../../../helpers/widgets/input_field.dart';
 import '../group_cubit.dart';
 import 'group_creation.dart/group_creation.dart';
 import 'group_creation.dart/group_creation_cubit.dart';
@@ -79,12 +79,12 @@ class _GroupListState extends State<GroupList> {
                     ],
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: InputFormField(
+                  child: InputField(
                     hintText: "Search ...",
                     onChanged: (val) {
                       cubit.searchInGroupsList(val);
                     },
-                    showBorder: false,
+                    onSubmitted: (p0) => {},
                   ),
                 ),
                 3.verticalSpace,

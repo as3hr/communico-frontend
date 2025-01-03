@@ -17,8 +17,9 @@ class AppImages {
   ];
 
   static Future<void> loadImages() async {
-    Future.wait(
-      images.where((image) => !ImageHelper.isImageLoaded(image)).map((image) {
+    await Future.wait(
+      // .where((image) => !ImageHelper.isImageLoaded(image))
+      images.map((image) {
         return ImageHelper.loadAssetImage(image);
       }),
     );
