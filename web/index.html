@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- <link rel="preload" as="image" href="assets/assets/rain.gif">
-  <link rel="preload" as="image" href="assets/assets/autumn.gif">
-  <link rel="preload" as="image" href="assets/assets/scenery.gif">
-  <link rel="preload" as="image" href="assets/assets/night.gif">
-  <link rel="preload" as="image" href="assets/assets/sunset.gif"> -->
-
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
@@ -23,12 +17,12 @@
   <link rel="icon" type="image/png" href="icons/chat.png">
 
   <title>Communico</title>
-  <link rel="manifest" href="manifest.json">
 
   <style>
     body {
       margin: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
@@ -39,43 +33,27 @@
         #29333F, 
         #6A737E  
       );
-    }
-
-    .loader {
-      width: 50px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      border: 8px solid #0000;
-      border-right-color: #13ADEF;
-      position: relative;
-      animation: l24 1s infinite linear;
-    }
-    .loader:before,
-    .loader:after {
-      content: "";
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: inherit;
-      animation: inherit;
-      animation-duration: 2s;
-    }
-    .loader:after {
-      animation-duration: 4s;
-    }
-    @keyframes l24 {
-      100% {transform: rotate(1turn)}
-    }
-
-    #loading-container {
       text-align: center;
     }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 0px;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
   </style>
 </head>
 <body>
-  <div id="loading-container">
-    <div class="loader"></div>
-  </div>
+  <img src="icons/chat.png" alt="Chat Logo" class="logo">
+  <div class="title">Communico</div>
+
   <script src="flutter_bootstrap.js" async></script>
   <script>
     window.addEventListener('load', async () => {
