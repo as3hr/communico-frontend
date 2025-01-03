@@ -23,6 +23,39 @@ A modern communication platform built with Flutter Web, featuring real-time mess
 - **State Management:** BLoC (Business Logic Component) and Cubit
 - **Real-time Communication:** Socket.IO
 
+
+## 📋 Prerequisites
+
+- Flutter SDK (version X.X.X)
+- Dart SDK (version X.X.X)
+- IDE (VS Code/Android Studio)
+- Git
+
+## 🔧 Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/as3hr/communico-frontend.git
+```
+
+2. Navigate to the project directory:
+```bash
+cd communico-frontend
+```
+
+3. Install dependencies:
+```bash
+flutter pub get
+```
+
+4. Configure base url:
+- add a baseUrl of the backend in [constants.dart](lib/helpers/constants.dart) file
+
+5. Run the application:
+```bash
+flutter run -d chrome
+```
+
 ## 🏗️ Project Structure
 
 ```
@@ -74,6 +107,15 @@ The frontend communicates with the backend through:
 - Custom backgrounds
 - Responsive layouts
 - Error handling and loading states
+
+## 📦 Building for Production
+
+1. Build the web application:
+```bash
+flutter build web --release
+```
+
+2. The built files will be available in `build/web/`
 
 ## 🤝 Contributing
 
