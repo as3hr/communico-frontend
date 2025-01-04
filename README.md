@@ -2,7 +2,7 @@
 
 A modern communication platform built with Flutter Web, featuring real-time messaging, group chats, AI chatbot integration, and entertainment features including radio stations.
 
-## 📄 Backend
+## 💻 Backend
 
 Check Out the backend of Cmmunico here[Communico Backend](https://github.com/as3hr/communico-backend)
 
