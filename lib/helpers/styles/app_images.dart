@@ -5,23 +5,12 @@ class AppImages {
   static const autumn = "$_baseDir/autumn.gif";
   static const scenery = "$_baseDir/scenery.gif";
   static const rain = "$_baseDir/rain.gif";
-  static const night = "$_baseDir/night.gif";
+  static const mountainous = "$_baseDir/mountainous.gif";
   static const sunset = "$_baseDir/sunset.gif";
 
-  static const images = [
-    autumn,
-    scenery,
-    rain,
-    night,
-    sunset,
-  ];
-
-  static Future<void> loadImages() async {
-    await Future.wait(
-      // .where((image) => !ImageHelper.isImageLoaded(image))
-      images.map((image) {
-        return ImageHelper.loadAssetImage(image);
-      }),
-    );
+  static Future<void> loadImage() async {
+    if (!ImageHelper.isImageLoaded(sunset)) {
+      ImageHelper.loadAssetImage(sunset);
+    }
   }
 }

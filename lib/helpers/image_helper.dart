@@ -12,7 +12,6 @@ class ImageHelper {
 
   static Future<ui.Image?> loadAssetImage(String imagePath) async {
     if (_imageCache.containsKey(imagePath)) {
-      debugPrint('Image already loaded: $imagePath');
       return _imageCache[imagePath];
     }
 

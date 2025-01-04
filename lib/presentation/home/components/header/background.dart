@@ -13,6 +13,6 @@ class Background {
     Background(image: AppImages.rain, title: "Rain"),
     Background(image: AppImages.sunset, title: "Sunset"),
     Background(image: AppImages.autumn, title: "Autumn"),
-    Background(image: AppImages.night, title: "Night"),
+    Background(image: AppImages.mountainous, title: "Mountainous"),
   ];
 }
