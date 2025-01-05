@@ -1,7 +1,9 @@
 import '../image_helper.dart';
 
 class AppImages {
-  static const _baseDir = "assets";
+  static const _baseDir =
+      "https://as3hr.github.io/Flutter-Notification-Repository";
+  // "assets";
   static const autumn = "$_baseDir/autumn.gif";
   static const scenery = "$_baseDir/scenery.gif";
   static const rain = "$_baseDir/rain.gif";

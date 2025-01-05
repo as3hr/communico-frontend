@@ -1,7 +1,7 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:communico_frontend/helpers/extensions.dart';
-import 'package:communico_frontend/helpers/styles/styles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'shimmer_effect.dart';
 
 class BackgroundImage extends StatelessWidget {
   const BackgroundImage({super.key, required this.image});
@@ -9,71 +9,50 @@ class BackgroundImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isImageLoaded = ValueNotifier<bool>(false);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Stack(
-        children: [
-          Image(
-            image: AssetImage(image),
+    return CachedNetworkImage(
+      imageUrl: image,
+      imageBuilder: (context, imageProvider) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: DecorationImage(
+            image: imageProvider,
             fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                Future.microtask(() => isImageLoaded.value = true);
-                return child;
-              }
-              return const SizedBox.expand();
-            },
-            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-              if (wasSynchronouslyLoaded) return child;
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: frame == null ? const SizedBox.shrink() : child,
-              );
-            },
+            filterQuality: FilterQuality.high,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.onPrimary,
+              BlendMode.dst,
+            ),
           ),
-          ValueListenableBuilder<bool>(
-            valueListenable: isImageLoaded,
-            builder: (context, loaded, child) {
-              if (loaded) return const SizedBox.shrink();
-              return Center(
-                child: SizedBox(
-                  width: 250.0,
-                  child: DefaultTextStyle(
-                    style: const TextStyle(
-                      fontSize: 70.0,
-                      fontFamily: 'Montserrat',
-                    ),
-                    child: AnimatedTextKit(
-                      repeatForever: false,
-                      isRepeatingAnimation: false,
-                      pause: const Duration(milliseconds: 800),
-                      totalRepeatCount: 1,
-                      onFinished: () {
-                        isImageLoaded.value = true;
-                      },
-                      animatedTexts: [
-                        FadeAnimatedText(
-                          'Applying your background, this may take some time...',
-                          duration: const Duration(seconds: 10),
-                          textAlign: TextAlign.center,
-                          textStyle: Styles.boldStyle(
-                            fontSize: 15,
-                            color: context.colorScheme.onPrimary,
-                            family: FontFamily.montserrat,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
+        ),
       ),
+      placeholder: (context, url) => const ShimmerEffect(),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
     );
+    // ClipRRect(
+    //   borderRadius: BorderRadius.circular(16),
+    //   child: Stack(
+    //     children: [
+    //       Image(
+    //         image: NetworkImage(image),
+    //         fit: BoxFit.cover,
+    //         height: double.infinity,
+    //         width: double.infinity,
+    //         loadingBuilder: (context, child, loadingProgress) {
+    //           if (loadingProgress == null) {
+    //             return child;
+    //           }
+    //           return const SizedBox.expand();
+    //         },
+    //         frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+    //           if (wasSynchronouslyLoaded) return child;
+    //           return AnimatedSwitcher(
+    //             duration: const Duration(milliseconds: 300),
+    //             child: frame == null ? const SizedBox.shrink() : child,
+    //           );
+    //         },
+    //       ),
+    //      ],
+    //   ),
+    // );
   }
 }
