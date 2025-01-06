@@ -96,7 +96,7 @@ class RadioBanner extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      station.title,
+                                      station.title.capitalized(),
                                       style: Styles.boldStyle(
                                         fontSize: 22,
                                         color: AppColor.white,
