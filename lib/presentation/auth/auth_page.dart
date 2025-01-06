@@ -14,6 +14,7 @@ class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
 
   static final cubit = sl<AuthCubit>();
+  static final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,76 +30,94 @@ class AuthPage extends StatelessWidget {
                     constraints: const BoxConstraints(maxWidth: 400),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Communico",
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Kanit",
-                              color: Colors.white,
-                              letterSpacing: 2,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Communico",
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Kanit",
+                                color: Colors.white,
+                                letterSpacing: 2,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Connect with your world, one chat at a time.",
-                            style: Styles.lightStyle(
-                              fontSize: 15,
-                              color: AppColor.white,
-                              family: FontFamily.montserrat,
+                            const SizedBox(height: 10),
+                            Text(
+                              "Connect with your world, one chat at a time.",
+                              style: Styles.lightStyle(
+                                fontSize: 15,
+                                color: AppColor.white,
+                                family: FontFamily.montserrat,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 50),
-                          InputField(
-                            hintText: "Enter your username",
-                            onChanged: (val) {
-                              state.username = val;
-                            },
-                            onSubmitted: (val) {
-                              if (state.username.isNotEmpty) {
-                                cubit.getIn();
-                              }
-                            },
-                            prefixIcon: Icons.person,
-                          ),
-                          const SizedBox(height: 20),
-                          if (state.passwordProtected) ...[
+                            const SizedBox(height: 50),
                             InputField(
-                              hintText: "Enter your password",
-                              passwordField: true,
+                              hintText: "Enter your username",
                               onChanged: (val) {
-                                state.password = val;
+                                state.username = val;
+                              },
+                              validator: (val) {
+                                if (val != null) {
+                                  if (val.length < 3) {
+                                    return "Username is too short";
+                                  }
+                                  if (val.length > 10) {
+                                    return "Wow! That's a long username";
+                                  }
+                                }
+                                return null;
                               },
                               onSubmitted: (val) {
-                                if (state.password?.isNotEmpty ?? false) {
+                                if ((_formKey.currentState?.validate() ??
+                                        false) &&
+                                    state.username.isNotEmpty) {
                                   cubit.getIn();
                                 }
                               },
-                              prefixIcon: Icons.lock_outline_rounded,
+                              prefixIcon: Icons.person,
                             ),
                             const SizedBox(height: 20),
-                          ],
-                          AppButton(
-                              title: "GET IN",
-                              onTap: () {
-                                if (state.username.isNotEmpty) {
-                                  cubit.getIn();
-                                }
-                              }),
-                          const SizedBox(height: 40),
-                          Text(
-                            "Powered by Communico",
-                            style: Styles.lightStyle(
-                              fontSize: 12,
-                              color: AppColor.white,
-                              family: FontFamily.montserrat,
+                            if (state.passwordProtected) ...[
+                              InputField(
+                                hintText: "Enter your password",
+                                passwordField: true,
+                                onChanged: (val) {
+                                  state.password = val;
+                                },
+                                onSubmitted: (val) {
+                                  if ((state.password?.isNotEmpty ?? false)) {
+                                    cubit.getIn();
+                                  }
+                                },
+                                prefixIcon: Icons.lock_outline_rounded,
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                            AppButton(
+                                title: "GET IN",
+                                onTap: () {
+                                  if ((_formKey.currentState?.validate() ??
+                                          false) &&
+                                      state.username.isNotEmpty) {
+                                    cubit.getIn();
+                                  }
+                                }),
+                            const SizedBox(height: 40),
+                            Text(
+                              "Powered by Communico",
+                              style: Styles.lightStyle(
+                                fontSize: 12,
+                                color: AppColor.white,
+                                family: FontFamily.montserrat,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
