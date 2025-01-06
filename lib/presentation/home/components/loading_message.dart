@@ -18,7 +18,7 @@ class LoadingMessage extends StatelessWidget {
             child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColor.purple,
+                  color: const Color(0xff191624),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),
