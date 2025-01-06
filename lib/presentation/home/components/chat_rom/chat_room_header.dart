@@ -16,11 +16,11 @@ class ChatRoomHeader extends StatelessWidget {
       height: 0.05.sh,
       decoration: BoxDecoration(
         color: context.colorScheme.primary,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black,
             blurRadius: 6,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
         borderRadius: const BorderRadius.only(
@@ -44,43 +44,9 @@ class ChatRoomHeader extends StatelessWidget {
             onPressed: () {
               params.onShareChat?.call();
             },
-            icon: Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: AppColor.electricBlue,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.electricBlue.withOpacity(0.4),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Share",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColor.white,
-                      fontFamily: "Kanit",
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(width: 5),
-                  Padding(
-                    padding: EdgeInsets.only(top: 2),
-                    child: Icon(
-                      Icons.arrow_outward_rounded,
-                      textDirection: TextDirection.rtl,
-                      color: AppColor.white,
-                      size: 18,
-                    ),
-                  ),
-                ],
-              ),
+            icon: const Icon(
+              Icons.arrow_outward_rounded,
+              color: AppColor.styleColor,
             ),
             tooltip: "Share Conversation",
           ),

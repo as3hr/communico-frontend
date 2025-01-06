@@ -1,4 +1,3 @@
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,7 +34,7 @@ class AiStreamingMessage extends StatelessWidget {
                         ),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: context.colorScheme.secondary,
+                          color: const Color(0xff272334),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.2),

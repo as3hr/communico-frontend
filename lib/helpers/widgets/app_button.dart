@@ -12,8 +12,8 @@ class AppButton extends StatelessWidget {
     this.padding,
     this.width,
     this.height,
-    this.backgroundColor = AppColor.styleColor,
-  });
+    Color? backgroundColor,
+  }) : backgroundColor = backgroundColor ?? AppColor.styleColor;
   final String title;
   final void Function()? onTap;
   final Widget? content;
@@ -49,7 +49,7 @@ class AppButton extends StatelessWidget {
                 title,
                 style: Styles.boldStyle(
                   fontSize: 20,
-                  color: AppColor.white,
+                  color: AppColor.black,
                   family: FontFamily.kanit,
                 ),
               ),

@@ -116,11 +116,13 @@ showAppDialog(BuildContext context, Widget content) {
   showDialog(
     context: context,
     builder: (_) {
-      return BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: AnimatedBanner(
-          content: content,
-        ),
+      return
+          // BackdropFilter(
+          //   filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          //   child:
+          AnimatedBanner(
+        content: content,
+        // ),
       );
     },
   );

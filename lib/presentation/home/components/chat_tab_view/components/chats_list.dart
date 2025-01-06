@@ -60,7 +60,7 @@ class _ChatsListState extends State<ChatsList> {
               backgroundColor: AppColor.styleColor,
               child: const Icon(
                 Icons.add,
-                color: AppColor.white,
+                color: AppColor.black,
               ),
             ),
           ),
@@ -70,7 +70,7 @@ class _ChatsListState extends State<ChatsList> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: context.colorScheme.primary,
+                    color: context.colorScheme.secondary,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -115,7 +115,7 @@ class _ChatsListState extends State<ChatsList> {
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: Divider(
                                   thickness: 0.5,
-                                  color: context.colorScheme.secondary,
+                                  color: context.colorScheme.onPrimary,
                                 ),
                               );
                             },

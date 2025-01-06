@@ -1,5 +1,4 @@
 import 'package:communico_frontend/domain/entities/message_entity.dart';
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +30,7 @@ class AiMessage extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: context.colorScheme.secondary,
+                    color: const Color(0xff272334),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),

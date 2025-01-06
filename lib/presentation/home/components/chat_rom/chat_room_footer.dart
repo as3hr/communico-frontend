@@ -78,7 +78,7 @@ class _ChatRoomFooterState extends State<ChatRoomFooter> {
                     padding:
                         EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
                     child: Icon(
-                      color: AppColor.white,
+                      color: AppColor.black,
                       Icons.send,
                       size: 20,
                     ),

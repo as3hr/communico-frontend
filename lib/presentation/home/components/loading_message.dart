@@ -1,4 +1,3 @@
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:communico_frontend/helpers/styles/app_colors.dart';
 import 'package:communico_frontend/helpers/widgets/jumping_dots.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class LoadingMessage extends StatelessWidget {
             child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: context.colorScheme.secondary,
+                  color: const Color(0xff272334),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),

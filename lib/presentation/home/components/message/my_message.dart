@@ -65,7 +65,7 @@ class MyMessage extends StatelessWidget {
                     maxWidth: 0.55.sw,
                   ),
                   decoration: BoxDecoration(
-                      color: context.colorScheme.primary,
+                      color: const Color(0xff191624),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),

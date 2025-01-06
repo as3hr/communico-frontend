@@ -1,4 +1,3 @@
-import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
@@ -9,11 +8,11 @@ class Background extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                context.colorScheme.primary,
-                context.colorScheme.secondary
+                Color(0xff191624),
+                Color(0xff191624),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,

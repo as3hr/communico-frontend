@@ -46,7 +46,7 @@ class OtherMessage extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: context.colorScheme.secondary,
+                    color: AppColor.purple,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),

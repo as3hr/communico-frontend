@@ -50,13 +50,6 @@ class _HeaderContentState extends State<HeaderContent> {
         loop: true,
       ),
     );
-    controller.stream.listen(playNextOnEnd);
-  }
-
-  playNextOnEnd(YoutubePlayerValue streamData) {
-    if (streamData.playerState == PlayerState.ended) {
-      cubit.playNext(context);
-    }
   }
 
   @override

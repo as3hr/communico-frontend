@@ -85,9 +85,9 @@ class _InputFormFieldState extends State<InputFormField> {
         suffixIcon: widget.suffixIcon,
         border: !widget.showBorder ? InputBorder.none : null,
         fillColor: context.colorScheme.primary,
-        enabledBorder: widget.showBorder ? _buildBorder(AppColor.black1) : null,
+        enabledBorder: widget.showBorder ? _buildBorder(AppColor.black) : null,
         focusedBorder: widget.showBorder
-            ? _buildBorder(AppColor.black1, isFocused: true)
+            ? _buildBorder(AppColor.black, isFocused: true)
             : null,
         errorBorder: _buildBorder(AppColor.red),
         focusedErrorBorder: _buildBorder(AppColor.red),

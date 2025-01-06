@@ -8,24 +8,21 @@ class AppColor {
 
   // Dark Theme Colors
   static const darkBackground = Color(0xff353647);
-  static const darkPrimary = Color(0xff414256);
-  static const darkSecondary = Color(0xFF343546);
 
   // Dark Theme Colors
-  static const primaryColor = Color(0xff29333F);
-  //  Color(0xff2D3250);
-  static const secondaryColor = Color(0xff6A737E);
-  // Color(0xff424769);
-  static const styleColor = Color(0xFF13ADEF);
+  static const primaryColor = Color(0xff1E1B2E);
+  static const secondaryColor = Color(0xff0D0B1A);
+  // Color(0xff6A737E);
+  static const styleColor = Color(0xFFCDFF63);
+  static const purple = Color(0xff6B57FF);
 
   // Primary and Accent Colors
-  static const electricBlue = Color(0xFF13ADEF);
+  static const electricBlue = purple;
   static const brightMagenta = Color(0xFFE94560);
 
   // Error, Alerts and others
   static const lightGrey = Color(0xFF99AAB5);
   static const red = Color(0xFFEF5350);
-  static const mango = Color(0xffffca4f);
   static const black3 = Color(0xff36393e);
-  static const black1 = Color(0xff1e2124);
+  static const black = Colors.black;
 }

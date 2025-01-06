@@ -1,3 +1,4 @@
+import 'package:communico_frontend/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../styles/app_colors.dart';
@@ -67,6 +68,7 @@ class _InputFieldState extends State<InputField> {
                 family: FontFamily.montserrat,
               ),
               filled: true,
+              fillColor: context.colorScheme.primary,
               prefixIcon: Icon(widget.prefixIcon, color: Colors.grey.shade600),
               suffixIcon: widget.passwordField
                   ? IconButton(

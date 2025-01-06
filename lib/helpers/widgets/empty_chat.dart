@@ -64,7 +64,7 @@ class EmptyChat extends StatelessWidget {
                   backgroundColor: AppColor.styleColor,
                   child: const Icon(
                     Icons.add,
-                    color: AppColor.white,
+                    color: AppColor.black,
                   ),
                 ),
               ),

@@ -59,7 +59,7 @@ class _GroupListState extends State<GroupList> {
               backgroundColor: AppColor.styleColor,
               child: const Icon(
                 Icons.add,
-                color: AppColor.white,
+                color: AppColor.black,
               ),
             ),
           ),
@@ -114,7 +114,7 @@ class _GroupListState extends State<GroupList> {
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: Divider(
                                   thickness: 0.5,
-                                  color: context.colorScheme.secondary,
+                                  color: context.colorScheme.onPrimary,
                                 ),
                               );
                             },

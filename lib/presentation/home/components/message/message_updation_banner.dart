@@ -45,7 +45,7 @@ class _MessageUpdationBannerState extends State<MessageUpdationBanner> {
         ),
         width: 0.2.sw,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+          padding: const EdgeInsets.all(12),
           child: ValueListenableBuilder<bool>(
               valueListenable: condition,
               builder: (context, value, _) {
