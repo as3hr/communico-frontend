@@ -30,7 +30,7 @@ class AiMessage extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xff272334),
+                    color: AppColor.purple,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
