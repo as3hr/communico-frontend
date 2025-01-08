@@ -112,7 +112,7 @@ class GroupCubit extends Cubit<GroupState> {
       }
       emitMessage(message);
       state.groupMessageController.text = "";
-      emit(state.copyWith(currentReplyTo: null));
+      state.currentReplyTo = null;
     }
   }
 

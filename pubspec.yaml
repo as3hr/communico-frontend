@@ -46,9 +46,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   pretty_dio_logger: ^1.4.0
   socket_io_client: ^3.0.2
-  adaptive_theme: ^3.6.0
   universal_html: ^2.2.4
-  flutter_switch: ^0.3.2
   intl: ^0.19.0
   one_clock: ^2.0.1
   stream_typewriter_text: ^1.0.8

@@ -26,9 +26,9 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(isAuthenticated: false));
   }
 
-  void getIn() {
+  void getIn({String? username}) {
     userRepository
-        .getIn(username: state.username, password: state.password)
+        .getIn(username: username ?? state.username, password: state.password)
         .then(
           (response) => response.fold(
             (error) {

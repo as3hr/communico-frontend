@@ -23,8 +23,8 @@ class HomeBody extends StatelessWidget {
       child: BlocBuilder<HomeCubit, HomeState>(
         bloc: cubit,
         builder: (context, state) {
-          return Background(
-            child: DefaultTabController(
+          return Background(children: [
+            DefaultTabController(
               length: 3,
               animationDuration: const Duration(milliseconds: 600),
               child: Padding(
@@ -73,7 +73,7 @@ class HomeBody extends StatelessWidget {
                 ),
               ),
             ),
-          );
+          ]);
         },
       ),
     );

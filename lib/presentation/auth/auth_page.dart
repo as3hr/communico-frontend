@@ -22,9 +22,9 @@ class AuthPage extends StatelessWidget {
       body: BlocBuilder<AuthCubit, AuthState>(
         bloc: cubit,
         builder: (context, state) {
-          return Background(
-            child: SafeArea(
-              child: SelectionArea(
+          return SafeArea(
+            child: Background(children: [
+              SelectionArea(
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 400),
@@ -123,7 +123,7 @@ class AuthPage extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            ]),
           );
         },
       ),

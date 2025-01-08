@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:communico_frontend/helpers/extensions.dart';
+import 'package:communico_frontend/helpers/styles/app_images.dart';
 import 'package:communico_frontend/helpers/utils.dart';
 import 'package:communico_frontend/presentation/home/components/header/background.dart';
 import 'package:flutter/material.dart';
@@ -94,8 +95,21 @@ class _HeaderContentState extends State<HeaderContent> {
                     family: FontFamily.montserrat,
                   ),
                   tabs: [
-                    const Text("Direct Messages"),
-                    const Text("Group Messages"),
+                    Row(
+                      children: [
+                        const Icon(Icons.near_me_outlined,
+                            color: AppColor.styleColor),
+                        1.horizontalSpace,
+                        const Text("Direct Messages"),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.group, color: AppColor.electricBlue),
+                        1.horizontalSpace,
+                        const Text("Group Messages"),
+                      ],
+                    ),
                     AnimatedTextKit(
                       repeatForever: true,
                       onTap: () {
@@ -124,8 +138,14 @@ class _HeaderContentState extends State<HeaderContent> {
                 3.horizontalSpace,
                 const AppVerticalDivider(),
                 3.horizontalSpace,
+                Image.asset(
+                  AppImages.cloud,
+                  height: 25,
+                  width: 35,
+                ),
+                1.horizontalSpace,
                 Text(
-                  "Quote: ${widget.currentQuote}",
+                  widget.currentQuote,
                   style: Styles.boldStyle(
                     fontSize: 15,
                     color: const Color(0xffE3E9EC),
@@ -137,14 +157,11 @@ class _HeaderContentState extends State<HeaderContent> {
                 3.horizontalSpace,
                 Row(
                   children: [
-                    Text(
-                      "Local Time: ",
-                      style: Styles.boldStyle(
-                        fontSize: 15,
-                        color: const Color(0xffE3E9EC),
-                        family: FontFamily.montserrat,
-                      ),
+                    const Icon(
+                      Icons.access_alarms_outlined,
+                      color: AppColor.purple,
                     ),
+                    1.horizontalSpace,
                     DigitalClock(
                       showSeconds: true,
                       isLive: true,

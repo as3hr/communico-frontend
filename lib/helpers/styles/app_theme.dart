@@ -21,7 +21,7 @@ class AppTheme {
       colorScheme: colortheme,
       fontFamily: "Montserrat",
       textSelectionTheme: const TextSelectionThemeData(
-        selectionColor: AppColor.electricBlue,
+        selectionColor: AppColor.lightGrey,
         cursorColor: AppColor.white,
         selectionHandleColor: AppColor.brightMagenta,
       ),

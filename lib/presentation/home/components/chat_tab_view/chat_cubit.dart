@@ -181,7 +181,7 @@ class ChatCubit extends Cubit<ChatState> {
       }
       emitMessage(message);
       state.messageController.text = "";
-      emit(state.copyWith(currentReplyTo: null));
+      state.currentReplyTo = null;
     }
   }
 

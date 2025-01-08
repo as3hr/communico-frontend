@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
-  const Background({super.key, required this.child});
-  final Widget child;
+  const Background({super.key, required this.children});
+  final List<Widget> children;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -19,7 +19,7 @@ class Background extends StatelessWidget {
             ),
           ),
         ),
-        child,
+        ...children,
       ],
     );
   }
