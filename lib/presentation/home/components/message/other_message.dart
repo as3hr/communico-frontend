@@ -86,7 +86,7 @@ class OtherMessage extends StatelessWidget {
                         style: Styles.mediumStyle(
                           fontSize: 14,
                           color: AppColor.white,
-                          family: FontFamily.kanit,
+                          family: FontFamily.montserrat,
                         ),
                       ),
                     ],
