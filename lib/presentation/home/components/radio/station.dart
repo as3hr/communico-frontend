@@ -18,9 +18,9 @@ class Station {
   }
 
   static final stations = [
-    Station(id: "SbAKYgfYET8", title: "Round and Round"),
     Station(id: "Uy1XHMEkKGA", title: "summurai"),
     Station(id: "jfKfPfyJRdk", title: "lofi radio"),
+    Station(id: "SbAKYgfYET8", title: "Round and Round"),
     Station(id: "7NOSDKb0HlU", title: "chillhop music"),
     Station(id: "5yx6BWlEVcY", title: "nujabes style radio"),
     Station(id: "5Qe16QYs9bE", title: "maxim"),
