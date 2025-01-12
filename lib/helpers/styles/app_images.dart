@@ -10,9 +10,13 @@ class AppImages {
   static const sunset = "$_baseDir/sunset.gif";
   static const cloud = "assets/cloud.png";
 
-  static Future<void> loadImage() async {
-    if (!ImageHelper.isImageLoaded(sunset)) {
-      ImageHelper.loadAssetImage(sunset);
-    }
+  static Future<void> preloadImages() async {
+    await NetworkImageHelper.preloadImages([
+      autumn,
+      scenery,
+      rain,
+      mountainous,
+      sunset,
+    ]);
   }
 }

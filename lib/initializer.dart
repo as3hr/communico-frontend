@@ -7,6 +7,6 @@ class Initializer {
   static Future<void> initApp() async {
     WidgetsFlutterBinding.ensureInitialized();
     await ServiceLocator.configureServiceLocator();
-    AppImages.loadImage();
+    AppImages.preloadImages();
   }
 }

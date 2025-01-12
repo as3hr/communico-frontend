@@ -1,64 +1,38 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
-class ImageHelper {
+class NetworkImageHelper {
   static final Map<String, ui.Image> _imageCache = {};
 
-  static bool isImageLoaded(String imagePath) {
-    return _imageCache.containsKey(imagePath);
+  static bool isImageLoaded(String imageUrl) {
+    return _imageCache.containsKey(imageUrl);
   }
 
-  static Future<ui.Image?> loadAssetImage(String imagePath) async {
-    if (_imageCache.containsKey(imagePath)) {
-      return _imageCache[imagePath];
+  static Future<ui.Image?> loadNetworkImage(String imageUrl) async {
+    if (_imageCache.containsKey(imageUrl)) {
+      return _imageCache[imageUrl];
     }
 
     try {
-      const config = ImageConfiguration.empty;
-      final key = await AssetImage(imagePath).obtainKey(config);
-
       final completer = Completer<ui.Image>();
 
-      final data = await key.bundle.load(key.name);
-      final buffer = await ImmutableBuffer.fromUint8List(
-        data.buffer.asUint8List(),
-      );
+      final response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode != 200) {
+        throw Exception('Failed to load image from network');
+      }
 
-      final imageStreamCompleter = MultiFrameImageStreamCompleter(
-        codec: PaintingBinding.instance.instantiateImageCodecWithSize(
-          buffer,
-          getTargetSize: (_, __) {
-            return ui.TargetImageSize(
-              height: config.size?.height.toInt(),
-              width: config.size?.width.toInt(),
-            );
-          },
-        ),
-        scale: key.scale,
-        informationCollector: () sync* {
-          yield ErrorDescription('Image provider: AssetImage(${key.name})');
-        },
-      );
+      final codec = await ui.instantiateImageCodec(response.bodyBytes);
+      final frameInfo = await codec.getNextFrame();
+      final image = frameInfo.image;
 
-      final listener = ImageStreamListener(
-        (imageInfo, synchronousCall) {
-          _imageCache[imagePath] = imageInfo.image;
-          if (!completer.isCompleted) completer.complete(imageInfo.image);
-        },
-        onError: (exception, stackTrace) {
-          if (!completer.isCompleted) {
-            completer.completeError(exception, stackTrace);
-          }
-        },
-      );
+      _imageCache[imageUrl] = image;
+      completer.complete(image);
 
-      imageStreamCompleter.addListener(listener);
-
-      return await completer.future;
+      return image;
     } catch (e) {
-      debugPrint('Error loading asset image: $e');
+      debugPrint('Error loading network image: $e');
       return null;
     }
   }
@@ -67,7 +41,12 @@ class ImageHelper {
     _imageCache.clear();
   }
 
-  static void removeFromCache(String imagePath) {
-    _imageCache.remove(imagePath);
+  static void removeFromCache(String imageUrl) {
+    _imageCache.remove(imageUrl);
+  }
+
+  static Future<List<ui.Image?>> preloadImages(List<String> imageUrls) async {
+    final futures = imageUrls.map((url) => loadNetworkImage(url));
+    return await Future.wait(futures);
   }
 }
