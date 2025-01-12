@@ -6,6 +6,13 @@ A modern communication platform built with Flutter Web, featuring real-time mess
 
 Check Out the backend of Communico [here](https://github.com/as3hr/communico-backend)
 
+## ScreenShots
+![1](https://github.com/user-attachments/assets/ac2eacbf-0fca-4054-ba00-cb7bf55ec6bf)
+![2](https://github.com/user-attachments/assets/e450ba92-a0bb-485a-9290-7c1e55f7b37e)
+![3](https://github.com/user-attachments/assets/10293a79-8f79-4108-9f33-b75e809d4f6e)
+![4](https://github.com/user-attachments/assets/55f32a8c-c230-4213-abc8-0532ffc00869)
+![5](https://github.com/user-attachments/assets/052ac6ac-8eb9-44fa-9843-57594fabe2a5)
+
 ## 🚀 Features
 
 - Real-time messaging with instant updates
